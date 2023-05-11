@@ -53,6 +53,10 @@ class Level1:
                     pygame.quit()
                     quit()
 
+            KEYS_PRESSED = pygame.key.get_pressed()
+            self.__CANNON.moveUpDown(KEYS_PRESSED)
+            #self.__CANNON.checkBoundaries(self.__WINDOW.getWidth(), self.__WINDOW.getHeight())
+
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())

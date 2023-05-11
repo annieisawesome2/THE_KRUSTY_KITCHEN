@@ -9,7 +9,7 @@ from cannon import Cannon
 ##cannon moving up and down, planks marqueeing, ball shooting out of cannon in the right place
 
 
-class Level1:
+class Level1: 
     def __init__(self):
         self.__WINDOW = Window("Fat Bear")
     
@@ -32,6 +32,7 @@ class Level1:
         self.__CANNON = Cannon("images/cannon.png")
         self.__CANNON.setScale(0.2)
         self.__CANNON.setPosition((-80, 200))
+        self.__CANNON.setSpeed(15)
         
 
         self.__BALL = ImageSprite("images/ball.png")

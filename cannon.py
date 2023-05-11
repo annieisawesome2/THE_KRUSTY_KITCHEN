@@ -1,10 +1,6 @@
 from sprite import MySprite
 import pygame
 
-
-##hi
-
-
 class Cannon(MySprite):
     def __init__(self, IMAGE_FILE):
         MySprite.__init__(self)
@@ -24,11 +20,12 @@ class Cannon(MySprite):
             self._SURFACE = pygame.transform.scale(self._SURFACE, (self.getWidth()*SCALE_X, self.getHeight()*SCALE_Y))
         
     def moveUpDown(self, KEYS_PRESSED):
-        """move sprite with WASD
+        """move cannon up and down
 
         Args:
             KEYS_PRESSED (list):    
         """
+        
         if KEYS_PRESSED[pygame.K_UP]:
             self._Y -= self._SPD
 

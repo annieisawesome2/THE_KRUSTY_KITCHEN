@@ -2,6 +2,9 @@ from sprite import MySprite
 import pygame
 
 
+##hi
+
+
 class Cannon(MySprite):
     def __init__(self, IMAGE_FILE):
         MySprite.__init__(self)
@@ -28,7 +31,7 @@ class Cannon(MySprite):
         """
         if KEYS_PRESSED[pygame.K_UP]:
             self._Y -= self._SPD
-        
+
         if KEYS_PRESSED[pygame.K_DOWN]:
             self._Y += self._SPD
     

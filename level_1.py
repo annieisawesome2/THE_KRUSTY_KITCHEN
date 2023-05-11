@@ -3,6 +3,7 @@ from text import Text
 from window import Window
 from boxes import Box
 from image import ImageSprite
+from cannon import Cannon
 
 
 ##cannon moving up and down, planks marqueeing, ball shooting out of cannon in the right place
@@ -28,7 +29,7 @@ class Level1:
             )
         )
 
-        self.__CANNON = ImageSprite("images/cannon.png")
+        self.__CANNON = Cannon("images/cannon.png")
         self.__CANNON.setScale(0.2)
         self.__CANNON.setPosition((-80, 200))
         

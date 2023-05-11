@@ -4,6 +4,7 @@ from window import Window
 from boxes import Box
 from image import ImageSprite
 from cannon import Cannon
+from ball import Ball
 
 
 ##cannon moving up and down, planks marqueeing, ball shooting out of cannon in the right place
@@ -35,9 +36,12 @@ class Level1:
         self.__CANNON.setSpeed(15)
         
 
-        self.__BALL = ImageSprite("images/ball.png")
+        self.__BALL = Ball("images/ball.png")
         self.__BALL.setScale(0.04)
-        self.__BALL.setPosition((500, 100))
+        self.__BALL.setPosition((-1000, -1000))
+        self.__BALL.setSpeed(10)
+        
+
 
         self.__PLANK = ImageSprite("images/plank.png")
         self.__PLANK.setScale(0.3)
@@ -56,7 +60,13 @@ class Level1:
 
             KEYS_PRESSED = pygame.key.get_pressed()
             self.__CANNON.moveUpDown(KEYS_PRESSED)
-            #self.__CANNON.checkBoundaries(self.__WINDOW.getWidth(), self.__WINDOW.getHeight())
+            
+            #self.__CANNON.checkBoundaries(-120, 800)
+
+            if KEYS_PRESSED[pygame.K_SPACE]:
+                self.__BALL.setPosition((self.__CANNON.getWidth() - 170,self.__CANNON.getHeight() + 17))
+                self.__BALL.marqueeX()
+
 
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())

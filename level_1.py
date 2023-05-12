@@ -36,11 +36,18 @@ class Level1:
         self.__CANNON.setSpeed(15)
         
 
-        self.__BALL = Ball("images/ball.png")
-        self.__BALL.setScale(0.04)
-        self.__BALL.setPosition((-1000, -1000))
-        self.__BALL.setSpeed(10)
-        
+        self.__BALLS = []
+        for i in range(1000):
+            self.__BALLS.append(Ball("images/ball.png"))
+
+        for ball in self.__BALLS:
+            ball.setScale(0.04)
+            ball.setPosition((-1000, -1000))
+            ball.setSpeed(25)
+
+
+    
+
 
 
         self.__PLANK = ImageSprite("images/plank.png")
@@ -59,12 +66,15 @@ class Level1:
                     quit()
 
             KEYS_PRESSED = pygame.key.get_pressed()
+
             self.__CANNON.moveUpDown(KEYS_PRESSED)
-            
             #self.__CANNON.checkBoundaries(-120, 800)
 
             if KEYS_PRESSED[pygame.K_SPACE]:
-                self.__BALL.setPosition((self.__CANNON.getWidth() - 170,self.__CANNON.getHeight() + 17))
+                self.__BALL.setPosition((self.__CANNON.getX()+215, self.__CANNON.getY()+120))
+                self.__BALL.changeShoot()
+            
+            if self.__BALL.getShoot():
                 self.__BALL.marqueeX()
 
 

@@ -7,6 +7,7 @@ class Ball(MySprite):
         MySprite.__init__(self)
         self.__FILE_LOC = IMAGE_FILE  ## ENCAPSULATION (protecting and hiding data through an interface)
         self._SURFACE = pygame.image.load(self.__FILE_LOC).convert_alpha()
+        self.SHOOT = False
 
     def setScale(self, SCALE_X, SCALE_Y=0):
         """resize the image based on a factor
@@ -19,6 +20,12 @@ class Ball(MySprite):
         if SCALE_Y == 0:
             SCALE_Y = SCALE_X
             self._SURFACE = pygame.transform.scale(self._SURFACE, (self.getWidth()*SCALE_X, self.getHeight()*SCALE_Y))
+    
+    def changeShoot(self):
+        self.SHOOT = True
+
+    def getShoot(self):
+        return self.SHOOT
 
     def marqueeX(self):
         self._X += self._SPD

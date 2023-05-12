@@ -11,13 +11,15 @@ class Plank(MySprite):
         """
         Moves object in a vertical snake pattern.
         """
-        self._Y += SPEED
+        self._Y += SPEED*self._DIR_Y
         if self._X == 500 and self._Y > SCREEN_HEIGHT:
             self._X = 800
-            self._Y = 0 - self.getWidth()
-        if self._X == 800 and self._Y > SCREEN_HEIGHT:
+            self._Y = SCREEN_HEIGHT
+            self._DIR_Y = -1
+        if self._X == 800 and self._Y < 0:
             self._X = 1100
             self._Y = 0 - self.getWidth()
+            self._DIR_Y = 1
         if self._X == 1100 and self._Y > SCREEN_HEIGHT:
             self._X = 500
             self._Y = 0 - self.getWidth()

@@ -40,11 +40,10 @@ class Level1:
         self.__BALL.setPosition((500, 100))
 
         self.__PLANKS = []
-        for i in range(6):
+        for i in range(9):
             self.__PLANKS.append(Plank("images/plank.png"))
-        for plank in self.__PLANKS:
-            plank.setScale(0.3)
-            plank.setPosition((500, 0-plank.getHeight()))
+            self.__PLANKS[i].setScale(0.3)
+            self.__PLANKS[i].setPosition((500, 0-300*i))
      
 
 
@@ -63,10 +62,8 @@ class Level1:
             self.__CANNON.moveUpDown(KEYS_PRESSED)
             #self.__CANNON.checkBoundaries(self.__WINDOW.getWidth(), self.__WINDOW.getHeight())
 
-            self.__PLANKS[0].marqueeY(self.__WINDOW.getHeight(), 15)
-            for i in range(len(self.__PLANKS)):
-                if self.__PLANKS[i].getPOS()[1] == 300:
-                    self.__PLANKS[i+1].marqueeY(self.__WINDOW.getHeight(), 15)
+            for plank in self.__PLANKS:
+                plank.marqueeY(self.__WINDOW.getHeight(), 6)
 
             # -- OUTPUTS -- #
             self.__WINDOW.clearScreen()

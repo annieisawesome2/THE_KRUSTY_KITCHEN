@@ -15,7 +15,7 @@ class MySprite:
         self._SPD = SPD
         self._COLOR = COLOR #white
         self.__DIR_X = 1
-        self.__DIR_Y = 1
+        self._DIR_Y = 1
         self.LOSE = False
         
 
@@ -120,6 +120,12 @@ class MySprite:
     
     def getPOS(self):
         return self._POS
+    
+    def getX(self):
+        return self._X
+    
+    def getY(self):
+        return self._Y
     
     def getSurface(self):
         return self._SURFACE

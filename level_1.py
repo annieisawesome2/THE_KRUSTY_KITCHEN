@@ -5,6 +5,7 @@ from boxes import Box
 from image import ImageSprite
 from cannon import Cannon
 from ball import Ball
+from planks import Plank
 
 
 ##cannon moving up and down, planks marqueeing, ball shooting out of cannon in the right place

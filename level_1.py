@@ -34,22 +34,17 @@ class Level1:
         self.__CANNON.setScale(0.2)
         self.__CANNON.setPosition((-80, 200))
         self.__CANNON.setSpeed(15)
-        
+    
 
         self.__BALLS = []
-        for i in range(1000):
+        for i in range(10):
             self.__BALLS.append(Ball("images/ball.png"))
 
         for ball in self.__BALLS:
             ball.setScale(0.04)
             ball.setPosition((-1000, -1000))
             ball.setSpeed(25)
-
-
-    
-
-
-
+        
         self.__PLANK = ImageSprite("images/plank.png")
         self.__PLANK.setScale(0.3)
         self.__PLANK.setPosition((900, 100))
@@ -69,19 +64,26 @@ class Level1:
 
             self.__CANNON.moveUpDown(KEYS_PRESSED)
             #self.__CANNON.checkBoundaries(-120, 800)
-
-            if KEYS_PRESSED[pygame.K_SPACE]:
-                self.__BALL.setPosition((self.__CANNON.getX()+215, self.__CANNON.getY()+120))
-                self.__BALL.changeShoot()
             
-            if self.__BALL.getShoot():
-                self.__BALL.marqueeX()
+            for ball in self.__BALLS:
+                if KEYS_PRESSED[pygame.K_SPACE]:
+                    ball.setPosition((self.__CANNON.getX()+215, self.__CANNON.getY()+120))
+                    ball.changeShoot()
 
+                if ball.getShoot():
+                    ball.marqueeX()
+                self.__BALLS.remove(ball)
+                    
+
+    
 
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
-            self.__WINDOW.getSurface().blit(self.__BALL.getSurface(), self.__BALL.getPOS())
+    
+            for ball in self.__BALLS:
+                self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
+            
             self.__WINDOW.getSurface().blit(self.__PLANK.getSurface(), self.__PLANK.getPOS())
             self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
             self.__WINDOW.updateFrame()

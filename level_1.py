@@ -4,13 +4,14 @@ from window import Window
 from boxes import Box
 from image import ImageSprite
 from cannon import Cannon
+from ball import Ball
 from planks import Plank
 
 
 ##cannon moving up and down, planks marqueeing, ball shooting out of cannon in the right place
 
 
-class Level1:
+class Level1: 
     def __init__(self):
         self.__WINDOW = Window("Fat Bear")
     
@@ -33,12 +34,18 @@ class Level1:
         self.__CANNON = Cannon("images/cannon.png")
         self.__CANNON.setScale(0.2)
         self.__CANNON.setPosition((-80, 200))
+        self.__CANNON.setSpeed(15)
+    
+
+        self.__BALLS = []
+        for i in range(10):
+            self.__BALLS.append(Ball("images/ball.png"))
+
+        for ball in self.__BALLS:
+            ball.setScale(0.04)
+            ball.setPosition((-1000, -1000))
+            ball.setSpeed(25)
         
-
-        self.__BALL = ImageSprite("images/ball.png")
-        self.__BALL.setScale(0.04)
-        self.__BALL.setPosition((500, 100))
-
         self.__PLANKS = []
         for i in range(9):
             self.__PLANKS.append(Plank("images/plank.png"))
@@ -60,18 +67,35 @@ class Level1:
 
             # -- PROCESSING -- #
             self.__CANNON.moveUpDown(KEYS_PRESSED)
-            #self.__CANNON.checkBoundaries(self.__WINDOW.getWidth(), self.__WINDOW.getHeight())
+            #self.__CANNON.checkBoundaries(-120, 800)
+            
+            # balls
+            for ball in self.__BALLS:
+                if KEYS_PRESSED[pygame.K_SPACE]:
+                    ball.setPosition((self.__CANNON.getX()+215, self.__CANNON.getY()+120))
+                    ball.changeShoot()
 
+                if ball.getShoot():
+                    ball.marqueeX()
+                self.__BALLS.remove(ball)
+            
+            # planks
             for plank in self.__PLANKS:
                 plank.marqueeY(self.__WINDOW.getHeight(), 6)
+                    
 
+    
             # -- OUTPUTS -- #
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
-            self.__WINDOW.getSurface().blit(self.__BALL.getSurface(), self.__BALL.getPOS())
+    
+            for ball in self.__BALLS:
+                self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
+
             for plank in self.__PLANKS:
                 self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
+            
             self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
             self.__WINDOW.updateFrame()
 

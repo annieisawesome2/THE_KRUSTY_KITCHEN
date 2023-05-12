@@ -64,9 +64,11 @@ class Level1:
 
             KEYS_PRESSED = pygame.key.get_pressed()
 
+            # -- PROCESSING -- #
             self.__CANNON.moveUpDown(KEYS_PRESSED)
             #self.__CANNON.checkBoundaries(-120, 800)
             
+            # balls
             for ball in self.__BALLS:
                 if KEYS_PRESSED[pygame.K_SPACE]:
                     ball.setPosition((self.__CANNON.getX()+215, self.__CANNON.getY()+120))
@@ -75,18 +77,24 @@ class Level1:
                 if ball.getShoot():
                     ball.marqueeX()
                 self.__BALLS.remove(ball)
+            
+            # planks
+            for plank in self.__PLANKS:
+                plank.marqueeY(self.__WINDOW.getHeight(), 6)
                     
 
     
-
+            # -- OUTPUTS -- #
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
     
             for ball in self.__BALLS:
                 self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
+
+            for plank in self.__PLANKS:
+                self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
             
-            self.__WINDOW.getSurface().blit(self.__PLANK.getSurface(), self.__PLANK.getPOS())
             self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
             self.__WINDOW.updateFrame()
 

@@ -4,6 +4,7 @@ from window import Window
 from boxes import Box
 from image import ImageSprite
 from cannon import Cannon
+from planks import Plank
 
 
 ##cannon moving up and down, planks marqueeing, ball shooting out of cannon in the right place
@@ -38,9 +39,12 @@ class Level1:
         self.__BALL.setScale(0.04)
         self.__BALL.setPosition((500, 100))
 
-        self.__PLANK = ImageSprite("images/plank.png")
-        self.__PLANK.setScale(0.3)
-        self.__PLANK.setPosition((900, 100))
+        self.__PLANKS = []
+        for i in range(6):
+            self.__PLANKS.append(Plank("images/plank.png"))
+        for plank in self.__PLANKS:
+            plank.setScale(0.3)
+            plank.setPosition((500, 0-plank.getHeight()))
      
 
 
@@ -54,14 +58,23 @@ class Level1:
                     quit()
 
             KEYS_PRESSED = pygame.key.get_pressed()
+
+            # -- PROCESSING -- #
             self.__CANNON.moveUpDown(KEYS_PRESSED)
             #self.__CANNON.checkBoundaries(self.__WINDOW.getWidth(), self.__WINDOW.getHeight())
 
+            self.__PLANKS[0].marqueeY(self.__WINDOW.getHeight(), 15)
+            for i in range(len(self.__PLANKS)):
+                if self.__PLANKS[i].getPOS()[1] == 300:
+                    self.__PLANKS[i+1].marqueeY(self.__WINDOW.getHeight(), 15)
+
+            # -- OUTPUTS -- #
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
             self.__WINDOW.getSurface().blit(self.__BALL.getSurface(), self.__BALL.getPOS())
-            self.__WINDOW.getSurface().blit(self.__PLANK.getSurface(), self.__PLANK.getPOS())
+            for plank in self.__PLANKS:
+                self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
             self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
             self.__WINDOW.updateFrame()
 

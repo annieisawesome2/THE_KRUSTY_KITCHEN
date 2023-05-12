@@ -37,23 +37,21 @@ class Level1:
         self.__CANNON.setSpeed(15)
     
 
-        self.__BALLS = []
-        for i in range(10):
-            self.__BALLS.append(Ball("images/ball.png"))
-
-        for ball in self.__BALLS:
-            ball.setScale(0.04)
-            ball.setPosition((-1000, -1000))
-            ball.setSpeed(25)
-        
+       
         self.__PLANKS = []
         for i in range(9):
             self.__PLANKS.append(Plank("images/plank.png"))
             self.__PLANKS[i].setScale(0.3)
             self.__PLANKS[i].setPosition((500, 0-300*i))
-     
 
+        
+        self.__BALLS = []
+        self.NEXT_BALL = 0
+        
+        
 
+        
+        
 
     def run(self):
         while True:
@@ -70,15 +68,31 @@ class Level1:
             #self.__CANNON.checkBoundaries(-120, 800)
             
             # balls
-            for ball in self.__BALLS:
-                if KEYS_PRESSED[pygame.K_SPACE]:
-                    ball.setPosition((self.__CANNON.getX()+215, self.__CANNON.getY()+120))
-                    ball.changeShoot()
+            
 
+            
+            TIME = pygame.time.get_ticks()
+            
+            if KEYS_PRESSED[pygame.K_SPACE] and TIME > self.NEXT_BALL:
+                DELAY = 400
+                self.NEXT_BALL = TIME + DELAY
+       
+                BALL = Ball("images/ball.png")
+                self.__BALLS.append(BALL)
+                BALL.setScale(0.04)
+                BALL.setPosition((self.__CANNON.getX() + 215, self.__CANNON.getY()+120))
+                BALL.setSpeed(10)
+                BALL.changeShoot()
+
+            for ball in self.__BALLS:
                 if ball.getShoot():
                     ball.marqueeX()
-                self.__BALLS.remove(ball)
             
+    
+    
+        
+            
+                   
             # planks
             for plank in self.__PLANKS:
                 plank.marqueeY(self.__WINDOW.getHeight(), 6)

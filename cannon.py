@@ -1,4 +1,5 @@
 from sprite import MySprite
+from ball import Ball
 import pygame
 
 class Cannon(MySprite):
@@ -6,6 +7,8 @@ class Cannon(MySprite):
         MySprite.__init__(self)
         self.__FILE_LOC = IMAGE_FILE  ## ENCAPSULATION (protecting and hiding data through an interface)
         self._SURFACE = pygame.image.load(self.__FILE_LOC).convert_alpha()
+
+    
 
     def setScale(self, SCALE_X, SCALE_Y=0):
         """resize the image based on a factor
@@ -33,4 +36,7 @@ class Cannon(MySprite):
             self._Y += self._SPD
     
         self._POS = (self._X, self._Y)
+
+
+
 

@@ -45,9 +45,11 @@ class Level1:
             ball.setPosition((-1000, -1000))
             ball.setSpeed(25)
         
-        self.__PLANK = ImageSprite("images/plank.png")
-        self.__PLANK.setScale(0.3)
-        self.__PLANK.setPosition((900, 100))
+        self.__PLANKS = []
+        for i in range(9):
+            self.__PLANKS.append(Plank("images/plank.png"))
+            self.__PLANKS[i].setScale(0.3)
+            self.__PLANKS[i].setPosition((500, 0-300*i))
      
 
 

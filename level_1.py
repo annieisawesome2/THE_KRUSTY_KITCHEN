@@ -6,6 +6,7 @@ from image import ImageSprite
 from cannon import Cannon
 from ball import Ball
 from planks import Plank
+from fruits import Fruits
 
 
 ##cannon moving up and down, planks marqueeing, ball shooting out of cannon in the right place
@@ -35,18 +36,47 @@ class Level1:
         self.__CANNON.setScale(0.2)
         self.__CANNON.setPosition((-80, 200))
         self.__CANNON.setSpeed(15)
+
+        self.__BALLS = []
+        self.NEXT_BALL = 0
+
+
+        self.__FRUITS = []
+        self.__FRUITS.append(Fruits("images/banana.png"))
+        self.__FRUITS.append(Fruits("images/cherry.png"))
+        self.__FRUITS.append(Fruits("images/pear.png"))
+        self.__FRUITS.append(Fruits("images/apple.png"))
+        self.__FRUITS.append(Fruits("images/orange.png"))
+
+
+
+        self.__FRUITS[0].setScale(0.04)
+        self.__FRUITS[1].setScale(0.03)
+        self.__FRUITS[2].setScale(0.04)
+        self.__FRUITS[3].setScale(0.03)
+        self.__FRUITS[4].setScale(0.04)
+
+
+        self.__FRUITS[0].setPosition((800, 50))
+        self.__FRUITS[1].setPosition((500, 50))
+        self.__FRUITS[2].setPosition((100, 50))
+        self.__FRUITS[3].setPosition((200, 50))
+        self.__FRUITS[4].setPosition((300, 50))
+
+
+    
+
     
 
        
         self.__PLANKS = []
         for i in range(9):
-            self.__PLANKS.append(Plank("images/plank.png"))
-            self.__PLANKS[i].setScale(0.3)
+            self.__PLANKS.append(Plank("images/cloud.png"))
+            self.__PLANKS[i].setScale(0.07)  #plank is 0.3
             self.__PLANKS[i].setPosition((500, 0-300*i))
 
         
-        self.__BALLS = []
-        self.NEXT_BALL = 0
+        
         
         
 
@@ -81,7 +111,7 @@ class Level1:
                 self.__BALLS.append(BALL)
                 BALL.setScale(0.04)
                 BALL.setPosition((self.__CANNON.getX() + 215, self.__CANNON.getY()+120))
-                BALL.setSpeed(10)
+                BALL.setSpeed(25)
                 BALL.changeShoot()
 
             for ball in self.__BALLS:
@@ -103,12 +133,17 @@ class Level1:
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
+
+            for fruit in self.__FRUITS:
+                self.__WINDOW.getSurface().blit(fruit.getSurface(), fruit.getPOS())
     
+            
+            for plank in self.__PLANKS:
+                self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
+
             for ball in self.__BALLS:
                 self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
 
-            for plank in self.__PLANKS:
-                self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
             
             self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
             self.__WINDOW.updateFrame()

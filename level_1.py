@@ -18,13 +18,13 @@ class Level1:
     
         self.__TITLE = Text("Fat Bear")
         self.__TITLE.setPosition((self.__WINDOW.getWidth()//2 - self.__TITLE.getWidth()//2, 0))
-        self.__TITLE.setColor((153, 255, 255))
+        self.__TITLE.setColor((0, 0, 102))
         self.__TITLE.setFontSize(50)
         self.__BALL = Box(15, 15)
         self.__BALL.setSpeed(0)
         self.__BALL.setPosition((self.__WINDOW.getWidth()//2 - self.__BALL.getWidth()//2, 650))
 
-        self.__BG_IMAGE = ImageSprite("images/background2.jpg")
+        self.__BG_IMAGE = ImageSprite("images/night_bg.jpeg")
         self.__BG_IMAGE.setScale(4)
         self.__BG_IMAGE.setPosition(
             (

@@ -3,7 +3,7 @@ import pygame
 class Window:
     """Create the window that will load pygame
     """
-    def __init__(self, TITLE, WIDTH = 1300, HEIGHT=800, FPS=30, BG_COLOR = (102, 0, 102)):
+    def __init__(self, TITLE, WIDTH = 1300, HEIGHT=800, FPS=30, BG_COLOR = (153, 153, 255)):
         ## ENCAPSULATION (protecting and hiding data through an interface)
         self.__TITLE = TITLE
         self.__FPS = FPS #frames per second the window will refresh

@@ -24,16 +24,3 @@ class Plank(MySprite):
             self._X = 500
             self._Y = 0 - self.getWidth()
         self._POS = (self._X, self._Y)
-
-    def setScale(self, SCALE_X, SCALE_Y=0):
-        """resize the image based on a factor
-
-        Args:
-            SCALE_X (float): 
-            SCALE_Y (float): Defaults to 0.
-        """
-
-        if SCALE_Y == 0:
-            SCALE_Y = SCALE_X
-            self._SURFACE = pygame.transform.scale(self._SURFACE, (self.getWidth()*SCALE_X, self.getHeight()*SCALE_Y))
-        

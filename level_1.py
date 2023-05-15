@@ -9,7 +9,7 @@ from planks import Plank
 from fruits import Fruits
 
 
-##cannon moving up and down, planks marqueeing, ball shooting out of cannon in the right place
+##Fruits on clouds random every time hitting objects
 
 
 class Level1: 
@@ -47,8 +47,6 @@ class Level1:
         self.__FRUITS.append(Fruits("images/pear.png"))
         self.__FRUITS.append(Fruits("images/apple.png"))
         self.__FRUITS.append(Fruits("images/orange.png"))
-
-
 
         self.__FRUITS[0].setScale(0.04)
         self.__FRUITS[1].setScale(0.03)

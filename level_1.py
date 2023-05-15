@@ -40,6 +40,12 @@ class Level1:
         self.__BALLS = []
         self.NEXT_BALL = 0
 
+        self.__PLANKS = []
+        for i in range(9):
+            self.__PLANKS.append(Plank("images/cloud.png"))
+            self.__PLANKS[i].setScale(0.07)  #plank is 0.3
+            self.__PLANKS[i].setPosition((500, 0-300*i))
+
 
         self.__FRUITS = []
         self.__FRUITS.append(Fruits("images/banana.png"))
@@ -62,18 +68,6 @@ class Level1:
         self.__FRUITS[2].setPosition((100, 50))
         self.__FRUITS[3].setPosition((200, 50))
         self.__FRUITS[4].setPosition((300, 50))
-
-
-    
-
-    
-
-       
-        self.__PLANKS = []
-        for i in range(9):
-            self.__PLANKS.append(Plank("images/cloud.png"))
-            self.__PLANKS[i].setScale(0.07)  #plank is 0.3
-            self.__PLANKS[i].setPosition((500, 0-300*i))
 
         
         
@@ -126,6 +120,9 @@ class Level1:
             # planks
             for plank in self.__PLANKS:
                 plank.marqueeY(self.__WINDOW.getHeight(), 6)
+
+            # fruits
+            self.__FRUITS[0].setPosition(self.__PLANKS[0])
                     
 
     

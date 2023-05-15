@@ -6,7 +6,8 @@ from image import ImageSprite
 from cannon import Cannon
 from ball import Ball
 from planks import Plank
-from fruits import Fruits
+from items import Items
+import random
 
 
 ##Fruits on clouds random every time hitting objects
@@ -41,31 +42,33 @@ class Level1:
         self.NEXT_BALL = 0
 
 
-        self.__FRUITS = []
-        self.__FRUITS.append(Fruits("images/banana.png"))
-        self.__FRUITS.append(Fruits("images/cherry.png"))
-        self.__FRUITS.append(Fruits("images/pear.png"))
-        self.__FRUITS.append(Fruits("images/apple.png"))
-        self.__FRUITS.append(Fruits("images/orange.png"))
+        self.__ITEMS = []
+        self.__ITEMS.append(Items("images/banana.png"))
+        self.__ITEMS.append(Items("images/cherry.png"))
+        self.__ITEMS.append(Items("images/pear.png"))
+        self.__ITEMS.append(Items("images/apple.png"))
+        self.__ITEMS.append(Items("images/orange.png"))
+        self.__ITEMS.append(Items("images/poison.png"))
+        self.__ITEMS.append(Items("images/purple_poison.png"))
 
-        self.__FRUITS[0].setScale(0.04)
-        self.__FRUITS[1].setScale(0.03)
-        self.__FRUITS[2].setScale(0.04)
-        self.__FRUITS[3].setScale(0.03)
-        self.__FRUITS[4].setScale(0.04)
-
-
-        self.__FRUITS[0].setPosition((800, 50))
-        self.__FRUITS[1].setPosition((500, 50))
-        self.__FRUITS[2].setPosition((100, 50))
-        self.__FRUITS[3].setPosition((200, 50))
-        self.__FRUITS[4].setPosition((300, 50))
-
-
+        self.__ITEMS[0].setScale(0.04)
+        self.__ITEMS[1].setScale(0.03)
+        self.__ITEMS[2].setScale(0.04)
+        self.__ITEMS[3].setScale(0.03)
+        self.__ITEMS[4].setScale(0.04)
+        self.__ITEMS[5].setScale(0.025)
+        self.__ITEMS[6].setScale(0.053)
     
 
-    
-
+        '''
+        self.__ITEMS[0].setPosition((800, 50))
+        self.__ITEMS[1].setPosition((500, 50))
+        self.__ITEMS[2].setPosition((100, 50))
+        self.__ITEMS[3].setPosition((200, 50))
+        self.__ITEMS[4].setPosition((300, 50))
+        self.__ITEMS[5].setPosition((300, 200))
+        self.__ITEMS[6].setPosition((400, 200))
+        '''
        
         self.__PLANKS = []
         for i in range(9):
@@ -73,13 +76,11 @@ class Level1:
             self.__PLANKS[i].setScale(0.07)  #plank is 0.3
             self.__PLANKS[i].setPosition((500, 0-300*i))
 
-        
-        
-        
-        
+        self.__ITEMS[0].setPosition((self.__PLANKS[0].getPOS()))
+
 
         
-        
+    
 
     def run(self):
         while True:
@@ -123,8 +124,18 @@ class Level1:
                    
             # planks
             for plank in self.__PLANKS:
-                plank.marqueeY(self.__WINDOW.getHeight(), 6)
-                    
+                plank.marqueeY(self.__WINDOW.getHeight(), 4)
+
+            self.__ITEMS[0].marqueeY(self.__WINDOW.getHeight(), 4)
+            
+            #for plank in self.__PLANKS:
+                
+                #ITEM_CHOICE = random.choice(self.__ITEMS)
+                #ITEM_CHOICE.setPosition((plank.getPOS()))
+                #ITEM_CHOICE.marqueeY(self.__WINDOW.getHeight(), 4)
+
+            
+        
 
     
             # -- OUTPUTS -- #
@@ -132,8 +143,8 @@ class Level1:
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
 
-            for fruit in self.__FRUITS:
-                self.__WINDOW.getSurface().blit(fruit.getSurface(), fruit.getPOS())
+            for item in self.__ITEMS:
+                self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
     
             
             for plank in self.__PLANKS:

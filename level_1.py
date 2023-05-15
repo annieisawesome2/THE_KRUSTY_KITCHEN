@@ -42,6 +42,8 @@ class Level1:
         self.NEXT_BALL = 0
 
 
+
+############## gloria edit
         self.__ITEMS = []
         self.__ITEMS.append(Items("images/banana.png"))
         self.__ITEMS.append(Items("images/cherry.png"))
@@ -66,7 +68,7 @@ class Level1:
             self.__PLANKS[i].setScale(0.07)  #plank is 0.3
             self.__PLANKS[i].setPosition((500, 0-300*i))
 
-
+############### gloria edit
 
         
 
@@ -113,6 +115,7 @@ class Level1:
     
         
             
+################ gloria edit
                    
             # planks
             for plank in self.__PLANKS:
@@ -123,6 +126,8 @@ class Level1:
                 ITEM_CHOICE = random.choice(self.__ITEMS)
                 ITEM_CHOICE.setPosition((plank.getPOS()))
                 ITEM_CHOICE.marqueeY(self.__WINDOW.getHeight(), 4)
+
+################## gloria edit
                 
        
         

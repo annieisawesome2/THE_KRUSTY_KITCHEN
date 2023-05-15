@@ -1,6 +1,7 @@
 from sprite import MySprite
 import pygame
 
+################ gloria edit
 
 class Items(MySprite):
     def __init__(self, IMAGE_FILE):

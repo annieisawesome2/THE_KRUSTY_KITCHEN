@@ -1,15 +1,12 @@
-import pygame
 from sprite import MySprite
-from items import Items
-import random
+import pygame
 
-class Plank(MySprite):
+
+class Items(MySprite):
     def __init__(self, IMAGE_FILE):
         MySprite.__init__(self)
         self.__FILE_LOC = IMAGE_FILE  ## ENCAPSULATION (protecting and hiding data through an interface)
         self._SURFACE = pygame.image.load(self.__FILE_LOC).convert_alpha()
-        
-        
 
     def marqueeY(self, SCREEN_HEIGHT, SPEED):
         """
@@ -28,4 +25,3 @@ class Plank(MySprite):
             self._X = 500
             self._Y = 0 - self.getWidth()
         self._POS = (self._X, self._Y)
-  

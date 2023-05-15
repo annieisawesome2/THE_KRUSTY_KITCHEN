@@ -58,17 +58,7 @@ class Level1:
         self.__ITEMS[4].setScale(0.04)
         self.__ITEMS[5].setScale(0.025)
         self.__ITEMS[6].setScale(0.053)
-    
-
-        '''
-        self.__ITEMS[0].setPosition((800, 50))
-        self.__ITEMS[1].setPosition((500, 50))
-        self.__ITEMS[2].setPosition((100, 50))
-        self.__ITEMS[3].setPosition((200, 50))
-        self.__ITEMS[4].setPosition((300, 50))
-        self.__ITEMS[5].setPosition((300, 200))
-        self.__ITEMS[6].setPosition((400, 200))
-        '''
+  
        
         self.__PLANKS = []
         for i in range(9):
@@ -76,7 +66,9 @@ class Level1:
             self.__PLANKS[i].setScale(0.07)  #plank is 0.3
             self.__PLANKS[i].setPosition((500, 0-300*i))
 
-        self.__ITEMS[0].setPosition((self.__PLANKS[0].getPOS()))
+
+
+        
 
 
         
@@ -126,15 +118,13 @@ class Level1:
             for plank in self.__PLANKS:
                 plank.marqueeY(self.__WINDOW.getHeight(), 4)
 
-            self.__ITEMS[0].marqueeY(self.__WINDOW.getHeight(), 4)
             
-            #for plank in self.__PLANKS:
+            for plank in self.__PLANKS:
+                ITEM_CHOICE = random.choice(self.__ITEMS)
+                ITEM_CHOICE.setPosition((plank.getPOS()))
+                ITEM_CHOICE.marqueeY(self.__WINDOW.getHeight(), 4)
                 
-                #ITEM_CHOICE = random.choice(self.__ITEMS)
-                #ITEM_CHOICE.setPosition((plank.getPOS()))
-                #ITEM_CHOICE.marqueeY(self.__WINDOW.getHeight(), 4)
-
-            
+       
         
 
     

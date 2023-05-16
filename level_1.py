@@ -1,3 +1,4 @@
+from pickle import FALSE
 import pygame
 from text import Text
 from window import Window
@@ -50,24 +51,7 @@ class Level1:
 
 
 ############## gloria edit
-        self.__ITEMS = []
-        self.__ITEMS.append(Items("images/banana.png"))
-        self.__ITEMS.append(Items("images/cherry.png"))
-        self.__ITEMS.append(Items("images/pear.png"))
-        self.__ITEMS.append(Items("images/apple.png"))
-        self.__ITEMS.append(Items("images/orange.png"))
-        self.__ITEMS.append(Items("images/poison.png"))
-        self.__ITEMS.append(Items("images/purple_poison.png"))
-
-        self.__ITEMS[0].setScale(0.04)
-        self.__ITEMS[1].setScale(0.03)
-        self.__ITEMS[2].setScale(0.04)
-        self.__ITEMS[3].setScale(0.03)
-        self.__ITEMS[4].setScale(0.04)
-        self.__ITEMS[5].setScale(0.025)
-        self.__ITEMS[6].setScale(0.053)
-  
-       
+    
         self.__PLANKS = []
         for i in range(9):
             self.__PLANKS.append(Plank("images/cloud.png"))
@@ -76,13 +60,38 @@ class Level1:
 
 ############### gloria edit
 
-        
+        self.ITEMS = [
+                Items("images/banana.png"),
+                Items("images/cherry.png"),
+                Items("images/pear.png"),
+                Items("images/apple.png"),
+                Items("images/orange.png"),
+                Items("images/poison.png"),
+                Items("images/purple_poison.png")
+            ]
+        self.ITEMS[0].setScale(0.04)
+        self.ITEMS[1].setScale(0.03)
+        self.ITEMS[2].setScale(0.04)
+        self.ITEMS[3].setScale(0.03)
+        self.ITEMS[4].setScale(0.04)
+        self.ITEMS[5].setScale(0.025)
+        self.ITEMS[6].setScale(0.053)
+
+        self.RANDOM_ITEM1 = self.ITEMS[random.randint(0,6)]
+        self.RANDOM_ITEM2 = self.ITEMS[random.randint(0,6)]
+        self.RANDOM_ITEM3 = self.ITEMS[random.randint(0,6)]
+        self.RANDOM_ITEM4 = self.ITEMS[random.randint(0,6)]
+        self.RANDOM_ITEM5 = self.ITEMS[random.randint(0,6)]
+        self.RANDOM_ITEM6 = self.ITEMS[random.randint(0,6)]
+        self.RANDOM_ITEM7 = self.ITEMS[random.randint(0,6)]
+        self.RANDOM_ITEM8 = self.ITEMS[random.randint(0,6)]
+        self.RANDOM_ITEM9 = self.ITEMS[random.randint(0,6)]
 
 
-        
     
 
     def run(self):
+        
         while True:
             # -- INPUTS -- #
             for event in pygame.event.get():
@@ -116,13 +125,27 @@ class Level1:
             for ball in self.__BALLS:
                 if ball.getShoot():
                     ball.marqueeX()
+
+            # planks
+            for plank in self.__PLANKS:
+                plank.marqueeY(self.__WINDOW.getHeight(), 4)
             
-    
-    
+        
+     
+            self.RANDOM_ITEM1.setPosition((self.__PLANKS[0]._POS))
+            self.RANDOM_ITEM2.setPosition((self.__PLANKS[1]._POS))
+            self.RANDOM_ITEM3.setPosition((self.__PLANKS[2]._POS))
+            self.RANDOM_ITEM4.setPosition((self.__PLANKS[3]._POS))
+            self.RANDOM_ITEM5.setPosition((self.__PLANKS[4]._POS))
+            self.RANDOM_ITEM6.setPosition((self.__PLANKS[5]._POS))
+            self.RANDOM_ITEM7.setPosition((self.__PLANKS[6]._POS))
+            self.RANDOM_ITEM8.setPosition((self.__PLANKS[7]._POS))
+            self.RANDOM_ITEM9.setPosition((self.__PLANKS[8]._POS))
+
         
             
 ################ gloria edit
-
+            '''
             # planks
             for plank in self.__PLANKS:
                 plank.marqueeY(self.__WINDOW.getHeight(), 4)
@@ -143,23 +166,37 @@ class Level1:
             #         self.__ITEMS[i].setPosition(plank.getPOS())
 
 ################## gloria edit
-                
-       
-        
-
-    
+            '''
             # -- OUTPUTS -- #
+           
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
+
+    
+
+
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
 
-            for item in self.__ITEMS:
-                self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
+            self.__WINDOW.getSurface().blit(self.RANDOM_ITEM1.getSurface(), self.RANDOM_ITEM1.getPOS())
+            self.__WINDOW.getSurface().blit(self.RANDOM_ITEM2.getSurface(), self.RANDOM_ITEM2.getPOS())
+            self.__WINDOW.getSurface().blit(self.RANDOM_ITEM3.getSurface(), self.RANDOM_ITEM3.getPOS())
+            self.__WINDOW.getSurface().blit(self.RANDOM_ITEM4.getSurface(), self.RANDOM_ITEM4.getPOS())
+            self.__WINDOW.getSurface().blit(self.RANDOM_ITEM5.getSurface(), self.RANDOM_ITEM5.getPOS())
+            self.__WINDOW.getSurface().blit(self.RANDOM_ITEM6.getSurface(), self.RANDOM_ITEM6.getPOS())
+            self.__WINDOW.getSurface().blit(self.RANDOM_ITEM7.getSurface(), self.RANDOM_ITEM7.getPOS())
+            self.__WINDOW.getSurface().blit(self.RANDOM_ITEM8.getSurface(), self.RANDOM_ITEM8.getPOS())
+            self.__WINDOW.getSurface().blit(self.RANDOM_ITEM9.getSurface(), self.RANDOM_ITEM9.getPOS())
 
             
             for plank in self.__PLANKS:
                 self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
 
+            self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
+
+            
+
+
+            
             for ball in self.__BALLS:
                 self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
             

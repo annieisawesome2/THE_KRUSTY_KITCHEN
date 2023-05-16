@@ -18,7 +18,7 @@ class Items(MySprite):
 
     def setValue(self, VALUE):
         self.__VALUE = VALUE
-
+        
     def setPresence(self):
         if not (self.getPOS()[0] == 500 and self.getPOS()[1] < 0):
             self.__PRESENCE = True

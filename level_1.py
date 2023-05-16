@@ -116,16 +116,25 @@ class Level1:
         
             
 ################ gloria edit
-                   
+
             # planks
             for plank in self.__PLANKS:
                 plank.marqueeY(self.__WINDOW.getHeight(), 4)
 
-            
-            for plank in self.__PLANKS:
-                ITEM_CHOICE = random.choice(self.__ITEMS)
-                ITEM_CHOICE.setPosition((plank.getPOS()))
-                ITEM_CHOICE.marqueeY(self.__WINDOW.getHeight(), 4)
+            # fruits
+            for item in self.__ITEMS:
+                item.setPresence()
+                if item.getPresence() == False:
+                    item.setPosition(self.__PLANKS[0].getPOS())
+            # print(self.__ITEMS[0].getPresence())
+            # self.__ITEMS[0].setPosition(self.__PLANKS[0].getPOS())
+
+            # for plank in self.__PLANKS:
+            #     i = random.randrange(len(self.__ITEMS))
+            #     if self.__ITEMS[i] == '':
+            #         pass
+            #     else:
+            #         self.__ITEMS[i].setPosition(plank.getPOS())
 
 ################## gloria edit
                 
@@ -140,7 +149,7 @@ class Level1:
 
             for item in self.__ITEMS:
                 self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
-    
+
             
             for plank in self.__PLANKS:
                 self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())

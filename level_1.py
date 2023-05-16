@@ -7,6 +7,7 @@ from cannon import Cannon
 from ball import Ball
 from planks import Plank
 from items import Items
+from bear import Bear
 import random
 
 
@@ -40,6 +41,11 @@ class Level1:
 
         self.__BALLS = []
         self.NEXT_BALL = 0
+
+        self.__BEAR = Bear("images/panda_bear.png")
+        self.__BEAR.setPosition((1050, 650))
+        self.__BEAR.setScale(0.5)
+        
 
 
 
@@ -156,6 +162,8 @@ class Level1:
 
             for ball in self.__BALLS:
                 self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
+            
+            self.__WINDOW.getSurface().blit(self.__BEAR.getSurface(),self.__BEAR.getPOS())
 
             
             self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())

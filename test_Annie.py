@@ -65,7 +65,13 @@ class Level1:
         self.STUFF = []
 
     def generate(self):
-        ITEM = random.choice(self.ITEMS)
+        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png"]
+        CHOSEN_ITEM = random.choice(STRING)
+
+        ITEM = Items(CHOSEN_ITEM)
+
+        
+        ITEM.setScale(0.03)
         return ITEM
         
     def run(self):
@@ -78,8 +84,7 @@ class Level1:
                     quit() 
 
 
-         
-             
+        
 
     
             TIME = pygame.time.get_ticks()
@@ -87,9 +92,9 @@ class Level1:
                 DELAY = 2000
 
                 self.NEXT_BALL = TIME + DELAY
-                ITEM = Items("images/cherry.png") #self.generate()
+                ITEM = self.generate()
                 self.STUFF.append(ITEM)
-                ITEM.setScale(0.03)
+                #ITEM.setScale(0.03)
                 ITEM.setPosition((500, -5 - ITEM.getHeight()))
                 ITEM.setgo()
               

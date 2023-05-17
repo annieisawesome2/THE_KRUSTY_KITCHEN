@@ -116,6 +116,7 @@ class Level1:
                 if ball.getShoot():
                     ball.marqueeX()
                 if ball.getPOS()[0] > self.__WINDOW.getWidth():
+                    self.__BALLS.pop(0)
                     del ball  
 
             # planks

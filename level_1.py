@@ -49,40 +49,34 @@ class Level1:
             self.__PLANKS.append(Plank("images/cloud.png"))
             self.__PLANKS[i].setScale(0.07)  #plank is 0.3
             self.__PLANKS[i].setPosition((500, 0-300*i))
-
-        self.ITEMS = [
-                Items("images/banana.png"),
-                Items("images/cherry.png"),
-                Items("images/pear.png"),
-                Items("images/apple.png"),
-                Items("images/orange.png"),
-                Items("images/poison.png"),
-                Items("images/purple_poison.png")
-            ]
-
-        self.ITEMS[0].setScale(0.04)
-        self.ITEMS[1].setScale(0.03)
-        self.ITEMS[2].setScale(0.04)
-        self.ITEMS[3].setScale(0.03)
-        self.ITEMS[4].setScale(0.04)
-        self.ITEMS[5].setScale(0.025)
-        self.ITEMS[6].setScale(0.053)
-
         
+        self.NEXT_ITEM = 0
+        self.STUFF = []
+
+    def generate(self):
+        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png"]
+        CHOSEN_ITEM = random.choice(STRING)
+
+        ITEM = Items(CHOSEN_ITEM)
+
+        if CHOSEN_ITEM == "images/banana.png":
+            ITEM.setScale(0.04)
+        elif CHOSEN_ITEM == "images/cherry.png":
+            ITEM.setScale(0.03)
+        elif CHOSEN_ITEM == "images/pear.png":
+            ITEM.setScale(0.04)
+        elif CHOSEN_ITEM == "images/apple.png":
+            ITEM.setScale(0.03)
+        elif CHOSEN_ITEM == "images/orange.png":
+            ITEM.setScale(0.04)
+        elif CHOSEN_ITEM == "images/poison.png":
+            ITEM.setScale(0.025)
+        elif CHOSEN_ITEM == "images/purple_poison.png":
+            ITEM.setScale(0.053)
+
+        return ITEM
         
 
-        #self.RANDOM_ITEM1 = self.ITEMS[random.randint(0,6)]
-        #self.RANDOM_ITEM2 = self.ITEMS[random.randint(0,6)]
-        #self.RANDOM_ITEM3 = self.ITEMS[random.randint(0,6)]
-        #self.RANDOM_ITEM4 = self.ITEMS[random.randint(0,6)]
-        #self.RANDOM_ITEM5 = self.ITEMS[random.randint(0,6)]
-        #self.RANDOM_ITEM6 = self.ITEMS[random.randint(0,6)]
-        #self.RANDOM_ITEM7 = self.ITEMS[random.randint(0,6)]
-        #self.RANDOM_ITEM8 = self.ITEMS[random.randint(0,6)]
-        #self.RANDOM_ITEM9 = self.ITEMS[random.randint(0,6)]
-
-
-        
     
     def run(self):
         
@@ -126,34 +120,30 @@ class Level1:
                 self.__PLANKS.pop(0)
                 del plank
             
-        
-     
-            #self.RANDOM_ITEM1.setPosition((self.__PLANKS[0]._POS))
-            #self.RANDOM_ITEM2.setPosition((self.__PLANKS[1]._POS))
-            #self.RANDOM_ITEM3.setPosition((self.__PLANKS[2]._POS))
-            #self.RANDOM_ITEM4.setPosition((self.__PLANKS[3]._POS))
-            #self.RANDOM_ITEM5.setPosition((self.__PLANKS[4]._POS))
-            #self.RANDOM_ITEM6.setPosition((self.__PLANKS[5]._POS))
-            #self.RANDOM_ITEM7.setPosition((self.__PLANKS[6]._POS))
-            #self.RANDOM_ITEM8.setPosition((self.__PLANKS[7]._POS))
-            #self.RANDOM_ITEM9.setPosition((self.__PLANKS[8]._POS))
+            TIME = pygame.time.get_ticks()
+            if TIME > self.NEXT_ITEM:
+                DELAY = 2000
 
+                self.NEXT_ITEM = TIME + DELAY
+                ITEM = self.generate()
+                self.STUFF.append(ITEM)
+                #ITEM.setScale(0.03)
+                ITEM.setPosition((500, -5 - ITEM.getHeight()))
+                ITEM.setgo()
+              
+            for stuff in self.STUFF:
+                if ITEM.getGo:
+                    stuff.marqueeY(self.__WINDOW.getHeight(), 8)
+         
+
+    
+   
             # -- OUTPUTS -- #
                 
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
        
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
-
-            #self.__WINDOW.getSurface().blit(self.RANDOM_ITEM1.getSurface(), self.RANDOM_ITEM1.getPOS())
-            #self.__WINDOW.getSurface().blit(self.RANDOM_ITEM2.getSurface(), self.RANDOM_ITEM2.getPOS())
-            #self.__WINDOW.getSurface().blit(self.RANDOM_ITEM3.getSurface(), self.RANDOM_ITEM3.getPOS())
-            #self.__WINDOW.getSurface().blit(self.RANDOM_ITEM4.getSurface(), self.RANDOM_ITEM4.getPOS())
-            #self.__WINDOW.getSurface().blit(self.RANDOM_ITEM5.getSurface(), self.RANDOM_ITEM5.getPOS())
-            #self.__WINDOW.getSurface().blit(self.RANDOM_ITEM6.getSurface(), self.RANDOM_ITEM6.getPOS())
-            #self.__WINDOW.getSurface().blit(self.RANDOM_ITEM7.getSurface(), self.RANDOM_ITEM7.getPOS())
-            #self.__WINDOW.getSurface().blit(self.RANDOM_ITEM8.getSurface(), self.RANDOM_ITEM8.getPOS())
-            #self.__WINDOW.getSurface().blit(self.RANDOM_ITEM9.getSurface(), self.RANDOM_ITEM9.getPOS())
 
             
             for plank in self.__PLANKS:
@@ -165,15 +155,16 @@ class Level1:
 
             
 
-
             
+            
+            for stuff in self.STUFF:
+                self.__WINDOW.getSurface().blit(stuff.getSurface(), stuff.getPOS())
+
             for ball in self.__BALLS:
                 self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
-            
-            self.__WINDOW.getSurface().blit(self.__BEAR.getSurface(),self.__BEAR.getPOS())
-            
-            self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
 
+            self.__WINDOW.getSurface().blit(self.__BEAR.getSurface(),self.__BEAR.getPOS())
+            self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
             self.__WINDOW.updateFrame()
 
 

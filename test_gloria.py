@@ -10,6 +10,7 @@ from planks import Plank
 from items import Items
 from bear import Bear
 import random
+import time
 
 
 ##Fruits on clouds random every time hitting objects
@@ -45,6 +46,7 @@ class Level1:
 
         self.__PLANKS = [Plank("images/cloud.png")]
         self.__PLANKS[0].setPosition((500, 0-self.__PLANKS[0].getHeight()))
+        self.NEXT_PLANK = 0
         '''
         for i in range(9):
             self.__PLANKS.append(Plank("images/cloud.png"))
@@ -77,10 +79,7 @@ class Level1:
         self.RANDOM_ITEM6 = self.ITEMS[random.randint(0,6)]
         self.RANDOM_ITEM7 = self.ITEMS[random.randint(0,6)]
         self.RANDOM_ITEM8 = self.ITEMS[random.randint(0,6)]
-        self.RANDOM_ITEM9 = self.ITEMS[random.randint(0,6)]
-
-
-        
+        self.RANDOM_ITEM9 = self.ITEMS[random.randint(0,6)]    
     
     def run(self):
         
@@ -111,19 +110,29 @@ class Level1:
                 BALL.setSpeed(25)
                 BALL.changeShoot()
 
+# replace -------------------------------------------------------------
             for ball in self.__BALLS:
                 if ball.getShoot():
                     ball.marqueeX()
                 if ball.getPOS()[0] > self.__WINDOW.getWidth():
-                    del ball  
+                    self.__BALLS.pop(0)
+                    del ball
+#----------------------------------------------------------------------
 
             # planks
-            self.__PLANKS[0].marqueeY(self.__WINDOW.getHeight(), 4)
-            if self.__PLANKS[0].getPOS()[1] == 300:
-                self.__PLANKS.append(Plank("images/cloud.png"))
-                self.__PLANKS[-1].marqueeY(self.__WINDOW.getHeight(), 4)
+
+            PLANK_TIME = pygame.time.get_ticks()
+            if PLANK_TIME > self.NEXT_PLANK:
+                DELAY = 2000
+                self.NEXT_PLANK = PLANK_TIME + DELAY
+                PLANK = Plank("images/cloud.png")
+                self.__PLANKS.append(PLANK)
+                PLANK.setPosition((500, 0 - self.__PLANKS[-1].getHeight()))
+
             for plank in self.__PLANKS:
+                plank.marqueeY(self.__WINDOW.getHeight(), 4)
                 if plank.getPOS() == [1100, self.__WINDOW.getHeight() + plank.getHeight()]:
+                    self.__PLANKS.pop(0)
                     del plank
 
             '''

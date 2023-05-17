@@ -2,6 +2,7 @@ import pygame
 from sprite import MySprite
 from items import Items
 import random
+import threading
 
 class Plank(MySprite):
     def __init__(self, IMAGE_FILE):
@@ -13,7 +14,7 @@ class Plank(MySprite):
 
     def itemPosition(self):
         self.ITEM.setPosition((self._POS))
-        
+
     def marqueeY(self, SCREEN_HEIGHT, SPEED):
         """
         Moves object in a vertical snake pattern.

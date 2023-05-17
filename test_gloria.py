@@ -43,12 +43,14 @@ class Level1:
         self.__BEAR.setPosition((1050, 650))
         self.__BEAR.setScale(0.5)
 
-        
-        self.__PLANKS = []
+        self.__PLANKS = [Plank("images/cloud.png")]
+        self.__PLANKS[0].setPosition((500, 0-self.__PLANKS[0].getHeight()))
+        '''
         for i in range(9):
             self.__PLANKS.append(Plank("images/cloud.png"))
             self.__PLANKS[i].setScale(0.07)  #plank is 0.3
             self.__PLANKS[i].setPosition((500, 0-300*i))
+        '''
 
         self.ITEMS = [
                 Items("images/banana.png"),
@@ -116,22 +118,32 @@ class Level1:
                     del ball  
 
             # planks
+            self.__PLANKS[0].marqueeY(self.__WINDOW.getHeight(), 4)
+            if self.__PLANKS[0].getPOS()[1] == 300:
+                self.__PLANKS.append(Plank("images/cloud.png"))
+                self.__PLANKS[-1].marqueeY(self.__WINDOW.getHeight(), 4)
+            for plank in self.__PLANKS:
+                if plank.getPOS() == [1100, self.__WINDOW.getHeight() + plank.getHeight()]:
+                    del plank
+
+            '''
             for plank in self.__PLANKS:
                 plank.marqueeY(self.__WINDOW.getHeight(), 4)
                 if plank.getPOS() == [1100, self.__WINDOW.getHeight() + plank.getHeight()]:
                     del plank
+            '''
             
     
     
-            self.RANDOM_ITEM1.setPosition((self.__PLANKS[0]._POS))
-            self.RANDOM_ITEM2.setPosition((self.__PLANKS[1]._POS))
-            self.RANDOM_ITEM3.setPosition((self.__PLANKS[2]._POS))
-            self.RANDOM_ITEM4.setPosition((self.__PLANKS[3]._POS))
-            self.RANDOM_ITEM5.setPosition((self.__PLANKS[4]._POS))
-            self.RANDOM_ITEM6.setPosition((self.__PLANKS[5]._POS))
-            self.RANDOM_ITEM7.setPosition((self.__PLANKS[6]._POS))
-            self.RANDOM_ITEM8.setPosition((self.__PLANKS[7]._POS))
-            self.RANDOM_ITEM9.setPosition((self.__PLANKS[8]._POS))
+            # self.RANDOM_ITEM1.setPosition((self.__PLANKS[0]._POS))
+            # self.RANDOM_ITEM2.setPosition((self.__PLANKS[1]._POS))
+            # self.RANDOM_ITEM3.setPosition((self.__PLANKS[2]._POS))
+            # self.RANDOM_ITEM4.setPosition((self.__PLANKS[3]._POS))
+            # self.RANDOM_ITEM5.setPosition((self.__PLANKS[4]._POS))
+            # self.RANDOM_ITEM6.setPosition((self.__PLANKS[5]._POS))
+            # self.RANDOM_ITEM7.setPosition((self.__PLANKS[6]._POS))
+            # self.RANDOM_ITEM8.setPosition((self.__PLANKS[7]._POS))
+            # self.RANDOM_ITEM9.setPosition((self.__PLANKS[8]._POS))
 
             # -- OUTPUTS -- #
                 

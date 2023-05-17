@@ -9,6 +9,7 @@ class Plank(MySprite):
         self.__FILE_LOC = IMAGE_FILE  ## ENCAPSULATION (protecting and hiding data through an interface)
         self._SURFACE = pygame.image.load(self.__FILE_LOC).convert_alpha()
         self.ITEM = None
+        self.setScale(0.07)
 
     def itemPosition(self):
         self.ITEM.setPosition((self._POS))
@@ -18,9 +19,9 @@ class Plank(MySprite):
         Moves object in a vertical snake pattern.
         """
         self._Y += SPEED*self._DIR_Y
-        if self._X == 500 and self._Y > SCREEN_HEIGHT:
+        if self._X == 500 and self._Y > SCREEN_HEIGHT + 80:
             self._X = 800
-            self._Y = SCREEN_HEIGHT
+            self._Y = SCREEN_HEIGHT + 80
             self._DIR_Y = -1
         if self._X == 800 and self._Y < 0 - self.getHeight():
             self._X = 1100

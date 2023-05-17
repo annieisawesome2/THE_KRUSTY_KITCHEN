@@ -118,6 +118,8 @@ class MySprite:
         self.__WIDTH = TUPLE[0]
         self.__HEIGHT = TUPLE[1]
         self._DIM = (self.__WIDTH, self.__HEIGHT)
+    
+
 
     
     # -- ACCESSOR METHODS -- #

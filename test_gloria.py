@@ -130,7 +130,7 @@ class Level1:
                 PLANK.setPosition((500, 0 - self.__PLANKS[-1].getHeight()))
 
             for plank in self.__PLANKS:
-                plank.marqueeY(self.__WINDOW.getHeight(), 4)
+                plank.marqueeY(self.__WINDOW.getHeight(), 8)
                 if plank.getPOS() == [1100, self.__WINDOW.getHeight() + plank.getHeight()]:
                     self.__PLANKS.pop(0)
                     del plank

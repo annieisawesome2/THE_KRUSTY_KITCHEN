@@ -47,7 +47,6 @@ class Level1:
         self.__PLANKS = []
         for i in range(9):
             self.__PLANKS.append(Plank("images/cloud.png"))
-            self.__PLANKS[i].setScale(0.07)  #plank is 0.3
             self.__PLANKS[i].setPosition((500, 0-300*i))
         
         self.NEXT_ITEM = 0
@@ -117,8 +116,8 @@ class Level1:
             # planks
             for plank in self.__PLANKS:
                 plank.marqueeY(self.__WINDOW.getHeight(), 8)
-                self.__PLANKS.pop(0)
-                del plank
+                if plank.getPOS() == [1100, self.__WINDOW.getHeight() + plank.getHeight()]:
+                    del plank
             
             TIME = pygame.time.get_ticks()
             if TIME > self.NEXT_ITEM:

@@ -77,9 +77,6 @@ class Level1:
                     pygame.quit()
                     quit() 
 
-
-        
-
     
             TIME = pygame.time.get_ticks()
             if TIME > self.NEXT_BALL:

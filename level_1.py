@@ -93,11 +93,11 @@ class Level1:
             #self.__CANNON.checkBoundaries(-120, 800)
             
             # balls
-            TIME = pygame.time.get_ticks()
+            TIME1 = pygame.time.get_ticks()
             
-            if KEYS_PRESSED[pygame.K_SPACE] and TIME > self.NEXT_BALL:
-                DELAY = 400
-                self.NEXT_BALL = TIME + DELAY
+            if KEYS_PRESSED[pygame.K_SPACE] and TIME1 > self.NEXT_BALL:
+                DELAY_1 = 400
+                self.NEXT_BALL = TIME1 + DELAY_1
        
                 BALL = Ball("images/ball.png")
                 self.__BALLS.append(BALL)
@@ -114,11 +114,17 @@ class Level1:
                     del ball  
 
             # planks
+            '''
+       
             for plank in self.__PLANKS:
                 plank.marqueeY(self.__WINDOW.getHeight(), 8)
+
                 if plank.getPOS() == [1100, self.__WINDOW.getHeight() + plank.getHeight()]:
                     del plank
-            
+            '''
+     
+    
+            #items
             TIME = pygame.time.get_ticks()
             if TIME > self.NEXT_ITEM:
                 DELAY = 2000
@@ -133,9 +139,9 @@ class Level1:
             for stuff in self.STUFF:
                 if ITEM.getGo:
                     stuff.marqueeY(self.__WINDOW.getHeight(), 8)
-         
-
-    
+        
+            
+        
    
             # -- OUTPUTS -- #
                 
@@ -145,17 +151,14 @@ class Level1:
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
 
             
-            for plank in self.__PLANKS:
-                self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
-
+            #for plank in self.__PLANKS:
+                #self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
+           
             
 
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
 
-            
 
-            
-            
             for stuff in self.STUFF:
                 self.__WINDOW.getSurface().blit(stuff.getSurface(), stuff.getPOS())
 

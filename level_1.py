@@ -32,11 +32,12 @@ class Level1:
         self.__BG_IMAGE.setPosition((0, self.__TITLE.getHeight()))
 
         self.__CANNON = Cannon("images/cannon.png")
-        self.__CANNON.setScale(0.2)
-        self.__CANNON.setPosition((-80, 200))
+        self.__CANNON.setScale(0.16)
+        self.__CANNON.setPosition((-60, 200))
         self.__CANNON.setSpeed(15)
 
         self.__BALLS = []
+    
         self.NEXT_BALL = 0
 
         self.__BEAR = Bear("images/panda_bear.png")
@@ -90,7 +91,8 @@ class Level1:
 
             # -- PROCESSING -- #
             self.__CANNON.moveUpDown(KEYS_PRESSED)
-            #self.__CANNON.checkBoundaries(-120, 800)
+
+            self.__CANNON.checkBoundaries(0, 820)
             
             # balls
             TIME1 = pygame.time.get_ticks()
@@ -100,9 +102,11 @@ class Level1:
                 self.NEXT_BALL = TIME1 + DELAY_1
        
                 BALL = Ball("images/ball.png")
+               
+
                 self.__BALLS.append(BALL)
-                BALL.setScale(0.04)
-                BALL.setPosition((self.__CANNON.getX() + 215, self.__CANNON.getY()+120))
+                BALL.setScale(0.03)
+                BALL.setPosition((self.__CANNON.getX() + 160, self.__CANNON.getY()+100))
                 BALL.setSpeed(25)
                 BALL.changeShoot()
 
@@ -111,7 +115,20 @@ class Level1:
                     ball.marqueeX()
                 if ball.getPOS()[0] > self.__WINDOW.getWidth():
                     self.__BALLS.pop(0)
-                    del ball  
+                    del ball 
+
+            #-----collisions ----------------
+            
+        
+            for ball in self.__BALLS:
+                for stuff in self.STUFF:
+                    BALL_MASK = pygame.mask.from_surface(ball.getSurface())
+                    ITEM_MASK = pygame.mask.from_surface(stuff.getSurface())
+                    if BALL_MASK.overlap(ITEM_MASK, ((stuff._X - ball._X, stuff._Y - ball._Y))):
+                        ball.setPosition((-1000,-1000))
+                        stuff.setPosition((-1000,-1000))
+        
+            #-------------------------------
 
             # planks
             '''

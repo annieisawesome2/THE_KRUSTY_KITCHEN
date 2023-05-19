@@ -18,6 +18,7 @@ class Plank(MySprite):
         CHOSEN_ITEM = random.choice(STRING)
 
         ITEM = Items(CHOSEN_ITEM)
+      
 
         if CHOSEN_ITEM == "images/banana.png":
             ITEM.setScale(0.04)
@@ -34,7 +35,7 @@ class Plank(MySprite):
         elif CHOSEN_ITEM == "images/purple_poison.png":
             ITEM.setScale(0.053)
 
-        self.ITEM = ITEM
+        self.ITEM =  ITEM
         
 
     def addItem(self, ITEMS_LIST):

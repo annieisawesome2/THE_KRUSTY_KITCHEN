@@ -54,7 +54,7 @@ class Level1:
         self.STUFF = []
 
     def generate(self):
-        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png"]
+        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png"]
         CHOSEN_ITEM = random.choice(STRING)
 
         ITEM = Items(CHOSEN_ITEM)

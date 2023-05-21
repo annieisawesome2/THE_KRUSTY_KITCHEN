@@ -41,26 +41,7 @@ class Level1:
             self.__PLANKS[i].setPosition((500, 0-300*i))
 
 
-        self.ITEMS = [
-                Items("images/banana.png"),
-                Items("images/cherry.png"),
-                Items("images/pear.png"),
-                Items("images/apple.png"),
-                Items("images/orange.png"),
-                Items("images/poison.png"),
-                Items("images/purple_poison.png")
-            ]
-
-        self.ITEMS[0].setScale(0.04)
-        self.ITEMS[1].setScale(0.03)
-        self.ITEMS[2].setScale(0.04)
-        self.ITEMS[3].setScale(0.03)
-        self.ITEMS[4].setScale(0.04)
-        self.ITEMS[5].setScale(0.025)
-        self.ITEMS[6].setScale(0.053)
-        
-
-    
+     
         self.NEXT_BALL = 0
         self.STUFF = []
 
@@ -70,8 +51,21 @@ class Level1:
 
         ITEM = Items(CHOSEN_ITEM)
 
-        
-        ITEM.setScale(0.03)
+        if CHOSEN_ITEM == "images/banana.png":
+            ITEM.setScale(0.04)
+        elif CHOSEN_ITEM == "images/cherry.png":
+            ITEM.setScale(0.03)
+        elif CHOSEN_ITEM == "images/pear.png":
+            ITEM.setScale(0.04)
+        elif CHOSEN_ITEM == "images/apple.png":
+            ITEM.setScale(0.03)
+        elif CHOSEN_ITEM == "images/orange.png":
+            ITEM.setScale(0.04)
+        elif CHOSEN_ITEM == "images/poison.png":
+            ITEM.setScale(0.025)
+        elif CHOSEN_ITEM == "images/purple_poison.png":
+            ITEM.setScale(0.053)
+
         return ITEM
         
     def run(self):
@@ -82,9 +76,6 @@ class Level1:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit() 
-
-
-        
 
     
             TIME = pygame.time.get_ticks()

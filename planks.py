@@ -2,7 +2,7 @@ import pygame
 from sprite import MySprite
 from items import Items
 import random
-import threading
+
 
 class Plank(MySprite):
     def __init__(self, IMAGE_FILE):
@@ -11,6 +11,31 @@ class Plank(MySprite):
         self._SURFACE = pygame.image.load(self.__FILE_LOC).convert_alpha()
         self.ITEM = None
         self.setScale(0.07)
+    
+
+    def generate(self):
+        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png"]
+        CHOSEN_ITEM = random.choice(STRING)
+
+        ITEM = Items(CHOSEN_ITEM)
+      
+
+        if CHOSEN_ITEM == "images/banana.png":
+            ITEM.setScale(0.04)
+        elif CHOSEN_ITEM == "images/cherry.png":
+            ITEM.setScale(0.03)
+        elif CHOSEN_ITEM == "images/pear.png":
+            ITEM.setScale(0.04)
+        elif CHOSEN_ITEM == "images/apple.png":
+            ITEM.setScale(0.03)
+        elif CHOSEN_ITEM == "images/orange.png":
+            ITEM.setScale(0.04)
+        elif CHOSEN_ITEM == "images/poison.png":
+            ITEM.setScale(0.025)
+        elif CHOSEN_ITEM == "images/purple_poison.png":
+            ITEM.setScale(0.053)
+
+        self.ITEM =  ITEM
         
 
     def addItem(self, ITEMS_LIST):

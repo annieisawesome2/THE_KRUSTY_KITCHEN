@@ -22,6 +22,25 @@ class MySprite:
     # -- MODIFIER METHODS -- #
 
     #movement methods
+    def isSpriteColliding(self, POSITION, DIMENSION):
+        """check if a sprite is colliding with the current sprite
+
+        Args:
+            POSITION (tuple): 
+            DIMENSION (tuple): 
+        returns:
+            bool
+        """
+        SPRITE_X = POSITION[0]
+
+        SPRITE_W = DIMENSION[0]
+     
+        if SPRITE_X >= self._X - SPRITE_W and SPRITE_X <= self._X + self.getWidth():
+            
+            return True
+        
+        return False
+
     def marqueeY(self, MAX_HEIGHT, MIN_HEIGHT=0):
         self._Y += self._SPD
         if self._Y > MAX_HEIGHT:
@@ -42,7 +61,7 @@ class MySprite:
     
         self._POS = (self._X, self._Y)
 
-    def checkBoundaries(self, MAX_X, MAX_Y, MIN_X=0, MIN_Y=0):
+    def checkBoundaries(self, MAX_X, MAX_Y, MIN_X=-50, MIN_Y= -20):
         if self._X > MAX_X - self.getWidth():
             self._X = MAX_X - self.getWidth()
         if self._X < MIN_X:

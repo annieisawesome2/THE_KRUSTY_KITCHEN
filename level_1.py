@@ -116,9 +116,6 @@ class Level1:
                 if ball.getPOS()[0] > self.__WINDOW.getWidth():
                     self.__BALLS.pop(0)
                     del ball 
-
-            #-----collisions ----------------
-            
         
             for ball in self.__BALLS:
                 for stuff in self.STUFF:
@@ -127,8 +124,9 @@ class Level1:
                     if BALL_MASK.overlap(ITEM_MASK, ((stuff._X - ball._X, stuff._Y - ball._Y))):
                         ball.setPosition((-1000,-1000))
                         stuff.setPosition((-1000,-1000))
-        
-            #-------------------------------
+                        
+            
+      
 
             # planks
             '''
@@ -140,11 +138,11 @@ class Level1:
                     del plank
             '''
      
-    
+
             #items
             TIME = pygame.time.get_ticks()
             if TIME > self.NEXT_ITEM:
-                DELAY = 2000
+                DELAY = 1500
 
                 self.NEXT_ITEM = TIME + DELAY
                 ITEM = self.generate()
@@ -155,7 +153,7 @@ class Level1:
               
             for stuff in self.STUFF:
                 if ITEM.getGo:
-                    stuff.marqueeY(self.__WINDOW.getHeight(), 8)
+                    stuff.marqueeY(self.__WINDOW.getHeight(), 12)
         
             
         
@@ -167,11 +165,6 @@ class Level1:
        
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
 
-            
-            #for plank in self.__PLANKS:
-                #self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
-           
-            
 
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
 
@@ -181,6 +174,8 @@ class Level1:
 
             for ball in self.__BALLS:
                 self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
+            
+        
 
             self.__WINDOW.getSurface().blit(self.__BEAR.getSurface(),self.__BEAR.getPOS())
             self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())

@@ -86,7 +86,6 @@ class Level1:
 
     
     def run(self):
-        
         while True:
             # -- INPUTS -- #
             for event in pygame.event.get():
@@ -121,7 +120,10 @@ class Level1:
                     ball.marqueeX()
                 if ball.getPOS()[0] > self.__WINDOW.getWidth():
                     self.__BALLS.pop(0)
-                    del ball 
+                    del ball
+
+            #-----collisions ----------------
+            
         
             
 
@@ -203,10 +205,9 @@ class Level1:
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
        
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
-
-
-            self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
-
+           
+            for plank in self.__PLANKS:
+                self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
 
             for plank in self.__PLANKS:
                 self.__WINDOW.getSurface().blit(plank.getSurface(),plank.getPOS())

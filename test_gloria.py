@@ -1,4 +1,4 @@
-from pickle import FALSE
+
 import pygame
 from text import Text
 from window import Window
@@ -18,11 +18,17 @@ import random
 class Level1: 
     def __init__(self):
         self.__WINDOW = Window("Fat Bear")
-    
+
+        self.__START_GAME = False
+        self.__START_TEXT = Text('"ENTER" to start playing')
+        self.__START_TEXT.setPosition((self.__WINDOW.getWidth()//2 - self.__START_TEXT.getWidth()//2, 0))
+        self.__START_TEXT.setFontSize(70)
+
         self.__TITLE = Text("Fat Bear")
         self.__TITLE.setPosition((self.__WINDOW.getWidth()//2 - self.__TITLE.getWidth()//2, 0))
         self.__TITLE.setColor((0, 0, 102))
         self.__TITLE.setFontSize(50)
+
         self.__BALL = Box(15, 15)
         self.__BALL.setSpeed(0)
         self.__BALL.setPosition((self.__WINDOW.getWidth()//2 - self.__BALL.getWidth()//2, 650))
@@ -32,50 +38,60 @@ class Level1:
         self.__BG_IMAGE.setPosition((0, self.__TITLE.getHeight()))
 
         self.__CANNON = Cannon("images/cannon.png")
-        self.__CANNON.setScale(0.2)
-        self.__CANNON.setPosition((-80, 200))
+        self.__CANNON.setScale(0.16)
+        self.__CANNON.setPosition((-60, 200))
         self.__CANNON.setSpeed(15)
 
         self.__BALLS = []
+    
         self.NEXT_BALL = 0
 
         self.__BEAR = Bear("images/panda_bear.png")
         self.__BEAR.setPosition((1050, 650))
         self.__BEAR.setScale(0.5)
 
+        
         self.__PLANKS = [Plank("images/cloud.png")]
         self.__PLANKS[0].setPosition((500, 0-self.__PLANKS[0].getHeight()))
         self.NEXT_PLANK = 0
-
-        self.ITEMS = [
-                Items("images/banana.png"),
-                Items("images/cherry.png"),
-                Items("images/pear.png"),
-                Items("images/apple.png"),
-                Items("images/orange.png"),
-                Items("images/poison.png"),
-                Items("images/purple_poison.png")
-            ]
-        self.ITEMS[0].setScale(0.04)
-        self.ITEMS[1].setScale(0.03)
-        self.ITEMS[2].setScale(0.04)
-        self.ITEMS[3].setScale(0.03)
-        self.ITEMS[4].setScale(0.04)
-        self.ITEMS[5].setScale(0.025)
-        self.ITEMS[6].setScale(0.053)
         
-        self.RANDOM_ITEM1 = self.ITEMS[random.randint(0,6)]
-        self.RANDOM_ITEM2 = self.ITEMS[random.randint(0,6)]
-        self.RANDOM_ITEM3 = self.ITEMS[random.randint(0,6)]
-        self.RANDOM_ITEM4 = self.ITEMS[random.randint(0,6)]
-        self.RANDOM_ITEM5 = self.ITEMS[random.randint(0,6)]
-        self.RANDOM_ITEM6 = self.ITEMS[random.randint(0,6)]
-        self.RANDOM_ITEM7 = self.ITEMS[random.randint(0,6)]
-        self.RANDOM_ITEM8 = self.ITEMS[random.randint(0,6)]
-        self.RANDOM_ITEM9 = self.ITEMS[random.randint(0,6)]    
+        self.NEXT_ITEM = 0
+        self.STUFF = []
+
+    def setStart(self, STATUS):
+        self.__START_GAME = STATUS
+    
+    def getStart(self):
+        return self.__START_GAME
+
+    def startScreen(self):
+
+
+    def generate(self):
+        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png"]
+        CHOSEN_ITEM = random.choice(STRING)
+
+        ITEM = Items(CHOSEN_ITEM)
+
+        if CHOSEN_ITEM == "images/banana.png":
+            ITEM.setScale(0.04)
+        elif CHOSEN_ITEM == "images/cherry.png":
+            ITEM.setScale(0.03)
+        elif CHOSEN_ITEM == "images/pear.png":
+            ITEM.setScale(0.04)
+        elif CHOSEN_ITEM == "images/apple.png":
+            ITEM.setScale(0.03)
+        elif CHOSEN_ITEM == "images/orange.png":
+            ITEM.setScale(0.04)
+        elif CHOSEN_ITEM == "images/poison.png":
+            ITEM.setScale(0.025)
+        elif CHOSEN_ITEM == "images/purple_poison.png":
+            ITEM.setScale(0.053)
+
+        return ITEM
     
     def run(self):
-        
+
         while True:
             # -- INPUTS -- #
             for event in pygame.event.get():
@@ -87,73 +103,103 @@ class Level1:
 
             # -- PROCESSING -- #
             self.__CANNON.moveUpDown(KEYS_PRESSED)
-            #self.__CANNON.checkBoundaries(-120, 800)
+
+            self.__CANNON.checkBoundaries(0, 820)
             
             # balls
-            TIME = pygame.time.get_ticks()
-            if KEYS_PRESSED[pygame.K_SPACE] and TIME > self.NEXT_BALL:
-                DELAY = 400
-                self.NEXT_BALL = TIME + DELAY
+            TIME1 = pygame.time.get_ticks()
+            
+            if KEYS_PRESSED[pygame.K_SPACE] and TIME1 > self.NEXT_BALL:
+                DELAY_1 = 400
+                self.NEXT_BALL = TIME1 + DELAY_1
+       
                 BALL = Ball("images/ball.png")
+               
+
                 self.__BALLS.append(BALL)
-                BALL.setScale(0.04)
-                BALL.setPosition((self.__CANNON.getX() + 215, self.__CANNON.getY()+120))
+                BALL.setScale(0.03)
+                BALL.setPosition((self.__CANNON.getX() + 160, self.__CANNON.getY()+100))
                 BALL.setSpeed(25)
                 BALL.changeShoot()
 
-# replace -------------------------------------------------------------
             for ball in self.__BALLS:
                 if ball.getShoot():
                     ball.marqueeX()
                 if ball.getPOS()[0] > self.__WINDOW.getWidth():
                     self.__BALLS.pop(0)
                     del ball
-#----------------------------------------------------------------------
 
+            #-----collisions ----------------
+            
+        
+            for ball in self.__BALLS:
+                for stuff in self.STUFF:
+                    BALL_MASK = pygame.mask.from_surface(ball.getSurface())
+                    ITEM_MASK = pygame.mask.from_surface(stuff.getSurface())
+                    if BALL_MASK.overlap(ITEM_MASK, ((stuff._X - ball._X, stuff._Y - ball._Y))):
+                        ball.setPosition((-1000,-1000))
+                        stuff.setPosition((-1000,-1000))
+        
+            #-------------------------------
 
+            # # planks
+            # PLANK_TIME = pygame.time.get_ticks()
+            # if PLANK_TIME > self.NEXT_PLANK:
+            #     DELAY = 2000
+            #     self.NEXT_PLANK = PLANK_TIME + DELAY
+            #     PLANK = Plank("images/cloud.png")
+            #     self.__PLANKS.append(PLANK)
+            #     PLANK.setPosition((500, 0 - self.__PLANKS[-1].getHeight()))
 
-
-# replace -------------------------------------------------------------
-            # planks
-            PLANK_TIME = pygame.time.get_ticks()
-            if PLANK_TIME > self.NEXT_PLANK:
+            # for plank in self.__PLANKS:
+            #     plank.marqueeY(self.__WINDOW.getHeight(), 8)
+            #     if plank.getPOS() == [1100, self.__WINDOW.getHeight() + plank.getHeight()]:
+            #         self.__PLANKS.pop(0)
+            #         del plank
+     
+    
+            #items
+            TIME = pygame.time.get_ticks()
+            if TIME > self.NEXT_ITEM:
                 DELAY = 2000
-                self.NEXT_PLANK = PLANK_TIME + DELAY
-                PLANK = Plank("images/cloud.png")
-                self.__PLANKS.append(PLANK)
-                PLANK.setPosition((500, 0 - self.__PLANKS[-1].getHeight()))
 
-            for plank in self.__PLANKS:
-                plank.marqueeY(self.__WINDOW.getHeight(), 8)
-                if plank.getPOS() == [1100, self.__WINDOW.getHeight() + plank.getHeight()]:
-                    self.__PLANKS.pop(0)
-                    del plank
-# ----------------------------------------------------------------------
-
-
-
-
+                self.NEXT_ITEM = TIME + DELAY
+                ITEM = self.generate()
+                self.STUFF.append(ITEM)
+                #ITEM.setScale(0.03)
+                ITEM.setPosition((500, -5 - ITEM.getHeight()))
+                ITEM.setgo()
+              
+            for stuff in self.STUFF:
+                if ITEM.getGo:
+                    stuff.marqueeY(self.__WINDOW.getHeight(), 8)
+        
+            
+        
+   
             # -- OUTPUTS -- #
                 
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
        
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
+           
+            # for plank in self.__PLANKS:
+            #     self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
+
+            for stuff in self.STUFF:
+                self.__WINDOW.getSurface().blit(stuff.getSurface(), stuff.getPOS())
 
             for ball in self.__BALLS:
                 self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
-            
-            for plank in self.__PLANKS:
-                self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
-            
-            self.__WINDOW.getSurface().blit(self.__BEAR.getSurface(),self.__BEAR.getPOS())
-            
-            self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
 
+            self.__WINDOW.getSurface().blit(self.__BEAR.getSurface(),self.__BEAR.getPOS())
+            self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
             self.__WINDOW.updateFrame()
 
 
 if __name__ == "__main__":
     pygame.init()
     GAME = Level1()
+    GAME.startScreen()
     GAME.run()

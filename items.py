@@ -55,11 +55,11 @@ class Items(MySprite):
             self._DIR_Y = -1
 
         if self._X == 850 and self._Y < 0 - self.getHeight():
-            self._X = 1150
-            self._Y = 0 - 20
+            self._X = 1100
+            self._Y = 0 - self.getWidth()
             self._DIR_Y = 1
             
-        if self._X == 1150 and self._Y > 550: #SCREEN_HEIGHT
+        if self._X == 1100 and self._Y > 550: #SCREEN_HEIGHT
             self.setPosition((-1000, -1000))
             
         self._POS = (self._X, self._Y)

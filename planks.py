@@ -36,7 +36,7 @@ class Plank(MySprite):
             self._Y = 0 - self.getWidth()
             self._DIR_Y = 1
         if self._X == 1100 and self._Y > 500: #SCREEN_HEIGHT
-            self._X = 500
-            self._Y = 0 - self.getWidth()
+            self.setPosition((-1000, -1000))
+            
         self._POS = (self._X, self._Y)
   

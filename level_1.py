@@ -44,11 +44,18 @@ class Level1:
         self.__BEAR.setPosition((1050, 650))
         self.__BEAR.setScale(0.5)
 
+
+        '''
+
         
         self.__PLANKS = []
         for i in range(9):
             self.__PLANKS.append(Plank("images/cloud.png"))
             self.__PLANKS[i].setPosition((500, 0-300*i))
+        '''
+
+        self.NEXT_PLANK = 0
+        self.__PLANKS = []
         
         self.NEXT_ITEM = 0
         self.STUFF = []
@@ -96,7 +103,6 @@ class Level1:
             
             # balls
             TIME1 = pygame.time.get_ticks()
-            
             if KEYS_PRESSED[pygame.K_SPACE] and TIME1 > self.NEXT_BALL:
                 DELAY_1 = 400
                 self.NEXT_BALL = TIME1 + DELAY_1
@@ -117,6 +123,67 @@ class Level1:
                     self.__BALLS.pop(0)
                     del ball 
         
+            
+
+            TIME = pygame.time.get_ticks()
+            if TIME > self.NEXT_ITEM:
+                DELAY = 1500
+
+                self.NEXT_ITEM = TIME + DELAY
+                ITEM = self.generate()
+                
+                
+                self.STUFF.append(ITEM)
+                ITEM.setScale(0.8)
+                ITEM.setPosition((550, -5 - ITEM.getHeight()))
+                NEW_HEIGHT = ITEM.getHeight() - 20
+
+                ITEM.setgo()
+             
+            for stuff in self.STUFF:
+                if ITEM.getGo:
+                    stuff.marqueeY(self.__WINDOW.getHeight(), 12)
+            
+        
+            TIME2 = pygame.time.get_ticks()
+            if TIME2 > self.NEXT_PLANK:
+                DELAY2 = 1500
+                self.NEXT_PLANK = TIME2 + DELAY2
+                CLOUD = Plank("images/cloud.png")
+                self.__PLANKS.append(CLOUD)
+        
+                CLOUD.setPosition((500, -5 - NEW_HEIGHT))
+                CLOUD.setScale(1)
+                CLOUD.setgo()
+              
+           
+            for cloud in self.__PLANKS:
+                if CLOUD.getGo:
+                    cloud.marquee(self.__WINDOW.getHeight(), 12)
+
+
+            
+
+            '''
+            TIME_PLANKS = pygame.time.get_ticks()
+            if TIME_PLANKS > self.NEXT_PLANK:
+                DELAY_PLANK = 1500
+
+                self.NEXT_PLANK = TIME_PLANKS + DELAY_PLANK
+                PLANK = Plank("images/cloud.png")
+                self.__PLANKS.append(PLANK)
+                #PLANK.setScale(0.03)
+                PLANK.setPosition((500, -5 - PLANK.getHeight()))
+                PLANK.setgo()
+              
+            for plank in self.__PLANKS:
+                    if PLANK.getGo:    
+                        plank.marquee(self.__WINDOW.getHeight(), 12)
+            '''
+
+        
+        
+            
             for ball in self.__BALLS:
                 for stuff in self.STUFF:
                     BALL_MASK = pygame.mask.from_surface(ball.getSurface())
@@ -126,33 +193,6 @@ class Level1:
                         stuff.setPosition((-1000,-1000))
                         
             
-      
-
-            # planks
-        
-       
-            for plank in self.__PLANKS:
-                plank.marqueeY(self.__WINDOW.getHeight(), 8)
-
-                if plank.getPOS() == [1100, self.__WINDOW.getHeight() + plank.getHeight()]:
-                    del plank
-         
-
-            #items
-            TIME = pygame.time.get_ticks()
-            if TIME > self.NEXT_ITEM:
-                DELAY = 1500
-
-                self.NEXT_ITEM = TIME + DELAY
-                ITEM = self.generate()
-                self.STUFF.append(ITEM)
-                #ITEM.setScale(0.03)
-                ITEM.setPosition((500, -5 - ITEM.getHeight()))
-                ITEM.setgo()
-              
-            for stuff in self.STUFF:
-                if ITEM.getGo:
-                    stuff.marqueeY(self.__WINDOW.getHeight(), 12)
         
             
         
@@ -168,11 +208,16 @@ class Level1:
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
 
 
+            for plank in self.__PLANKS:
+                self.__WINDOW.getSurface().blit(plank.getSurface(),plank.getPOS())
+
             for stuff in self.STUFF:
                 self.__WINDOW.getSurface().blit(stuff.getSurface(), stuff.getPOS())
 
             for ball in self.__BALLS:
                 self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
+            
+            
             
         
 

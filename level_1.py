@@ -8,7 +8,7 @@ from cannon import Cannon
 from ball import Ball
 from planks import Plank
 from items import Items
-from bear import Bear
+from bucket import Bear
 import random
 
 

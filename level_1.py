@@ -129,15 +129,14 @@ class Level1:
       
 
             # planks
-            '''
+        
        
             for plank in self.__PLANKS:
                 plank.marqueeY(self.__WINDOW.getHeight(), 8)
 
                 if plank.getPOS() == [1100, self.__WINDOW.getHeight() + plank.getHeight()]:
                     del plank
-            '''
-     
+         
 
             #items
             TIME = pygame.time.get_ticks()

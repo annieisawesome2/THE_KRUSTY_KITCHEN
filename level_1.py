@@ -45,10 +45,9 @@ class Level1:
         self.__BEAR.setScale(0.5)
 
         
-        self.__PLANKS = []
-        for i in range(9):
-            self.__PLANKS.append(Plank("images/cloud.png"))
-            self.__PLANKS[i].setPosition((500, 0-300*i))
+        self.__PLANKS = [Plank("images/cloud.png")]
+        self.__PLANKS[0].setPosition((500, 0-self.__PLANKS[0].getHeight()))
+        self.NEXT_PLANK = 0
         
         self.NEXT_ITEM = 0
         self.STUFF = []
@@ -79,7 +78,6 @@ class Level1:
 
     
     def run(self):
-        
         while True:
             # -- INPUTS -- #
             for event in pygame.event.get():
@@ -115,7 +113,7 @@ class Level1:
                     ball.marqueeX()
                 if ball.getPOS()[0] > self.__WINDOW.getWidth():
                     self.__BALLS.pop(0)
-                    del ball 
+                    del ball
 
             #-----collisions ----------------
             
@@ -131,14 +129,19 @@ class Level1:
             #-------------------------------
 
             # planks
-            '''
-       
+            PLANK_TIME = pygame.time.get_ticks()
+            if PLANK_TIME > self.NEXT_PLANK:
+                DELAY = 2000
+                self.NEXT_PLANK = PLANK_TIME + DELAY
+                PLANK = Plank("images/cloud.png")
+                self.__PLANKS.append(PLANK)
+                PLANK.setPosition((500, 0 - self.__PLANKS[-1].getHeight()))
+
             for plank in self.__PLANKS:
                 plank.marqueeY(self.__WINDOW.getHeight(), 8)
-
                 if plank.getPOS() == [1100, self.__WINDOW.getHeight() + plank.getHeight()]:
+                    self.__PLANKS.pop(0)
                     del plank
-            '''
      
     
             #items
@@ -166,15 +169,9 @@ class Level1:
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
        
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
-
-            
-            #for plank in self.__PLANKS:
-                #self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
            
-            
-
-            self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
-
+            for plank in self.__PLANKS:
+                self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
 
             for stuff in self.STUFF:
                 self.__WINDOW.getSurface().blit(stuff.getSurface(), stuff.getPOS())

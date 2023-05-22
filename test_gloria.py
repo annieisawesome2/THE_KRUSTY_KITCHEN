@@ -8,7 +8,7 @@ from cannon import Cannon
 from ball import Ball
 from planks import Plank
 from items import Items
-from bear import Bear
+from bucket import Bucket
 import random
 
 
@@ -18,17 +18,11 @@ import random
 class Level1: 
     def __init__(self):
         self.__WINDOW = Window("Fat Bear")
-
-        self.__START_GAME = False
-        self.__START_TEXT = Text('"ENTER" to start playing')
-        self.__START_TEXT.setPosition((self.__WINDOW.getWidth()//2 - self.__START_TEXT.getWidth()//2, 0))
-        self.__START_TEXT.setFontSize(70)
-
+    
         self.__TITLE = Text("Fat Bear")
         self.__TITLE.setPosition((self.__WINDOW.getWidth()//2 - self.__TITLE.getWidth()//2, 0))
         self.__TITLE.setColor((0, 0, 102))
         self.__TITLE.setFontSize(50)
-
         self.__BALL = Box(15, 15)
         self.__BALL.setSpeed(0)
         self.__BALL.setPosition((self.__WINDOW.getWidth()//2 - self.__BALL.getWidth()//2, 650))
@@ -46,10 +40,18 @@ class Level1:
     
         self.NEXT_BALL = 0
 
-        self.__BEAR = Bear("images/panda_bear.png")
-        self.__BEAR.setPosition((1050, 650))
-        self.__BEAR.setScale(0.5)
+        self.__BUCKET = Bucket("images/bucket.png")
+        self.__BUCKET.setPosition((1085, 530))
+        self.__BUCKET.setScale(0.2)
+        self.__FRONT_BUCKET = Bucket("images/bucket2.png")
+        self.__FRONT_BUCKET.setPosition((1085, 585))
+        self.__FRONT_BUCKET.setScale(0.2)
 
+        self.POINTS = 0
+        self.HEALTH_BAR = []
+        for i in range(15):
+            self.HEALTH_BAR.append(Box(15, 10))
+            self.HEALTH_BAR[i].setPosition((1075+i*12, 535+self.__BUCKET.getHeight()))
         
         self.__PLANKS = [Plank("images/cloud.png")]
         self.__PLANKS[0].setPosition((500, 0-self.__PLANKS[0].getHeight()))
@@ -57,15 +59,6 @@ class Level1:
         
         self.NEXT_ITEM = 0
         self.STUFF = []
-
-    def setStart(self, STATUS):
-        self.__START_GAME = STATUS
-    
-    def getStart(self):
-        return self.__START_GAME
-
-    def startScreen(self):
-
 
     def generate(self):
         STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png"]
@@ -89,9 +82,10 @@ class Level1:
             ITEM.setScale(0.053)
 
         return ITEM
+        
+
     
     def run(self):
-
         while True:
             # -- INPUTS -- #
             for event in pygame.event.get():
@@ -130,18 +124,18 @@ class Level1:
                     del ball
 
             #-----collisions ----------------
-            
-        
             for ball in self.__BALLS:
                 for stuff in self.STUFF:
                     BALL_MASK = pygame.mask.from_surface(ball.getSurface())
                     ITEM_MASK = pygame.mask.from_surface(stuff.getSurface())
                     if BALL_MASK.overlap(ITEM_MASK, ((stuff._X - ball._X, stuff._Y - ball._Y))):
                         ball.setPosition((-1000,-1000))
+                        self.__BALLS.pop(self.__BALLS.index(ball))
                         stuff.setPosition((-1000,-1000))
-        
-            #-------------------------------
-
+                        self.STUFF.pop(self.STUFF.index(stuff))
+            
+      
+# planks -------------------------------------------------------------------------------------------
             # # planks
             # PLANK_TIME = pygame.time.get_ticks()
             # if PLANK_TIME > self.NEXT_PLANK:
@@ -156,12 +150,13 @@ class Level1:
             #     if plank.getPOS() == [1100, self.__WINDOW.getHeight() + plank.getHeight()]:
             #         self.__PLANKS.pop(0)
             #         del plank
+# ---------------------------------------------------------------------------------------------------
      
     
             #items
             TIME = pygame.time.get_ticks()
             if TIME > self.NEXT_ITEM:
-                DELAY = 2000
+                DELAY = 1500
 
                 self.NEXT_ITEM = TIME + DELAY
                 ITEM = self.generate()
@@ -172,10 +167,20 @@ class Level1:
               
             for stuff in self.STUFF:
                 if ITEM.getGo:
-                    stuff.marqueeY(self.__WINDOW.getHeight(), 8)
-        
-            
-        
+                    stuff.marqueeY(self.__WINDOW.getHeight(), 12)
+                    
+                # points
+                if stuff.getCollected():
+                    if stuff.getFileLoc() != "images/purple_poison.png" and stuff.getFileLoc() != "images/poison.png":
+                        self.POINTS += 1
+                    elif stuff.getFileLoc() == "images/poison.png":
+                        self.POINTS -= 1
+                    elif stuff.getFileLoc() == "images/purple_poison.png":
+                        self.POINTS -= 3
+                    self.STUFF.pop(self.STUFF.index(stuff))
+                    del stuff
+            print(self.POINTS)
+
    
             # -- OUTPUTS -- #
                 
@@ -183,6 +188,8 @@ class Level1:
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
        
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
+
+            self.__WINDOW.getSurface().blit(self.__BUCKET.getSurface(), self.__BUCKET.getPOS())
            
             # for plank in self.__PLANKS:
             #     self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
@@ -192,8 +199,14 @@ class Level1:
 
             for ball in self.__BALLS:
                 self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
+            
 
-            self.__WINDOW.getSurface().blit(self.__BEAR.getSurface(),self.__BEAR.getPOS())
+            # self.__WINDOW.getSurface().blit(self.__BEAR.getSurface(),self.__BEAR.getPOS()
+            self.__WINDOW.getSurface().blit(self.__FRONT_BUCKET.getSurface(), self.__FRONT_BUCKET.getPOS())
+
+            for interval in self.HEALTH_BAR:
+                self.__WINDOW.getSurface().blit(interval.getSurface(), interval.getPOS())
+
             self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
             self.__WINDOW.updateFrame()
 
@@ -201,5 +214,4 @@ class Level1:
 if __name__ == "__main__":
     pygame.init()
     GAME = Level1()
-    GAME.startScreen()
     GAME.run()

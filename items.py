@@ -8,8 +8,7 @@ class Items(MySprite):
         self.__FILE_LOC = IMAGE_FILE  ## ENCAPSULATION (protecting and hiding data through an interface)
         self._SURFACE = pygame.image.load(self.__FILE_LOC).convert_alpha()
         self.__VALUE = 0
-        self.__PRESENCE = False
-        self.__EATEN = False
+        self.__COLLECTED = False
         self.go = False
     
     def setgo(self):
@@ -32,18 +31,18 @@ class Items(MySprite):
         else:
             self.__PRESENCE = False
     
-    def setEaten(self, STATUS):
-        self.__EATEN = STATUS
+    def setCollected(self, STATUS):
+        self.__COLLECTED = STATUS
 
     # -- ACCESSOR METHODS -- #
     def getValue(self):
         return self.__VALUE
 
-    def getPresence(self):
-        return self.__PRESENCE
+    def getCollected(self):
+        return self.__COLLECTED
 
-    def getEaten(self):
-        return self.__EATEN
+    def getFileLoc(self):
+        return self.__FILE_LOC
 
     def marqueeY(self, SCREEN_HEIGHT, SPEED):
         """
@@ -60,7 +59,8 @@ class Items(MySprite):
             self._Y = 0 - self.getWidth()
             self._DIR_Y = 1
             
-        if self._X == 1100 and self._Y > 500: #SCREEN_HEIGHT
+        if self._X == 1100 and self._Y > 600: #SCREEN_HEIGHT
+            self.__COLLECTED = True
             self.setPosition((-1000, -1000))
             
         self._POS = (self._X, self._Y)

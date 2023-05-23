@@ -201,50 +201,99 @@ class Level2:
      
             for bullet in self.BULLETS_1:
                 for box in self.BOXES:
-                    BULLET_MASK = pygame.mask.from_surface(bullet.getSurface())
-                    BOX_MASK = pygame.mask.from_surface(box.getSurface())
-                    if BULLET_MASK.overlap(BOX_MASK, ((box._X - bullet._X, box._Y - bullet._Y))):
-                        ITEM = self.generate()
-                        self.ITEMS.append(ITEM)
-                        box = ITEM
+                    BULLET_MASK1 = pygame.mask.from_surface(bullet.getSurface())
+                    BOX_MASK1 = pygame.mask.from_surface(box.getSurface())
+                    if BULLET_MASK1.overlap(BOX_MASK1, ((box._X - bullet._X, box._Y - bullet._Y))):
+                        NEW_ITEM = self.generate()
+                        NEW_ITEM.setPosition((box.getX(), box.getY() )) # y + 30
+                        NEW_ITEM.setgo()
+                        self.ITEMS.append(NEW_ITEM)
+                        box.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
-
                         
+
+            
             for bullet in self.BULLETS_2:
                 for box in self.BOXES:
-                    BULLET_MASK = pygame.mask.from_surface(bullet.getSurface())
-                    BOX_MASK = pygame.mask.from_surface(box.getSurface())
-                    if BULLET_MASK.overlap(BOX_MASK, ((box._X - bullet._X, box._Y - bullet._Y))):
+                    BULLET_MASK2 = pygame.mask.from_surface(bullet.getSurface())
+                    BOX_MASK2 = pygame.mask.from_surface(box.getSurface())
+                    if BULLET_MASK2.overlap(BOX_MASK2, ((box._X - bullet._X, box._Y - bullet._Y))):
+                        NEW_ITEM2 = self.generate()
+                        NEW_ITEM2.setPosition((box.getX(), box.getY() )) # y + 30
+                        NEW_ITEM2.setgo()
+                        self.ITEMS.append(NEW_ITEM2)
+                        box.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
-                        box.setPosition((-1000,-1000))
+                        
+            #_________________
 
             for bullet in self.BULLETS_3:
                 for box in self.BOXES:
-                    BULLET_MASK = pygame.mask.from_surface(bullet.getSurface())
-                    BOX_MASK = pygame.mask.from_surface(box.getSurface())
-                    if BULLET_MASK.overlap(BOX_MASK, ((box._X - bullet._X, box._Y - bullet._Y))):
+                    BULLET_MASK3 = pygame.mask.from_surface(bullet.getSurface())
+                    BOX_MASK3 = pygame.mask.from_surface(box.getSurface())
+                    if BULLET_MASK3.overlap(BOX_MASK3, ((box._X - bullet._X, box._Y - bullet._Y))):
                         bullet.setPosition((-1000,-1000))
                         box.setPosition((-1000,-1000))
 
             for bullet in self.BULLETS_4:
                 for box in self.BOXES:
-                    BULLET_MASK = pygame.mask.from_surface(bullet.getSurface())
-                    BOX_MASK = pygame.mask.from_surface(box.getSurface())
-                    if BULLET_MASK.overlap(BOX_MASK, ((box._X - bullet._X, box._Y - bullet._Y))):
+                    BULLET_MASK4 = pygame.mask.from_surface(bullet.getSurface())
+                    BOX_MASK4 = pygame.mask.from_surface(box.getSurface())
+                    if BULLET_MASK4.overlap(BOX_MASK4, ((box._X - bullet._X, box._Y - bullet._Y))):
                         bullet.setPosition((-1000,-1000))
                         box.setPosition((-1000,-1000))
+            #_________________
+            
+            
+            
+            for item in self.ITEMS:
+                if item.getGo():
+                    if item._Y == 185:
+                        item._DIR_X = -1
+                        item.marqueeX(self.__WINDOW.getWidth(), 8)
+                    else:
+                        item.marqueeX(self.__WINDOW.getWidth(), 8)
+            
 
+            ##--- CHecking for collisions then deleting item.... check for missed objects if it goes off screen without hit
+            for item in self.ITEMS:    
+                if item._POS == ((-1000, -1000)) :
+                    self.ITEMS.remove(item)
+                    del item
 
-
-
+            for box in self.BOXES:
+                if box._POS == ((-1000, -1000)):
+                    self.BOXES.remove(box)
+                    del box
+            
+            for bullet1 in self.BULLETS_1:
+                if bullet1._POS == ((-1000, -1000)) : #or bullet1._Y < 0 - bullet1.getHeight()
+                    self.BULLETS_1.remove(bullet1)
+                    del bullet1
+            
+            for bullet2 in self.BULLETS_2 :
+                if bullet2._POS == ((-1000, -1000)) :
+                    self.BULLETS_2.remove(bullet2)
+                    del bullet2
+            
+            for bullet3 in self.BULLETS_3 :
+                if bullet3._POS == ((-1000, -1000)):
+                    self.BULLETS_3.remove(bullet2)
+                    del bullet3
+            
+            for bullet4 in self.BULLETS_4:
+                if bullet4._POS == ((-1000, -1000)):
+                    self.BULLETS_4.remove(bullet2)
+                    del bullet4
+            
+                
+    
             
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
       
             for box in self.BOXES:
                 self.__WINDOW.getSurface().blit(box.getSurface(), box.getPOS())
-
-                 
 
             for bullet in self.BULLETS_1:
                 self.__WINDOW.getSurface().blit(bullet.getSurface(), bullet.getPOS())

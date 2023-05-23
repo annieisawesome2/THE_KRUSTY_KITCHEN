@@ -57,7 +57,7 @@ class Level1:
 
 
     def generate(self):
-        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png"]
+        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png", "images/bomb.png"]
         CHOSEN_ITEM = random.choice(STRING)
 
         ITEM = Items(CHOSEN_ITEM)
@@ -76,6 +76,8 @@ class Level1:
             ITEM.setScale(0.025)
         elif CHOSEN_ITEM == "images/purple_poison.png":
             ITEM.setScale(0.053)
+        elif CHOSEN_ITEM == "images/bomb.png":
+            ITEM.setScale(0.05)
 
         return ITEM
         

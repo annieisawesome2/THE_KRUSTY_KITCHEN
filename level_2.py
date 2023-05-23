@@ -60,6 +60,7 @@ class Level2:
 
         self.NEXT_ITEM = 0
         self.BOXES = []
+        self.ITEMS = []
 
     def generate(self):
         STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png"]
@@ -179,13 +180,6 @@ class Level2:
                     del bullet
 
 
-            
-
-
-
-
-
-
 
             TIME = pygame.time.get_ticks()
             if TIME > self.NEXT_ITEM:
@@ -210,9 +204,12 @@ class Level2:
                     BULLET_MASK = pygame.mask.from_surface(bullet.getSurface())
                     BOX_MASK = pygame.mask.from_surface(box.getSurface())
                     if BULLET_MASK.overlap(BOX_MASK, ((box._X - bullet._X, box._Y - bullet._Y))):
+                        ITEM = self.generate()
+                        self.ITEMS.append(ITEM)
+                        box = ITEM
                         bullet.setPosition((-1000,-1000))
-                        box.setPosition((-1000,-1000))
-            
+
+                        
             for bullet in self.BULLETS_2:
                 for box in self.BOXES:
                     BULLET_MASK = pygame.mask.from_surface(bullet.getSurface())
@@ -260,6 +257,9 @@ class Level2:
                 
             for bullet in self.BULLETS_4:
                 self.__WINDOW.getSurface().blit(bullet.getSurface(), bullet.getPOS())
+             
+            for item in self.ITEMS:
+                self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
             
             self.__WINDOW.getSurface().blit(self.SHOOTER_1.getSurface(), self.SHOOTER_1.getPOS())
             self.__WINDOW.getSurface().blit(self.SHOOTER_2.getSurface(), self.SHOOTER_2.getPOS())

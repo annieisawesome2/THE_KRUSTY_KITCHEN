@@ -69,6 +69,7 @@ class Items(MySprite):
         """
         Moves object in a vertical snake pattern.
         """
+        #if self._Y == 50 and self._X < SCREEN_WIDTH:
         self._X += SPEED*self._DIR_X
         if self._Y == 50 and self._X > SCREEN_WIDTH:
             self._Y = 185
@@ -84,5 +85,6 @@ class Items(MySprite):
             self.setPosition((-1000, -1000))
             
         self._POS = (self._X, self._Y)
-  
+    
+    
   

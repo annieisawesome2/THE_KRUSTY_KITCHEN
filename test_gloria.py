@@ -189,8 +189,8 @@ class Level1:
             if self.POINTS > 5 and self.POINTS <=15:
                 for i in range(len(self.HEALTH_BAR[:self.POINTS])):
                     self.HEALTH_BAR[i].setColor((0, 255, 0))
-            for i in range(len(self.HEALTH_BAR[self.POINTS:])-1, -1, -1):
-                self.HEALTH_BAR[i].setColor((255, 255, 255))
+            # for i in range(len(self.HEALTH_BAR[self.POINTS:])-1, -1, -1):
+            #     self.HEALTH_BAR[i].setColor((255, 255, 255))
 
    
             # -- OUTPUTS -- #

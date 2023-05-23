@@ -173,13 +173,24 @@ class Level1:
                 if stuff.getCollected():
                     if stuff.getFileLoc() != "images/purple_poison.png" and stuff.getFileLoc() != "images/poison.png":
                         self.POINTS += 1
+                        print(self.POINTS) # delete ------------------------------------------------------------------------------
                     elif stuff.getFileLoc() == "images/poison.png":
                         self.POINTS -= 1
+                        print(self.POINTS) # delete ------------------------------------------------------------------------------
                     elif stuff.getFileLoc() == "images/purple_poison.png":
                         self.POINTS -= 3
+                        print(self.POINTS) # delete ------------------------------------------------------------------------------
                     self.STUFF.pop(self.STUFF.index(stuff))
                     del stuff
-            print(self.POINTS)
+
+            if self.POINTS > 0 and self.POINTS <=5:
+                for i in range(len(self.HEALTH_BAR[:self.POINTS])):
+                    self.HEALTH_BAR[i].setColor((255, 0, 0))
+            if self.POINTS > 5 and self.POINTS <=15:
+                for i in range(len(self.HEALTH_BAR[:self.POINTS])):
+                    self.HEALTH_BAR[i].setColor((0, 255, 0))
+            for i in range(len(self.HEALTH_BAR[self.POINTS:])-1, -1, -1):
+                self.HEALTH_BAR[i].setColor((255, 255, 255))
 
    
             # -- OUTPUTS -- #

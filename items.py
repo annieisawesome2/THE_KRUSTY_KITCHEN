@@ -49,19 +49,39 @@ class Items(MySprite):
         Moves object in a vertical snake pattern.
         """
         self._Y += SPEED*self._DIR_Y
-        if self._X == 500 and self._Y > SCREEN_HEIGHT:
-            self._X = 800
+        if self._X == 550 and self._Y > SCREEN_HEIGHT:
+            self._X = 850
             self._Y = SCREEN_HEIGHT
             self._DIR_Y = -1
 
-        if self._X == 800 and self._Y < 0 - self.getHeight():
+        if self._X == 850 and self._Y < 0 - self.getHeight():
             self._X = 1100
             self._Y = 0 - self.getWidth()
             self._DIR_Y = 1
             
-        if self._X == 1100 and self._Y > 600: #SCREEN_HEIGHT
-            self.__COLLECTED = True
+        if self._X == 1100 and self._Y > 550: #SCREEN_HEIGHT
             self.setPosition((-1000, -1000))
             
         self._POS = (self._X, self._Y)
+    
+    def marqueeX(self, SCREEN_WIDTH, SPEED):
+        """
+        Moves object in a vertical snake pattern.
+        """
+        self._X += SPEED*self._DIR_X
+        if self._Y == 50 and self._X > SCREEN_WIDTH:
+            self._Y = 185
+            self._X = SCREEN_WIDTH
+            self._DIR_X = -1
+
+        if self._Y == 185 and self._X < 0 - self.getWidth():
+            self._Y = 320
+            self._X = 0 - self.getHeight()
+            self._DIR_X = 1
+            
+        if self._Y == 320 and self._X > SCREEN_WIDTH: #SCREEN_HEIGHT
+            self.setPosition((-1000, -1000))
+            
+        self._POS = (self._X, self._Y)
+  
   

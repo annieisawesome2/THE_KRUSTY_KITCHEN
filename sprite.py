@@ -14,7 +14,7 @@ class MySprite:
         self._POS = (self._X, self._Y)
         self._SPD = SPD
         self._COLOR = COLOR #white
-        self.__DIR_X = 1
+        self._DIR_X = 1
         self._DIR_Y = 1
         self.LOSE = False
         

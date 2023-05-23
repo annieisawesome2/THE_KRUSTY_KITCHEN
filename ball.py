@@ -18,3 +18,7 @@ class Ball(MySprite):
     def marqueeX(self):
         self._X += self._SPD
         self._POS = (self._X, self._Y)
+
+    def marqueeY(self):
+        self._Y -= self._SPD
+        self._POS = (self._X, self._Y)

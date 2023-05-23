@@ -54,6 +54,8 @@ class Level1:
         for i in range(15):
             self.HEALTH_BAR.append(Box(15, 10))
             self.HEALTH_BAR[i].setPosition((1075+i*12, 535+self.__BUCKET.getHeight()))
+        
+        self.PLAY = True
 
 
     def generate(self):
@@ -103,7 +105,6 @@ class Level1:
                 self.NEXT_BALL = TIME1 + DELAY_1
        
                 BALL = Ball("images/ball.png")
-               
 
                 self.__BALLS.append(BALL)
                 BALL.setScale(0.03)
@@ -119,9 +120,17 @@ class Level1:
                     del ball
 
             #-----collisions ----------------
-            
-        
+            for ball in self.__BALLS:
+                for stuff in self.STUFF:
+                    BALL_MASK = pygame.mask.from_surface(ball.getSurface())
+                    ITEM_MASK = pygame.mask.from_surface(stuff.getSurface())
+                    if BALL_MASK.overlap(ITEM_MASK, ((stuff._X - ball._X, stuff._Y - ball._Y))):
+                        ball.setPosition((-1000,-1000))
+                        self.__BALLS.pop(self.__BALLS.index(ball))
+                        stuff.setPosition((-1000,-1000))
+                        self.STUFF.pop(self.STUFF.index(stuff))
 
+            # items
             TIME = pygame.time.get_ticks()
             if TIME > self.NEXT_ITEM:
                 DELAY = 1500
@@ -139,56 +148,59 @@ class Level1:
                 if ITEM.getGo:
                     stuff.marqueeY(self.__WINDOW.getHeight(), 12)
                 
+                # points
                 if stuff.getCollected():
                     if stuff.getFileLoc() != "images/purple_poison.png" and stuff.getFileLoc() != "images/poison.png":
                         self.POINTS += 1
+                        print(self.POINTS) # delete ------------------------------------------------------------------------------
                     elif stuff.getFileLoc() == "images/poison.png":
                         self.POINTS -= 1
+                        print(self.POINTS) # delete ------------------------------------------------------------------------------
                     elif stuff.getFileLoc() == "images/purple_poison.png":
                         self.POINTS -= 3
+                    elif stuff.g
                     self.STUFF.pop(self.STUFF.index(stuff))
                     del stuff
-            print(self.POINTS)
-            
-          
-            for ball in self.__BALLS:
-                for stuff in self.STUFF:
-                    BALL_MASK = pygame.mask.from_surface(ball.getSurface())
-                    ITEM_MASK = pygame.mask.from_surface(stuff.getSurface())
-                    if BALL_MASK.overlap(ITEM_MASK, ((stuff._X - ball._X, stuff._Y - ball._Y))):
-                        ball.setPosition((-1000,-1000))
-                        stuff.setPosition((-1000,-1000))
-                        
-            
-        
-            
+
+            if self.POINTS >= 0 and self.POINTS <=5:
+                for i in range(len(self.HEALTH_BAR)):
+                    if i < self.POINTS:
+                        self.HEALTH_BAR[i].setColor((255, 0, 0))
+                    else:
+                        self.HEALTH_BAR[i].setColor((255, 255, 255))
+            if self.POINTS > 5 and self.POINTS <=15:
+                for i in range(len(self.HEALTH_BAR)):
+                    if i < self.POINTS:
+                        self.HEALTH_BAR[i].setColor((0, 255, 0))
+                    else:
+                        self.HEALTH_BAR[i].setColor(255, 255, 255)
         
    
             # -- OUTPUTS -- #
                 
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
-       
-            self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
-            self.__WINDOW.getSurface().blit(self.__BUCKET.getSurface(), self.__BUCKET.getPOS())
-           
-        
 
+            # cannon
+            self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
+
+            # bucket
+            self.__WINDOW.getSurface().blit(self.__BUCKET.getSurface(), self.__BUCKET.getPOS())
+        
+            # items
             for stuff in self.STUFF:
                 self.__WINDOW.getSurface().blit(stuff.getSurface(), stuff.getPOS())
 
+            # balls
             for ball in self.__BALLS:
                 self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
 
-            
+            # bucket
             self.__WINDOW.getSurface().blit(self.__FRONT_BUCKET.getSurface(), self.__FRONT_BUCKET.getPOS())
 
+            # health bar
             for interval in self.HEALTH_BAR:
                 self.__WINDOW.getSurface().blit(interval.getSurface(), interval.getPOS())
-
-            
-            
-            
 
             self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
             self.__WINDOW.updateFrame()

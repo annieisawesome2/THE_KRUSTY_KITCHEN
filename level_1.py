@@ -7,7 +7,6 @@ from image import ImageSprite
 from cannon import Cannon
 from ball import Ball
 from items import Items
-from bucket import Bucket
 import random
 
 
@@ -51,10 +50,10 @@ class Level1:
         self.NEXT_ITEM = 0
         self.STUFF = []
 
-        self.__BUCKET = Bucket("images/bucket.png")
+        self.__BUCKET = ImageSprite("images/bucket.png")
         self.__BUCKET.setPosition((1085, 530))
         self.__BUCKET.setScale(0.2)
-        self.__FRONT_BUCKET = Bucket("images/bucket2.png")
+        self.__FRONT_BUCKET = ImageSprite("images/bucket2.png")
         self.__FRONT_BUCKET.setPosition((1085, 585))
         self.__FRONT_BUCKET.setScale(0.2)
 

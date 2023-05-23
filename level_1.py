@@ -18,7 +18,7 @@ class Level1:
     def __init__(self):
         self.__WINDOW = Window("Fat Bear")
     
-        self.__TITLE = Text("Fat Bear")
+        self.__TITLE = Text("Fruit Explosion")
         self.__TITLE.setPosition((self.__WINDOW.getWidth()//2 - self.__TITLE.getWidth()//2, 0))
         self.__TITLE.setColor((0, 0, 102))
         self.__TITLE.setFontSize(50)
@@ -38,10 +38,6 @@ class Level1:
         self.__BALLS = []
     
         self.NEXT_BALL = 0
-
-
-        self.NEXT_PLANK = 0
-        self.__PLANKS = []
         
         self.NEXT_ITEM = 0
         self.STUFF = []
@@ -154,25 +150,7 @@ class Level1:
                     del stuff
             print(self.POINTS)
             
-            '''
-            TIME2 = pygame.time.get_ticks()
-            if TIME2 > self.NEXT_PLANK:
-                DELAY2 = 1500
-                self.NEXT_PLANK = TIME2 + DELAY2
-                CLOUD = Plank("images/cloud.png")
-                self.__PLANKS.append(CLOUD)
-        
-                CLOUD.setPosition((500, -5 - NEW_HEIGHT))
-                CLOUD.setScale(1)
-                CLOUD.setgo()
-              
-           
-            for cloud in self.__PLANKS:
-                if CLOUD.getGo:
-                    cloud.marquee(self.__WINDOW.getHeight(), 12)
-            '''
-
-            
+          
             for ball in self.__BALLS:
                 for stuff in self.STUFF:
                     BALL_MASK = pygame.mask.from_surface(ball.getSurface())
@@ -194,8 +172,7 @@ class Level1:
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
             self.__WINDOW.getSurface().blit(self.__BUCKET.getSurface(), self.__BUCKET.getPOS())
            
-            #for plank in self.__PLANKS:
-                #self.__WINDOW.getSurface().blit(plank.getSurface(), plank.getPOS())
+        
 
             for stuff in self.STUFF:
                 self.__WINDOW.getSurface().blit(stuff.getSurface(), stuff.getPOS())

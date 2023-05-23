@@ -10,10 +10,10 @@ class Window:
         self.__WIDTH = WIDTH #width of the window
         self.__HEIGHT = HEIGHT #height of the window
         self.__SCREEN_DIM = (self.__WIDTH, self.__HEIGHT) #screen dimention
-        self.__BG_COLOR = BG_COLOR #uses the format (R, G, B)
+        self.BG_COLOR = BG_COLOR #uses the format (R, G, B)
         self.__FRAME = pygame.time.Clock()
         self.__SURFACE = pygame.display.set_mode(self.__SCREEN_DIM) #surface object in pygame. Every item in your program will overlay on top of a surface object
-        self.__SURFACE.fill(self.__BG_COLOR)
+        self.__SURFACE.fill(self.BG_COLOR)
         pygame.display.set_caption(self.__TITLE) 
 
     # -- MODIFIER METHODS -- #
@@ -26,7 +26,7 @@ class Window:
     def clearScreen(self):
         """fill the screen with the background color
         """
-        self.__SURFACE.fill(self.__BG_COLOR)
+        self.__SURFACE.fill(self.BG_COLOR)
 
     # -- ACCESSOR METHODS -- #
     def getSurface(self):

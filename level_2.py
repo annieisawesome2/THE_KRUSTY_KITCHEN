@@ -53,9 +53,9 @@ class Level2:
        
       
 
-        self.__BG_IMAGE = ImageSprite("images/level_2BG.jpg")
+        self.__BG_IMAGE = ImageSprite("images/night_bg.jpeg")
         self.__BG_IMAGE.setScale(3)
-        self.__BG_IMAGE.setPosition((50, 0))
+        self.__BG_IMAGE.setPosition((0, 0))
     
 
         self.NEXT_ITEM = 0
@@ -225,25 +225,32 @@ class Level2:
                         box.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
                         
-            #_________________
+
 
             for bullet in self.BULLETS_3:
                 for box in self.BOXES:
                     BULLET_MASK3 = pygame.mask.from_surface(bullet.getSurface())
                     BOX_MASK3 = pygame.mask.from_surface(box.getSurface())
                     if BULLET_MASK3.overlap(BOX_MASK3, ((box._X - bullet._X, box._Y - bullet._Y))):
+                        NEW_ITEM3 = self.generate()
+                        NEW_ITEM3.setPosition((box.getX(), box.getY() )) # y + 30
+                        NEW_ITEM3.setgo()
+                        self.ITEMS.append(NEW_ITEM3)
+                        box.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
-                        box.setPosition((-1000,-1000))
 
             for bullet in self.BULLETS_4:
                 for box in self.BOXES:
                     BULLET_MASK4 = pygame.mask.from_surface(bullet.getSurface())
                     BOX_MASK4 = pygame.mask.from_surface(box.getSurface())
                     if BULLET_MASK4.overlap(BOX_MASK4, ((box._X - bullet._X, box._Y - bullet._Y))):
+                        NEW_ITEM4 = self.generate()
+                        NEW_ITEM4.setPosition((box.getX(), box.getY() )) # y + 30
+                        NEW_ITEM4.setgo()
+                        self.ITEMS.append(NEW_ITEM4)
+                        box.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
-                        box.setPosition((-1000,-1000))
-            #_________________
-            
+  
             
             
             for item in self.ITEMS:
@@ -257,33 +264,35 @@ class Level2:
 
             ##--- CHecking for collisions then deleting item.... check for missed objects if it goes off screen without hit
             for item in self.ITEMS:    
-                if item._POS == ((-1000, -1000)) :
+                if item._POS == ((-1000, -1000)) or (item._Y == 320 and item._X > self.__WINDOW.getWidth()):
                     self.ITEMS.remove(item)
                     del item
 
             for box in self.BOXES:
-                if box._POS == ((-1000, -1000)):
+                if box._POS == ((-1000, -1000)) or (box._Y == 320 and box._X > self.__WINDOW.getWidth()):
                     self.BOXES.remove(box)
                     del box
+       
             
             for bullet1 in self.BULLETS_1:
-                if bullet1._POS == ((-1000, -1000)) : #or bullet1._Y < 0 - bullet1.getHeight()
+                if bullet1._POS == ((-1000, -1000)) or bullet1._Y < 0 - bullet1.getHeight() :
                     self.BULLETS_1.remove(bullet1)
                     del bullet1
             
-            for bullet2 in self.BULLETS_2 :
-                if bullet2._POS == ((-1000, -1000)) :
+            
+            for bullet2 in self.BULLETS_2:
+                if bullet2._POS == ((-1000, -1000)) or bullet2._Y < 0 - bullet2.getHeight():
                     self.BULLETS_2.remove(bullet2)
                     del bullet2
             
             for bullet3 in self.BULLETS_3 :
-                if bullet3._POS == ((-1000, -1000)):
-                    self.BULLETS_3.remove(bullet2)
+                if bullet3._POS == ((-1000, -1000)) or bullet3._Y < 0 - bullet3.getHeight():
+                    self.BULLETS_3.remove(bullet3)
                     del bullet3
             
             for bullet4 in self.BULLETS_4:
-                if bullet4._POS == ((-1000, -1000)):
-                    self.BULLETS_4.remove(bullet2)
+                if bullet4._POS == ((-1000, -1000)) or bullet4._Y < 0 - bullet4.getHeight():
+                    self.BULLETS_4.remove(bullet4)
                     del bullet4
             
                 

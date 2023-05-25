@@ -63,7 +63,7 @@ class Level2:
         self.ITEMS = []
 
     def generate(self):
-        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png"]
+        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png", "images/bomb.png"]
         CHOSEN_ITEM = random.choice(STRING)
 
         ITEM = Items(CHOSEN_ITEM)
@@ -82,6 +82,8 @@ class Level2:
             ITEM.setScale(0.025)
         elif CHOSEN_ITEM == "images/purple_poison.png":
             ITEM.setScale(0.053)
+        elif CHOSEN_ITEM == "images/bomb.png":
+            ITEM.setScale(0.05)
 
         return ITEM
      
@@ -210,8 +212,15 @@ class Level2:
                         self.ITEMS.append(NEW_ITEM)
                         box.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
-                        
-
+            
+            for bullet in self.BULLETS_1:
+                for item in self.ITEMS:
+                    BULLET_MASK1_I = pygame.mask.from_surface(bullet.getSurface())
+                    ITEM_MASK1 = pygame.mask.from_surface(item.getSurface())
+                    if BULLET_MASK1_I.overlap(ITEM_MASK1, ((item._X - bullet._X, item._Y - bullet._Y))):
+                        item.setPosition((-1000,1000))
+                        bullet.setPosition((-1000,-1000))
+            
             
             for bullet in self.BULLETS_2:
                 for box in self.BOXES:
@@ -223,6 +232,14 @@ class Level2:
                         NEW_ITEM2.setgo()
                         self.ITEMS.append(NEW_ITEM2)
                         box.setPosition((-1000,1000))
+                        bullet.setPosition((-1000,-1000))
+
+            for bullet in self.BULLETS_2:
+                for item in self.ITEMS:
+                    BULLET_MASK2_I = pygame.mask.from_surface(bullet.getSurface())
+                    ITEM_MASK2 = pygame.mask.from_surface(item.getSurface())
+                    if BULLET_MASK2_I.overlap(ITEM_MASK2, ((item._X - bullet._X, item._Y - bullet._Y))):
+                        item.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
                         
 
@@ -238,6 +255,15 @@ class Level2:
                         self.ITEMS.append(NEW_ITEM3)
                         box.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
+            
+            for bullet in self.BULLETS_3:
+                for item in self.ITEMS:
+                    BULLET_MASK3_I = pygame.mask.from_surface(bullet.getSurface())
+                    ITEM_MASK3 = pygame.mask.from_surface(item.getSurface())
+                    if BULLET_MASK3_I.overlap(ITEM_MASK3, ((item._X - bullet._X, item._Y - bullet._Y))):
+                        item.setPosition((-1000,1000))
+                        bullet.setPosition((-1000,-1000))
+                        
 
             for bullet in self.BULLETS_4:
                 for box in self.BOXES:
@@ -250,7 +276,18 @@ class Level2:
                         self.ITEMS.append(NEW_ITEM4)
                         box.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
-  
+            
+            for bullet in self.BULLETS_4:
+                for item in self.ITEMS:
+                    BULLET_MASK4_I = pygame.mask.from_surface(bullet.getSurface())
+                    ITEM_MASK4 = pygame.mask.from_surface(item.getSurface())
+                    if BULLET_MASK4_I.overlap(ITEM_MASK4, ((item._X - bullet._X, item._Y - bullet._Y))):
+                        item.setPosition((-1000,1000))
+                        bullet.setPosition((-1000,-1000))
+                        
+
+            
+      
             
             
             for item in self.ITEMS:

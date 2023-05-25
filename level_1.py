@@ -62,6 +62,55 @@ class Level1:
         for i in range(15):
             self.HEALTH_BAR.append(Box(15, 10))
             self.HEALTH_BAR[i].setPosition((1075+i*12, 535+self.__BUCKET.getHeight()))
+    def reset(self):
+        self.__WINDOW = Window("Fat Bear")
+    
+        self.__TITLE = Text("Fruit Explosion")
+        self.__TITLE.setPosition((self.__WINDOW.getWidth()//2 - self.__TITLE.getWidth()//2, 0))
+        self.__TITLE.setColor((0, 0, 102))
+        self.__TITLE.setFontSize(50)
+        self.__BALL = Box(15, 15)
+        self.__BALL.setSpeed(0)
+        self.__BALL.setPosition((self.__WINDOW.getWidth()//2 - self.__BALL.getWidth()//2, 650))
+
+        self.PLAY = False
+
+        self.START_MESSAGE = Text("'ENTER' to play!")
+        self.START_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.START_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.START_MESSAGE.getHeight()//2))
+        self.DIE_MESSAGE = Text("You lose! 'ENTER' to try again")
+        self.DIE_MESSAGE.setPosition((-1000, -1000))
+        self.WIN_MESSAGE = Text("You Win! 'ENTER' to play Level 2!")
+        self.WIN_MESSAGE.setPosition((-1000, -1000))
+        
+        self.__BG_IMAGE = ImageSprite("images/night_bg.jpeg")
+        self.__BG_IMAGE.setScale(4)
+        self.__BG_IMAGE.setPosition((0, self.__TITLE.getHeight()))
+
+        self.__CANNON = Cannon("images/cannon.png")
+        self.__CANNON.setScale(0.16)
+        self.__CANNON.setPosition((-60, 200))
+        self.__CANNON.setSpeed(15)
+
+        self.__BALLS = []
+    
+        self.NEXT_BALL = 0
+        
+        self.NEXT_ITEM = 0
+        self.STUFF = []
+
+        self.__BUCKET = ImageSprite("images/bucket.png")
+        self.__BUCKET.setPosition((1085, 530))
+        self.__BUCKET.setScale(0.2)
+        self.__FRONT_BUCKET = ImageSprite("images/bucket2.png")
+        self.__FRONT_BUCKET.setPosition((1085, 585))
+        self.__FRONT_BUCKET.setScale(0.2)
+
+        self.POINTS = 0
+        self.HEALTH_BAR = []
+        for i in range(15):
+            self.HEALTH_BAR.append(Box(15, 10))
+            self.HEALTH_BAR[i].setPosition((1075+i*12, 535+self.__BUCKET.getHeight()))
+
 
     def generate(self):
         STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png", "images/bomb.png"]
@@ -91,17 +140,23 @@ class Level1:
 
     
     def run(self):
+        
+
         while True:
             # -- INPUTS -- #
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
+
+            
+            
             
             KEYS_PRESSED = pygame.key.get_pressed()
 
             if KEYS_PRESSED[pygame.K_RETURN]:
                 self.PLAY = True
+                pygame.mixer.music.play(-1)
 
             # -- PROCESSING -- #
             if self.PLAY:
@@ -187,10 +242,15 @@ class Level1:
             
             # die screen
             if self.POINTS < 0:
+                pygame.mixer.music.stop()
+
                 self.PLAY = False
                 for stuff in self.STUFF:
                     stuff.setPosition((-1000, -1000))
                 self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
+                if KEYS_PRESSED[pygame.K_RETURN]:
+                    self.reset()
+
             # win screen
             elif self.POINTS >= 15:
                 self.PLAY = False
@@ -237,5 +297,7 @@ class Level1:
 
 if __name__ == "__main__":
     pygame.init()
+    BUBBLE_BATH = pygame.mixer.music.load("sounds/bubble_bath.mp3")
+    #pygame.mixer.music.load("sounds/lose.mp3")
     GAME = Level1()
     GAME.run()

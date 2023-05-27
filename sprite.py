@@ -120,7 +120,7 @@ class MySprite:
 
         if SCALE_Y == 0:
             SCALE_Y = SCALE_X
-            self._SURFACE = pygame.transform.scale(self._SURFACE, (self.getWidth()*SCALE_X, self.getHeight()*SCALE_Y))
+        self._SURFACE = pygame.transform.scale(self._SURFACE, (self.getWidth()*SCALE_X, self.getHeight()*SCALE_Y))
 
     def setPosition(self, TUPLE):
         self._X = TUPLE[0]

@@ -60,8 +60,14 @@ class Level1:
         self.POINTS = 0
         self.HEALTH_BAR = []
         for i in range(15):
-            self.HEALTH_BAR.append(Box(15, 10))
-            self.HEALTH_BAR[i].setPosition((1075+i*12, 535+self.__BUCKET.getHeight()))
+            self.HEALTH_BAR.append(Box(15, 15))
+            self.HEALTH_BAR[i].setPosition(
+                (
+                    self.__WINDOW.getWidth() - 50,
+                    self.__WINDOW.getHeight() - 10 - (i+1)*17
+                )
+            )
+
     def reset(self):
         self.__WINDOW = Window("Fat Bear")
     
@@ -99,18 +105,22 @@ class Level1:
         self.STUFF = []
 
         self.__BUCKET = ImageSprite("images/bucket.png")
-        self.__BUCKET.setPosition((1085, 530))
         self.__BUCKET.setScale(0.2)
+        self.__BUCKET.setPosition((1085, 530))
         self.__FRONT_BUCKET = ImageSprite("images/bucket2.png")
-        self.__FRONT_BUCKET.setPosition((1085, 585))
         self.__FRONT_BUCKET.setScale(0.2)
+        self.__FRONT_BUCKET.setPosition((1085, 585))
 
         self.POINTS = 0
         self.HEALTH_BAR = []
         for i in range(15):
-            self.HEALTH_BAR.append(Box(15, 10))
-            self.HEALTH_BAR[i].setPosition((1075+i*12, 535+self.__BUCKET.getHeight()))
-
+            self.HEALTH_BAR.append(Box(15, 15))
+            self.HEALTH_BAR[i].setPosition(
+                (
+                    self.__WINDOW.getWidth() - 50,
+                    self.__WINDOW.getHeight() - 10 - (i+1)*17
+                )
+            )
 
     def generate(self):
         STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png", "images/bomb.png"]
@@ -227,6 +237,7 @@ class Level1:
                     self.STUFF.remove(stuff)
                     del stuff
 
+            # health bar
             if self.POINTS > 0 and self.POINTS <=5:
                 for i in range(len(self.HEALTH_BAR)):
                     if i < self.POINTS:

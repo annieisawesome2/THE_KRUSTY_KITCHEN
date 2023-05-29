@@ -57,7 +57,7 @@ class Level1:
         self.__FRONT_BUCKET.setPosition((1085, 585))
         self.__FRONT_BUCKET.setScale(0.2)
 
-        self.POINTS = 0
+        self.POINTS = 1
         self.HEALTH_BAR = []
         for i in range(15):
             self.HEALTH_BAR.append(Box(15, 15))
@@ -205,7 +205,7 @@ class Level1:
                         self.HEALTH_BAR[i].setColor((255, 255, 255))
             
             # die screen
-            if self.POINTS < 0:
+            if self.POINTS <= 0:
                 pygame.mixer.music.stop()
 
                 self.PLAY = False

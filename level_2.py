@@ -7,7 +7,7 @@ import random
 from items import Items
 from cannon import Cannon
 from ball import Ball
-
+from boxes import Box
 
 
 ##Fruits on clouds random every time hitting objects
@@ -50,17 +50,35 @@ class Level2:
         self.BULLETS_4 = []
         self.NEXT_BULLET_4 = 0
 
-       
-      
-
+        # background
         self.__BG_IMAGE = ImageSprite("images/night_bg.jpeg")
         self.__BG_IMAGE.setScale(3)
         self.__BG_IMAGE.setPosition((0, 0))
-    
 
+        # items
         self.NEXT_ITEM = 0
         self.BOXES = []
         self.ITEMS = []
+
+        # black hole
+        self.HOLE = ImageSprite("images/hole.png")
+        self.HOLE.setScale(0.3)
+        self.HOLE.setPosition((self.__WINDOW.getWidth() - 95, 290))
+        self.FRONT_HOLE = ImageSprite("images/hole2.png")
+        self.FRONT_HOLE.setScale(0.3)
+        self.FRONT_HOLE.setPosition((self.__WINDOW.getWidth() - 55, 290))
+
+        # health bar
+        self.POINTS = 0
+        self.HEALTH_BAR = []
+        for i in range(15):
+            self.HEALTH_BAR.append(Box(15, 15))
+            self.HEALTH_BAR[i].setPosition(
+                (
+                    self.__WINDOW.getWidth() - 30,
+                    self.__WINDOW.getHeight() - 10 - (i+1)*17
+                )
+            )
 
     def generate(self):
         STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png", "images/bomb.png"]
@@ -86,9 +104,6 @@ class Level2:
             ITEM.setScale(0.05)
 
         return ITEM
-     
-
-
     
     def run(self):
         
@@ -210,6 +225,8 @@ class Level2:
                         NEW_ITEM.setPosition((box.getX(), box.getY() )) # y + 30
                         NEW_ITEM.setgo()
                         self.ITEMS.append(NEW_ITEM)
+                        if box.getPOS()[1] == 200:
+                            NEW_ITEM.setDirX(-1)
                         box.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
             
@@ -231,6 +248,8 @@ class Level2:
                         NEW_ITEM2.setPosition((box.getX(), box.getY() )) # y + 30
                         NEW_ITEM2.setgo()
                         self.ITEMS.append(NEW_ITEM2)
+                        if box.getPOS()[1] == 200:
+                            NEW_ITEM2.setDirX(-1)
                         box.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
 
@@ -253,6 +272,8 @@ class Level2:
                         NEW_ITEM3.setPosition((box.getX(), box.getY() )) # y + 30
                         NEW_ITEM3.setgo()
                         self.ITEMS.append(NEW_ITEM3)
+                        if box.getPOS()[1] == 200:
+                            NEW_ITEM3.setDirX(-1)
                         box.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
             
@@ -274,6 +295,8 @@ class Level2:
                         NEW_ITEM4.setPosition((box.getX(), box.getY() )) # y + 30
                         NEW_ITEM4.setgo()
                         self.ITEMS.append(NEW_ITEM4)
+                        if box.getPOS()[1] == 200:
+                            NEW_ITEM4.setDirX(-1)
                         box.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
             
@@ -299,17 +322,17 @@ class Level2:
                         item.marqueeX(self.__WINDOW.getWidth(), 8)
             
 
-            ##--- CHecking for collisions then deleting item.... check for missed objects if it goes off screen without hit
+            ##--- Checking for collisions then deleting item.... check for missed objects if it goes off screen without hit
             for item in self.ITEMS:    
-                if item._POS == ((-1000, -1000)) or (item._Y == 320 and item._X > self.__WINDOW.getWidth()):
+                if item._POS == ((-1000, -1000)) or (item._Y == 350 and item._X > self.__WINDOW.getWidth()):
                     self.ITEMS.remove(item)
                     del item
 
             for box in self.BOXES:
-                if box._POS == ((-1000, -1000)) or (box._Y == 320 and box._X > self.__WINDOW.getWidth()):
+                if box._POS == ((-1000, -1000)) or (box._Y == 350 and box._X > self.__WINDOW.getWidth()):
                     self.BOXES.remove(box)
                     del box
-       
+
             
             for bullet1 in self.BULLETS_1:
                 if bullet1._POS == ((-1000, -1000)) or bullet1._Y < 0 - bullet1.getHeight() :
@@ -331,13 +354,46 @@ class Level2:
                 if bullet4._POS == ((-1000, -1000)) or bullet4._Y < 0 - bullet4.getHeight():
                     self.BULLETS_4.remove(bullet4)
                     del bullet4
-            
+
+            # points
+            for stuff in self.ITEMS:
+                if stuff.getPOS()[0] > self.__WINDOW.getWidth()-20 and stuff.getPOS()[1] == 350:
+                    stuff.setCollected(True)
+                if stuff.getCollected():
+                    if stuff.getFileLoc() == "images/box.png":
+                        pass
+                    elif stuff.getFileLoc() != "images/purple_poison.png" and stuff.getFileLoc() != "images/poison.png" and stuff.getFileLoc() != "images/bomb.png":
+                        self.POINTS += 1
+                    elif stuff.getFileLoc() == "images/poison.png":
+                        self.POINTS -= 1
+                    elif stuff.getFileLoc() == "images/purple_poison.png":
+                        self.POINTS -= 3
+                    elif stuff.getFileLoc() == "images/bomb.png":
+                        self.POINTS -= 15
+                    self.ITEMS.remove(stuff)
+                    del stuff
+
+            # health bar
+            if self.POINTS > 0 and self.POINTS <=5:
+                for i in range(len(self.HEALTH_BAR)):
+                    if i < self.POINTS:
+                        self.HEALTH_BAR[i].setColor((255, 0, 0))
+                    else:
+                        self.HEALTH_BAR[i].setColor((255, 255, 255))
+            if self.POINTS > 5 and self.POINTS <=15:
+                for i in range(len(self.HEALTH_BAR)):
+                    if i < self.POINTS:
+                        self.HEALTH_BAR[i].setColor((0, 255, 0))
+                    else:
+                        self.HEALTH_BAR[i].setColor((255, 255, 255))
                 
     
-            
+            # -- OUTPUTS -- #
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
-      
+
+            self.__WINDOW.getSurface().blit(self.HOLE.getSurface(), self.HOLE.getPOS())
+
             for box in self.BOXES:
                 self.__WINDOW.getSurface().blit(box.getSurface(), box.getPOS())
 
@@ -352,14 +408,20 @@ class Level2:
                 
             for bullet in self.BULLETS_4:
                 self.__WINDOW.getSurface().blit(bullet.getSurface(), bullet.getPOS())
-             
+
             for item in self.ITEMS:
                 self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
+
+            self.__WINDOW.getSurface().blit(self.FRONT_HOLE.getSurface(), self.FRONT_HOLE.getPOS())
             
             self.__WINDOW.getSurface().blit(self.SHOOTER_1.getSurface(), self.SHOOTER_1.getPOS())
             self.__WINDOW.getSurface().blit(self.SHOOTER_2.getSurface(), self.SHOOTER_2.getPOS())
             self.__WINDOW.getSurface().blit(self.SHOOTER_3.getSurface(), self.SHOOTER_3.getPOS())
             self.__WINDOW.getSurface().blit(self.SHOOTER_4.getSurface(), self.SHOOTER_4.getPOS())
+
+            # health bar
+            for interval in self.HEALTH_BAR:
+                self.__WINDOW.getSurface().blit(interval.getSurface(), interval.getPOS())
             
       
             self.__WINDOW.updateFrame()

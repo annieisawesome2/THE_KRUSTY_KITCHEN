@@ -79,7 +79,7 @@ class Level2:
         self.FRONT_HOLE.setPosition((self.__WINDOW.getWidth() - 55, 290))
 
         # health bar
-        self.POINTS = 0
+        self.POINTS = 1
         self.HEALTH_BAR = []
         for i in range(15):
             self.HEALTH_BAR.append(Box(15, 15))
@@ -130,6 +130,7 @@ class Level2:
             # --- PROCESSING --- #
             if KEYS_PRESSED[pygame.K_RETURN]:
                 self.PLAY = True
+                pygame.mixer.music.play(-1)
 
             if self.PLAY:
                 self.START_MESSAGE.setPosition((-1000, -1000))
@@ -383,12 +384,16 @@ class Level2:
                         pass
                     elif item.getFileLoc() != "images/purple_poison.png" and item.getFileLoc() != "images/poison.png" and item.getFileLoc() != "images/bomb.png":
                         self.POINTS += 1
+                        pygame.mixer.Sound.play(FRUIT_SOUND)
                     elif item.getFileLoc() == "images/poison.png":
                         self.POINTS -= 1
+                        pygame.mixer.Sound.play(POISON_SOUND)
                     elif item.getFileLoc() == "images/purple_poison.png":
                         self.POINTS -= 3
+                        pygame.mixer.Sound.play(POISON_SOUND)
                     elif item.getFileLoc() == "images/bomb.png":
                         self.POINTS -= 15
+                        pygame.mixer.Sound.play(POISON_SOUND)
                     self.ITEMS.remove(item)
                     del item
 
@@ -407,8 +412,9 @@ class Level2:
                         self.HEALTH_BAR[i].setColor((255, 255, 255))
             
             # die screen
-            if self.POINTS < 0:
+            if self.POINTS <= 0:
                 self.PLAY = False
+                pygame.mixer.music.stop()
                 for item in self.ITEMS:
                     item.setPosition((-1000, -1000))
                 for box in self.BOXES:
@@ -476,5 +482,11 @@ class Level2:
     
 if __name__ == "__main__":
     pygame.init()
+    pygame.mixer.music.load("sounds/bubble_bath.mp3")
+    FRUIT_SOUND = pygame.mixer.Sound("sounds/fruit_sound.mp3")
+    POISON_SOUND = pygame.mixer.Sound("sounds/bad_sound.mp3")
+    COLLISION_SOUND = pygame.mixer.Sound("sounds/Pop.mp3")
+
+
     GAME = Level2()
     GAME.run()

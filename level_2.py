@@ -15,8 +15,23 @@ from boxes import Box
 
 class Level2: 
     def __init__(self):
-        self.__WINDOW = Window("Fat Bear")
+        self.__WINDOW = Window("Fruit Explosion")
         self.__WINDOW.BG_COLOR = ((255, 255, 255))
+
+        # background
+        self.__BG_IMAGE = ImageSprite("images/night_bg.jpeg")
+        self.__BG_IMAGE.setScale(3)
+        self.__BG_IMAGE.setPosition((0, 0))
+
+        # messages
+        self.PLAY = False
+
+        self.START_MESSAGE = Text("'ENTER' to play!")
+        self.START_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.START_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.START_MESSAGE.getHeight()//2))
+        self.DIE_MESSAGE = Text("You lose! 'ENTER' to try again")
+        self.DIE_MESSAGE.setPosition((-1000, -1000))
+        self.WIN_MESSAGE = Text("You Win!")
+        self.WIN_MESSAGE.setPosition((-1000, -1000))
 
         # --- SHOOTER 1 -- #
         self.SHOOTER_1 = Cannon("images/shooter.png")
@@ -49,11 +64,6 @@ class Level2:
         
         self.BULLETS_4 = []
         self.NEXT_BULLET_4 = 0
-
-        # background
-        self.__BG_IMAGE = ImageSprite("images/night_bg.jpeg")
-        self.__BG_IMAGE.setScale(3)
-        self.__BG_IMAGE.setPosition((0, 0))
 
         # items
         self.NEXT_ITEM = 0
@@ -108,6 +118,7 @@ class Level2:
     def run(self):
         
         while True:
+
             # -- INPUTS -- #
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -116,104 +127,112 @@ class Level2:
             
             KEYS_PRESSED = pygame.key.get_pressed()
 
-            # --- SHOOTER 1 -- #
-            TIME1 = pygame.time.get_ticks()
-            if KEYS_PRESSED[pygame.K_c] and TIME1 > self.NEXT_BULLET_1:
-                DELAY_1 = 400
-                self.NEXT_BULLET_1 = TIME1 + DELAY_1
-       
-                BULLET_1 = Ball("images/bullet.png")
-                self.BULLETS_1.append(BULLET_1)
-                BULLET_1.setScale(0.04)
-                BULLET_1.setPosition((self.SHOOTER_1.getX() +60, self.SHOOTER_1.getY()))
-                BULLET_1.setSpeed(25)
-                BULLET_1.changeShoot()
+            # --- PROCESSING --- #
+            if KEYS_PRESSED[pygame.K_RETURN]:
+                self.PLAY = True
 
-            for bullet in self.BULLETS_1:
-                if bullet.getShoot():
-                    bullet.marqueeY()
-                if bullet.getPOS()[0] > self.__WINDOW.getWidth(): ###change to height????
-                    self.BULLETS_1.pop(0)
-                    del bullet
+            if self.PLAY:
+                self.START_MESSAGE.setPosition((-1000, -1000))
 
-            # --- SHOOTER 2 -- #
-            TIME2 = pygame.time.get_ticks()
-            if KEYS_PRESSED[pygame.K_v] and TIME2 > self.NEXT_BULLET_2:
-                DELAY_2 = 400
-                self.NEXT_BULLET_2 = TIME2 + DELAY_2
-       
-                BULLET_2 = Ball("images/bullet.png")
-                self.BULLETS_2.append(BULLET_2)
-                BULLET_2.setScale(0.04)
-                BULLET_2.setPosition((self.SHOOTER_2.getX() +60, self.SHOOTER_2.getY()))
-                BULLET_2.setSpeed(25)
-                BULLET_2.changeShoot()
+                # shooters ------------------------------------------------------------
+                # shooter 1
+                TIME1 = pygame.time.get_ticks()
+                if KEYS_PRESSED[pygame.K_c] and TIME1 > self.NEXT_BULLET_1:
+                    DELAY_1 = 400
+                    self.NEXT_BULLET_1 = TIME1 + DELAY_1
+        
+                    BULLET_1 = Ball("images/bullet.png")
+                    self.BULLETS_1.append(BULLET_1)
+                    BULLET_1.setScale(0.04)
+                    BULLET_1.setPosition((self.SHOOTER_1.getX() +60, self.SHOOTER_1.getY()))
+                    BULLET_1.setSpeed(25)
+                    BULLET_1.changeShoot()
 
-            for bullet in self.BULLETS_2:
-                if bullet.getShoot():
-                    bullet.marqueeY()
-                if bullet.getPOS()[0] > self.__WINDOW.getWidth(): ###change to height????
-                    self.BULLETS_2.pop(0)
-                    del bullet
+                for bullet in self.BULLETS_1:
+                    if bullet.getShoot():
+                        bullet.marqueeY()
+                    if bullet.getPOS()[0] > self.__WINDOW.getWidth(): ###change to height????
+                        self.BULLETS_1.pop(0)
+                        del bullet
 
-            # --- SHOOTER 3 -- #
-            TIME3 = pygame.time.get_ticks()
-            if KEYS_PRESSED[pygame.K_b] and TIME3 > self.NEXT_BULLET_3:
-                DELAY_3 = 400
-                self.NEXT_BULLET_3 = TIME3 + DELAY_3
-       
-                BULLET_3 = Ball("images/bullet.png")
-                self.BULLETS_3.append(BULLET_3)
-                BULLET_3.setScale(0.04)
-                BULLET_3.setPosition((self.SHOOTER_3.getX() +60, self.SHOOTER_3.getY()))
-                BULLET_3.setSpeed(25)
-                BULLET_3.changeShoot()
+                # shooter 2
+                TIME2 = pygame.time.get_ticks()
+                if KEYS_PRESSED[pygame.K_v] and TIME2 > self.NEXT_BULLET_2:
+                    DELAY_2 = 400
+                    self.NEXT_BULLET_2 = TIME2 + DELAY_2
+        
+                    BULLET_2 = Ball("images/bullet.png")
+                    self.BULLETS_2.append(BULLET_2)
+                    BULLET_2.setScale(0.04)
+                    BULLET_2.setPosition((self.SHOOTER_2.getX() +60, self.SHOOTER_2.getY()))
+                    BULLET_2.setSpeed(25)
+                    BULLET_2.changeShoot()
 
-            for bullet in self.BULLETS_3:
-                if bullet.getShoot():
-                    bullet.marqueeY()
-                if bullet.getPOS()[0] > self.__WINDOW.getWidth(): ###change to height????
-                    self.BULLETS_3.pop(0)
-                    del bullet
-            
-            # --- SHOOTER 4 -- #
-            TIME4 = pygame.time.get_ticks()
-            if KEYS_PRESSED[pygame.K_n] and TIME4 > self.NEXT_BULLET_4:
-                DELAY_4 = 400
-                self.NEXT_BULLET_4 = TIME4 + DELAY_4
-       
-                BULLET_4 = Ball("images/bullet.png")
-                self.BULLETS_4.append(BULLET_4)
-                BULLET_4.setScale(0.04)
-                BULLET_4.setPosition((self.SHOOTER_4.getX() +60, self.SHOOTER_4.getY()))
-                BULLET_4.setSpeed(25)
-                BULLET_4.changeShoot()
+                for bullet in self.BULLETS_2:
+                    if bullet.getShoot():
+                        bullet.marqueeY()
+                    if bullet.getPOS()[0] > self.__WINDOW.getWidth(): ###change to height????
+                        self.BULLETS_2.pop(0)
+                        del bullet
 
-            for bullet in self.BULLETS_4:
-                if bullet.getShoot():
-                    bullet.marqueeY()
-                if bullet.getPOS()[0] > self.__WINDOW.getWidth(): ###change to height????
-                    self.BULLETS_4.pop(0)
-                    del bullet
+                # --- SHOOTER 3 -- #
+                TIME3 = pygame.time.get_ticks()
+                if KEYS_PRESSED[pygame.K_b] and TIME3 > self.NEXT_BULLET_3:
+                    DELAY_3 = 400
+                    self.NEXT_BULLET_3 = TIME3 + DELAY_3
+        
+                    BULLET_3 = Ball("images/bullet.png")
+                    self.BULLETS_3.append(BULLET_3)
+                    BULLET_3.setScale(0.04)
+                    BULLET_3.setPosition((self.SHOOTER_3.getX() +60, self.SHOOTER_3.getY()))
+                    BULLET_3.setSpeed(25)
+                    BULLET_3.changeShoot()
 
-
-
-            TIME = pygame.time.get_ticks()
-            if TIME > self.NEXT_ITEM:
-                DELAY = 2000
-
-                self.NEXT_ITEM = TIME + DELAY
-                ITEM = Items("images/box.png")
+                for bullet in self.BULLETS_3:
+                    if bullet.getShoot():
+                        bullet.marqueeY()
+                    if bullet.getPOS()[0] > self.__WINDOW.getWidth(): ###change to height????
+                        self.BULLETS_3.pop(0)
+                        del bullet
                 
+                # --- SHOOTER 4 -- #
+                TIME4 = pygame.time.get_ticks()
+                if KEYS_PRESSED[pygame.K_n] and TIME4 > self.NEXT_BULLET_4:
+                    DELAY_4 = 400
+                    self.NEXT_BULLET_4 = TIME4 + DELAY_4
+        
+                    BULLET_4 = Ball("images/bullet.png")
+                    self.BULLETS_4.append(BULLET_4)
+                    BULLET_4.setScale(0.04)
+                    BULLET_4.setPosition((self.SHOOTER_4.getX() +60, self.SHOOTER_4.getY()))
+                    BULLET_4.setSpeed(25)
+                    BULLET_4.changeShoot()
+
+                for bullet in self.BULLETS_4:
+                    if bullet.getShoot():
+                        bullet.marqueeY()
+                    if bullet.getPOS()[0] > self.__WINDOW.getWidth(): ###change to height????
+                        self.BULLETS_4.pop(0)
+                        del bullet
+
+
+
+                TIME = pygame.time.get_ticks()
+                if TIME > self.NEXT_ITEM:
+                    DELAY = 2000
+
+                    self.NEXT_ITEM = TIME + DELAY
+                    ITEM = Items("images/box.png")
+                    
+                    
+                    self.BOXES.append(ITEM)
+                    ITEM.setScale(0.1)
+                    ITEM.setPosition((-5 - ITEM.getWidth(),50))
+                    ITEM.setgo()
                 
-                self.BOXES.append(ITEM)
-                ITEM.setScale(0.1)
-                ITEM.setPosition((-5 - ITEM.getWidth(),50))
-                ITEM.setgo()
-             
-            for box in self.BOXES:
-                if ITEM.getGo:
-                    box.marqueeX(self.__WINDOW.getWidth(), 8)
+                for box in self.BOXES:
+                    if ITEM.getGo:
+                        box.marqueeX(self.__WINDOW.getWidth(), 8)
 
      
             for bullet in self.BULLETS_1:
@@ -356,22 +375,22 @@ class Level2:
                     del bullet4
 
             # points
-            for stuff in self.ITEMS:
-                if stuff.getPOS()[0] > self.__WINDOW.getWidth()-20 and stuff.getPOS()[1] == 350:
-                    stuff.setCollected(True)
-                if stuff.getCollected():
-                    if stuff.getFileLoc() == "images/box.png":
+            for item in self.ITEMS:
+                if item.getPOS()[0] > self.__WINDOW.getWidth()-20 and item.getPOS()[1] == 350:
+                    item.setCollected(True)
+                if item.getCollected():
+                    if item.getFileLoc() == "images/box.png":
                         pass
-                    elif stuff.getFileLoc() != "images/purple_poison.png" and stuff.getFileLoc() != "images/poison.png" and stuff.getFileLoc() != "images/bomb.png":
+                    elif item.getFileLoc() != "images/purple_poison.png" and item.getFileLoc() != "images/poison.png" and item.getFileLoc() != "images/bomb.png":
                         self.POINTS += 1
-                    elif stuff.getFileLoc() == "images/poison.png":
+                    elif item.getFileLoc() == "images/poison.png":
                         self.POINTS -= 1
-                    elif stuff.getFileLoc() == "images/purple_poison.png":
+                    elif item.getFileLoc() == "images/purple_poison.png":
                         self.POINTS -= 3
-                    elif stuff.getFileLoc() == "images/bomb.png":
+                    elif item.getFileLoc() == "images/bomb.png":
                         self.POINTS -= 15
-                    self.ITEMS.remove(stuff)
-                    del stuff
+                    self.ITEMS.remove(item)
+                    del item
 
             # health bar
             if self.POINTS > 0 and self.POINTS <=5:
@@ -386,7 +405,28 @@ class Level2:
                         self.HEALTH_BAR[i].setColor((0, 255, 0))
                     else:
                         self.HEALTH_BAR[i].setColor((255, 255, 255))
-                
+            
+            # die screen
+            if self.POINTS < 0:
+                self.PLAY = False
+                for item in self.ITEMS:
+                    item.setPosition((-1000, -1000))
+                for box in self.BOXES:
+                    box.setPosition((-1000, -1000))
+                self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
+                if KEYS_PRESSED[pygame.K_RETURN]:
+                    self.__init__()
+
+            # win screen
+            elif self.POINTS >= 15:
+                self.PLAY = False
+                for item in self.ITEMS:
+                    item.setPosition((-1000, -1000))
+                for box in self.BOXES:
+                    box.setPosition((-1000, -1000))
+                self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
+                if KEYS_PRESSED[pygame.K_RETURN]:
+                    pass
     
             # -- OUTPUTS -- #
             self.__WINDOW.clearScreen()
@@ -423,6 +463,11 @@ class Level2:
             for interval in self.HEALTH_BAR:
                 self.__WINDOW.getSurface().blit(interval.getSurface(), interval.getPOS())
             
+            # text
+            # text
+            self.__WINDOW.getSurface().blit(self.START_MESSAGE.getSurface(), self.START_MESSAGE.getPOS())
+            self.__WINDOW.getSurface().blit(self.DIE_MESSAGE.getSurface(), self.DIE_MESSAGE.getPOS())
+            self.__WINDOW.getSurface().blit(self.WIN_MESSAGE.getSurface(), self.WIN_MESSAGE.getPOS())
       
             self.__WINDOW.updateFrame()
 

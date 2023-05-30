@@ -19,8 +19,8 @@ class Level2:
         self.__WINDOW.BG_COLOR = ((255, 255, 255))
 
         # background
-        self.__BG_IMAGE = ImageSprite("images/night_bg.jpeg")
-        self.__BG_IMAGE.setScale(3)
+        self.__BG_IMAGE = ImageSprite("images/under_sea.png")
+        self.__BG_IMAGE.setScale(1.1)
         self.__BG_IMAGE.setPosition((0, 0))
 
         # messages
@@ -34,33 +34,33 @@ class Level2:
         self.WIN_MESSAGE.setPosition((-1000, -1000))
 
         # --- SHOOTER 1 -- #
-        self.SHOOTER_1 = Cannon("images/shooter.png")
-        self.SHOOTER_1.setScale(0.6)
+        self.SHOOTER_1 = Cannon("images/coral_1.png")
+        self.SHOOTER_1.setScale(0.9)
         self.SHOOTER_1.setPosition((170, 680))
     
         self.BULLETS_1 = []
         self.NEXT_BULLET_1 = 0
 
         # --- SHOOTER 2 -- #
-        self.SHOOTER_2 = Cannon("images/shooter.png")
-        self.SHOOTER_2.setScale(0.6)
-        self.SHOOTER_2.setPosition((445, 680))
+        self.SHOOTER_2 = Cannon("images/coral_2.png")
+        self.SHOOTER_2.setScale(0.9)
+        self.SHOOTER_2.setPosition((445, 660))
         
         self.BULLETS_2 = []
         self.NEXT_BULLET_2 = 0
 
         # --- SHOOTER 3 -- #
-        self.SHOOTER_3 = Cannon("images/shooter.png")
-        self.SHOOTER_3.setScale(0.6)
-        self.SHOOTER_3.setPosition((715, 680))
+        self.SHOOTER_3 = Cannon("images/coral_3.png")
+        self.SHOOTER_3.setScale(0.9)
+        self.SHOOTER_3.setPosition((715, 670))
         
         self.BULLETS_3 = []
         self.NEXT_BULLET_3 = 0
 
         # --- SHOOTER 4 -- #
-        self.SHOOTER_4 = Cannon("images/shooter.png")
-        self.SHOOTER_4.setScale(0.6)
-        self.SHOOTER_4.setPosition((983, 680))
+        self.SHOOTER_4 = Cannon("images/coral_4.png")
+        self.SHOOTER_4.setScale(0.9)
+        self.SHOOTER_4.setPosition((983, 676))
         
         self.BULLETS_4 = []
         self.NEXT_BULLET_4 = 0
@@ -91,28 +91,16 @@ class Level2:
             )
 
     def generate(self):
-        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png", "images/bomb.png"]
+        STRING = ["images/dollar_bill.png", "images/plankton_new.png"]
         CHOSEN_ITEM = random.choice(STRING)
 
         ITEM = Items(CHOSEN_ITEM)
 
-        if CHOSEN_ITEM == "images/banana.png":
-            ITEM.setScale(0.04)
-        elif CHOSEN_ITEM == "images/cherry.png":
-            ITEM.setScale(0.03)
-        elif CHOSEN_ITEM == "images/pear.png":
-            ITEM.setScale(0.04)
-        elif CHOSEN_ITEM == "images/apple.png":
-            ITEM.setScale(0.03)
-        elif CHOSEN_ITEM == "images/orange.png":
-            ITEM.setScale(0.04)
-        elif CHOSEN_ITEM == "images/poison.png":
-            ITEM.setScale(0.025)
-        elif CHOSEN_ITEM == "images/purple_poison.png":
-            ITEM.setScale(0.053)
-        elif CHOSEN_ITEM == "images/bomb.png":
-            ITEM.setScale(0.05)
-
+        if CHOSEN_ITEM == "images/dollar_bill.png":
+            ITEM.setScale(0.21)
+        elif CHOSEN_ITEM == "images/plankton_new.png":
+            ITEM.setScale(0.25)
+        
         return ITEM
     
     def run(self):
@@ -142,19 +130,17 @@ class Level2:
                     DELAY_1 = 400
                     self.NEXT_BULLET_1 = TIME1 + DELAY_1
         
-                    BULLET_1 = Ball("images/bullet.png")
+                    BULLET_1 = Ball("images/squid.png")
                     self.BULLETS_1.append(BULLET_1)
-                    BULLET_1.setScale(0.04)
-                    BULLET_1.setPosition((self.SHOOTER_1.getX() +60, self.SHOOTER_1.getY()))
+                    BULLET_1.setScale(0.15)
+                    BULLET_1.setPosition((self.SHOOTER_1.getX() +50, self.SHOOTER_1.getY() +60))
                     BULLET_1.setSpeed(25)
                     BULLET_1.changeShoot()
 
                 for bullet in self.BULLETS_1:
                     if bullet.getShoot():
                         bullet.marqueeY()
-                    if bullet.getPOS()[0] > self.__WINDOW.getWidth(): ###change to height????
-                        self.BULLETS_1.pop(0)
-                        del bullet
+                
 
                 # shooter 2
                 TIME2 = pygame.time.get_ticks()
@@ -162,19 +148,17 @@ class Level2:
                     DELAY_2 = 400
                     self.NEXT_BULLET_2 = TIME2 + DELAY_2
         
-                    BULLET_2 = Ball("images/bullet.png")
+                    BULLET_2 = Ball("images/squid.png")
                     self.BULLETS_2.append(BULLET_2)
-                    BULLET_2.setScale(0.04)
-                    BULLET_2.setPosition((self.SHOOTER_2.getX() +60, self.SHOOTER_2.getY()))
+                    BULLET_2.setScale(0.15)
+                    BULLET_2.setPosition((self.SHOOTER_2.getX() +60, self.SHOOTER_2.getY()+60))
                     BULLET_2.setSpeed(25)
                     BULLET_2.changeShoot()
 
                 for bullet in self.BULLETS_2:
                     if bullet.getShoot():
                         bullet.marqueeY()
-                    if bullet.getPOS()[0] > self.__WINDOW.getWidth(): ###change to height????
-                        self.BULLETS_2.pop(0)
-                        del bullet
+                 
 
                 # --- SHOOTER 3 -- #
                 TIME3 = pygame.time.get_ticks()
@@ -182,52 +166,45 @@ class Level2:
                     DELAY_3 = 400
                     self.NEXT_BULLET_3 = TIME3 + DELAY_3
         
-                    BULLET_3 = Ball("images/bullet.png")
+                    BULLET_3 = Ball("images/squid.png")
                     self.BULLETS_3.append(BULLET_3)
-                    BULLET_3.setScale(0.04)
-                    BULLET_3.setPosition((self.SHOOTER_3.getX() +60, self.SHOOTER_3.getY()))
+                    BULLET_3.setScale(0.15)
+                    BULLET_3.setPosition((self.SHOOTER_3.getX() +35, self.SHOOTER_3.getY()+60))
                     BULLET_3.setSpeed(25)
                     BULLET_3.changeShoot()
 
                 for bullet in self.BULLETS_3:
                     if bullet.getShoot():
                         bullet.marqueeY()
-                    if bullet.getPOS()[0] > self.__WINDOW.getWidth(): ###change to height????
-                        self.BULLETS_3.pop(0)
-                        del bullet
-                
+              
                 # --- SHOOTER 4 -- #
                 TIME4 = pygame.time.get_ticks()
                 if KEYS_PRESSED[pygame.K_n] and TIME4 > self.NEXT_BULLET_4:
                     DELAY_4 = 400
                     self.NEXT_BULLET_4 = TIME4 + DELAY_4
         
-                    BULLET_4 = Ball("images/bullet.png")
+                    BULLET_4 = Ball("images/squid.png")
                     self.BULLETS_4.append(BULLET_4)
-                    BULLET_4.setScale(0.04)
-                    BULLET_4.setPosition((self.SHOOTER_4.getX() +60, self.SHOOTER_4.getY()))
+                    BULLET_4.setScale(0.15)
+                    BULLET_4.setPosition((self.SHOOTER_4.getX() +40, self.SHOOTER_4.getY()+30))
                     BULLET_4.setSpeed(25)
                     BULLET_4.changeShoot()
 
                 for bullet in self.BULLETS_4:
                     if bullet.getShoot():
                         bullet.marqueeY()
-                    if bullet.getPOS()[0] > self.__WINDOW.getWidth(): ###change to height????
-                        self.BULLETS_4.pop(0)
-                        del bullet
-
-
+             
 
                 TIME = pygame.time.get_ticks()
                 if TIME > self.NEXT_ITEM:
                     DELAY = 2000
 
                     self.NEXT_ITEM = TIME + DELAY
-                    ITEM = Items("images/box.png")
+                    ITEM = Items("images/bubble.png")
                     
                     
                     self.BOXES.append(ITEM)
-                    ITEM.setScale(0.1)
+                    ITEM.setScale(0.07)
                     ITEM.setPosition((-5 - ITEM.getWidth(),50))
                     ITEM.setgo()
                 
@@ -242,7 +219,7 @@ class Level2:
                     BOX_MASK1 = pygame.mask.from_surface(box.getSurface())
                     if BULLET_MASK1.overlap(BOX_MASK1, ((box._X - bullet._X, box._Y - bullet._Y))):
                         NEW_ITEM = self.generate()
-                        NEW_ITEM.setPosition((box.getX(), box.getY() )) # y + 30
+                        NEW_ITEM.setPosition((box.getX(), box.getY() +30)) # y + 30
                         NEW_ITEM.setgo()
                         self.ITEMS.append(NEW_ITEM)
                         if box.getPOS()[1] == 200:

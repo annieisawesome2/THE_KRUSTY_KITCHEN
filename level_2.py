@@ -20,7 +20,7 @@ class Level2:
 
         # background
         self.__BG_IMAGE = ImageSprite("images/under_sea.png")
-        self.__BG_IMAGE.setScale(1.1)
+        self.__BG_IMAGE.setScale(1.02)
         self.__BG_IMAGE.setPosition((0, 0))
 
         # messages
@@ -57,27 +57,21 @@ class Level2:
         self.BULLETS_3 = []
         self.NEXT_BULLET_3 = 0
 
-        # --- SHOOTER 4 -- #
-        self.SHOOTER_4 = Cannon("images/coral_4.png")
-        self.SHOOTER_4.setScale(0.9)
-        self.SHOOTER_4.setPosition((983, 676))
-        
-        self.BULLETS_4 = []
-        self.NEXT_BULLET_4 = 0
+
 
         # items
         self.NEXT_ITEM = 0
         self.BOXES = []
         self.ITEMS = []
 
-        # black hole
-        self.HOLE = ImageSprite("images/hole.png")
-        self.HOLE.setScale(0.3)
-        self.HOLE.setPosition((self.__WINDOW.getWidth() - 95, 290))
-        self.FRONT_HOLE = ImageSprite("images/hole2.png")
-        self.FRONT_HOLE.setScale(0.3)
-        self.FRONT_HOLE.setPosition((self.__WINDOW.getWidth() - 55, 290))
-
+        # crab and treasure box
+        self.CRAB = ImageSprite("images/crab.png")
+        self.CRAB.setScale(0.2)
+        self.CRAB.setPosition((self.__WINDOW.getWidth() - 170, 350))
+        self.TREASURE_BOX = ImageSprite("images/treasure_chest.png")
+        self.TREASURE_BOX.setScale(0.1)
+        self.TREASURE_BOX.setPosition((self.__WINDOW.getWidth() - 370, 350))
+       
         # health bar
         self.POINTS = 1
         self.HEALTH_BAR = []
@@ -91,22 +85,24 @@ class Level2:
             )
 
     def generate(self):
+        """Generate cash or plankton
+
+        Returns:
+            _type_: _description_
+        """
         STRING = ["images/dollar_bill.png", "images/plankton_new.png"]
         CHOSEN_ITEM = random.choice(STRING)
-
         ITEM = Items(CHOSEN_ITEM)
 
         if CHOSEN_ITEM == "images/dollar_bill.png":
             ITEM.setScale(0.21)
         elif CHOSEN_ITEM == "images/plankton_new.png":
             ITEM.setScale(0.25)
-        
         return ITEM
     
     def run(self):
         
         while True:
-
             # -- INPUTS -- #
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -123,10 +119,9 @@ class Level2:
             if self.PLAY:
                 self.START_MESSAGE.setPosition((-1000, -1000))
 
-                # shooters ------------------------------------------------------------
-                # shooter 1
+                # ----- shooter 1 ----- #
                 TIME1 = pygame.time.get_ticks()
-                if KEYS_PRESSED[pygame.K_c] and TIME1 > self.NEXT_BULLET_1:
+                if KEYS_PRESSED[pygame.K_a] and TIME1 > self.NEXT_BULLET_1:
                     DELAY_1 = 400
                     self.NEXT_BULLET_1 = TIME1 + DELAY_1
         
@@ -142,9 +137,9 @@ class Level2:
                         bullet.marqueeY()
                 
 
-                # shooter 2
+                # ----- shooter 2 ----- #
                 TIME2 = pygame.time.get_ticks()
-                if KEYS_PRESSED[pygame.K_v] and TIME2 > self.NEXT_BULLET_2:
+                if KEYS_PRESSED[pygame.K_s] and TIME2 > self.NEXT_BULLET_2:
                     DELAY_2 = 400
                     self.NEXT_BULLET_2 = TIME2 + DELAY_2
         
@@ -160,9 +155,9 @@ class Level2:
                         bullet.marqueeY()
                  
 
-                # --- SHOOTER 3 -- #
+               # ----- shooter 3 ----- #
                 TIME3 = pygame.time.get_ticks()
-                if KEYS_PRESSED[pygame.K_b] and TIME3 > self.NEXT_BULLET_3:
+                if KEYS_PRESSED[pygame.K_d] and TIME3 > self.NEXT_BULLET_3:
                     DELAY_3 = 400
                     self.NEXT_BULLET_3 = TIME3 + DELAY_3
         
@@ -177,32 +172,12 @@ class Level2:
                     if bullet.getShoot():
                         bullet.marqueeY()
               
-                # --- SHOOTER 4 -- #
-                TIME4 = pygame.time.get_ticks()
-                if KEYS_PRESSED[pygame.K_n] and TIME4 > self.NEXT_BULLET_4:
-                    DELAY_4 = 400
-                    self.NEXT_BULLET_4 = TIME4 + DELAY_4
-        
-                    BULLET_4 = Ball("images/squid.png")
-                    self.BULLETS_4.append(BULLET_4)
-                    BULLET_4.setScale(0.15)
-                    BULLET_4.setPosition((self.SHOOTER_4.getX() +40, self.SHOOTER_4.getY()+30))
-                    BULLET_4.setSpeed(25)
-                    BULLET_4.changeShoot()
-
-                for bullet in self.BULLETS_4:
-                    if bullet.getShoot():
-                        bullet.marqueeY()
-             
-
+                # --- BUBBLE GENERATOR --- #
                 TIME = pygame.time.get_ticks()
                 if TIME > self.NEXT_ITEM:
                     DELAY = 2000
-
                     self.NEXT_ITEM = TIME + DELAY
                     ITEM = Items("images/bubble.png")
-                    
-                    
                     self.BOXES.append(ITEM)
                     ITEM.setScale(0.07)
                     ITEM.setPosition((-5 - ITEM.getWidth(),50))
@@ -212,12 +187,13 @@ class Level2:
                     if ITEM.getGo:
                         box.marqueeX(self.__WINDOW.getWidth(), 8)
 
-     
+            ## --- COLLISION 1 --- ##
             for bullet in self.BULLETS_1:
                 for box in self.BOXES:
                     BULLET_MASK1 = pygame.mask.from_surface(bullet.getSurface())
                     BOX_MASK1 = pygame.mask.from_surface(box.getSurface())
                     if BULLET_MASK1.overlap(BOX_MASK1, ((box._X - bullet._X, box._Y - bullet._Y))):
+                        pygame.mixer.Sound.play(COLLISION_SOUND)
                         NEW_ITEM = self.generate()
                         NEW_ITEM.setPosition((box.getX(), box.getY() +30)) # y + 30
                         NEW_ITEM.setgo()
@@ -235,12 +211,13 @@ class Level2:
                         item.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
             
-            
+             ## --- COLLISION 2 --- ##
             for bullet in self.BULLETS_2:
                 for box in self.BOXES:
                     BULLET_MASK2 = pygame.mask.from_surface(bullet.getSurface())
                     BOX_MASK2 = pygame.mask.from_surface(box.getSurface())
                     if BULLET_MASK2.overlap(BOX_MASK2, ((box._X - bullet._X, box._Y - bullet._Y))):
+                        pygame.mixer.Sound.play(COLLISION_SOUND)
                         NEW_ITEM2 = self.generate()
                         NEW_ITEM2.setPosition((box.getX(), box.getY() )) # y + 30
                         NEW_ITEM2.setgo()
@@ -259,12 +236,13 @@ class Level2:
                         bullet.setPosition((-1000,-1000))
                         
 
-
+             ## --- COLLISION 3 --- ##
             for bullet in self.BULLETS_3:
                 for box in self.BOXES:
                     BULLET_MASK3 = pygame.mask.from_surface(bullet.getSurface())
                     BOX_MASK3 = pygame.mask.from_surface(box.getSurface())
                     if BULLET_MASK3.overlap(BOX_MASK3, ((box._X - bullet._X, box._Y - bullet._Y))):
+                        pygame.mixer.Sound.play(COLLISION_SOUND)
                         NEW_ITEM3 = self.generate()
                         NEW_ITEM3.setPosition((box.getX(), box.getY() )) # y + 30
                         NEW_ITEM3.setgo()
@@ -281,35 +259,7 @@ class Level2:
                     if BULLET_MASK3_I.overlap(ITEM_MASK3, ((item._X - bullet._X, item._Y - bullet._Y))):
                         item.setPosition((-1000,1000))
                         bullet.setPosition((-1000,-1000))
-                        
-
-            for bullet in self.BULLETS_4:
-                for box in self.BOXES:
-                    BULLET_MASK4 = pygame.mask.from_surface(bullet.getSurface())
-                    BOX_MASK4 = pygame.mask.from_surface(box.getSurface())
-                    if BULLET_MASK4.overlap(BOX_MASK4, ((box._X - bullet._X, box._Y - bullet._Y))):
-                        NEW_ITEM4 = self.generate()
-                        NEW_ITEM4.setPosition((box.getX(), box.getY() )) # y + 30
-                        NEW_ITEM4.setgo()
-                        self.ITEMS.append(NEW_ITEM4)
-                        if box.getPOS()[1] == 200:
-                            NEW_ITEM4.setDirX(-1)
-                        box.setPosition((-1000,1000))
-                        bullet.setPosition((-1000,-1000))
-            
-            for bullet in self.BULLETS_4:
-                for item in self.ITEMS:
-                    BULLET_MASK4_I = pygame.mask.from_surface(bullet.getSurface())
-                    ITEM_MASK4 = pygame.mask.from_surface(item.getSurface())
-                    if BULLET_MASK4_I.overlap(ITEM_MASK4, ((item._X - bullet._X, item._Y - bullet._Y))):
-                        item.setPosition((-1000,1000))
-                        bullet.setPosition((-1000,-1000))
-                        
-
-            
-      
-            
-            
+                
             for item in self.ITEMS:
                 if item.getGo():
                     if item._Y == 185:
@@ -317,8 +267,16 @@ class Level2:
                         item.marqueeX(self.__WINDOW.getWidth(), 8)
                     else:
                         item.marqueeX(self.__WINDOW.getWidth(), 8)
+                        
+             ## --- TREASURE and ITEM COLLSION --- ##
+            for item in self.ITEMS:
+                    ITEM_MASK5 = pygame.mask.from_surface(item.getSurface())
+                    TREASURE_MASK = pygame.mask.from_surface(self.CRAB.getSurface())
+                    if TREASURE_MASK.overlap(ITEM_MASK5, ((item._X - self.TREASURE_BOX._X, item._Y - self.TREASURE_BOX._Y))):
+                        item.setPosition((-1000,1000))
+                        
             
-
+        
             ##--- Checking for collisions then deleting item.... check for missed objects if it goes off screen without hit
             for item in self.ITEMS:    
                 if item._POS == ((-1000, -1000)) or (item._Y == 350 and item._X > self.__WINDOW.getWidth()):
@@ -346,11 +304,7 @@ class Level2:
                 if bullet3._POS == ((-1000, -1000)) or bullet3._Y < 0 - bullet3.getHeight():
                     self.BULLETS_3.remove(bullet3)
                     del bullet3
-            
-            for bullet4 in self.BULLETS_4:
-                if bullet4._POS == ((-1000, -1000)) or bullet4._Y < 0 - bullet4.getHeight():
-                    self.BULLETS_4.remove(bullet4)
-                    del bullet4
+  
 
             # points
             for item in self.ITEMS:
@@ -415,32 +369,27 @@ class Level2:
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
 
-            self.__WINDOW.getSurface().blit(self.HOLE.getSurface(), self.HOLE.getPOS())
 
             for box in self.BOXES:
                 self.__WINDOW.getSurface().blit(box.getSurface(), box.getPOS())
 
             for bullet in self.BULLETS_1:
                 self.__WINDOW.getSurface().blit(bullet.getSurface(), bullet.getPOS())
-            
             for bullet in self.BULLETS_2:
                 self.__WINDOW.getSurface().blit(bullet.getSurface(), bullet.getPOS())
-            
             for bullet in self.BULLETS_3:
                 self.__WINDOW.getSurface().blit(bullet.getSurface(), bullet.getPOS())
-                
-            for bullet in self.BULLETS_4:
-                self.__WINDOW.getSurface().blit(bullet.getSurface(), bullet.getPOS())
-
+           
             for item in self.ITEMS:
                 self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
 
-            self.__WINDOW.getSurface().blit(self.FRONT_HOLE.getSurface(), self.FRONT_HOLE.getPOS())
+            self.__WINDOW.getSurface().blit(self.CRAB.getSurface(), self.CRAB.getPOS())
+            self.__WINDOW.getSurface().blit(self.TREASURE_BOX.getSurface(), self.TREASURE_BOX.getPOS())
             
             self.__WINDOW.getSurface().blit(self.SHOOTER_1.getSurface(), self.SHOOTER_1.getPOS())
             self.__WINDOW.getSurface().blit(self.SHOOTER_2.getSurface(), self.SHOOTER_2.getPOS())
             self.__WINDOW.getSurface().blit(self.SHOOTER_3.getSurface(), self.SHOOTER_3.getPOS())
-            self.__WINDOW.getSurface().blit(self.SHOOTER_4.getSurface(), self.SHOOTER_4.getPOS())
+      
 
             # health bar
             for interval in self.HEALTH_BAR:
@@ -456,14 +405,11 @@ class Level2:
 
 
        
-    
 if __name__ == "__main__":
     pygame.init()
     pygame.mixer.music.load("sounds/bubble_bath.mp3")
     FRUIT_SOUND = pygame.mixer.Sound("sounds/fruit_sound.mp3")
     POISON_SOUND = pygame.mixer.Sound("sounds/bad_sound.mp3")
-    COLLISION_SOUND = pygame.mixer.Sound("sounds/Pop.mp3")
-
-
+    COLLISION_SOUND = pygame.mixer.Sound("sounds/bubble_pop.mp3")
     GAME = Level2()
     GAME.run()

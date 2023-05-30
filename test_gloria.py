@@ -15,12 +15,8 @@ import random
 
 class Level1: 
     def __init__(self):
-        self.__WINDOW = Window("Fat Bear")
-    
-        self.__TITLE = Text("Fruit Explosion")
-        self.__TITLE.setPosition((self.__WINDOW.getWidth()//2 - self.__TITLE.getWidth()//2, 0))
-        self.__TITLE.setColor((0, 0, 102))
-        self.__TITLE.setFontSize(50)
+        self.__WINDOW = Window("Spongebob")
+
         self.__BALL = Box(15, 15)
         self.__BALL.setSpeed(0)
         self.__BALL.setPosition((self.__WINDOW.getWidth()//2 - self.__BALL.getWidth()//2, 650))
@@ -34,9 +30,9 @@ class Level1:
         self.WIN_MESSAGE = Text("You Win! 'ENTER' to play Level 2!")
         self.WIN_MESSAGE.setPosition((-1000, -1000))
         
-        self.__BG_IMAGE = ImageSprite("images/night_bg.jpeg")
-        self.__BG_IMAGE.setScale(4)
-        self.__BG_IMAGE.setPosition((0, self.__TITLE.getHeight()))
+        self.__BG_IMAGE = ImageSprite("images/krusty_krab_kitchen.jpeg")
+        self.__BG_IMAGE.setScale(1.4, 1.6)
+        self.__BG_IMAGE.setPosition((self.__WINDOW.getWidth() - self.__BG_IMAGE.getWidth(), 0))
 
         self.__CANNON = Cannon("images/cannon.png")
         self.__CANNON.setScale(0.16)
@@ -71,27 +67,12 @@ class Level1:
         
 
     def generate(self):
-        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png", "images/bomb.png"]
+        STRING = ["images/bun1.png", "images/bun2.png", "images/patty.png", "images/pickles.png", "images/lettuce.png", "images/tomatos.png", "images/bacon.png", "images/egg.png", "images/cheese.png", "images/ketchup.png", "images/mustard.png", "images/peppers.png", "images/onions.png", "images/pickles.png"]
+        print(len(STRING))
         CHOSEN_ITEM = random.choice(STRING)
 
         ITEM = Items(CHOSEN_ITEM)
-
-        if CHOSEN_ITEM == "images/banana.png":
-            ITEM.setScale(0.04)
-        elif CHOSEN_ITEM == "images/cherry.png":
-            ITEM.setScale(0.03)
-        elif CHOSEN_ITEM == "images/pear.png":
-            ITEM.setScale(0.04)
-        elif CHOSEN_ITEM == "images/apple.png":
-            ITEM.setScale(0.03)
-        elif CHOSEN_ITEM == "images/orange.png":
-            ITEM.setScale(0.04)
-        elif CHOSEN_ITEM == "images/poison.png":
-            ITEM.setScale(0.025)
-        elif CHOSEN_ITEM == "images/purple_poison.png":
-            ITEM.setScale(0.053)
-        elif CHOSEN_ITEM == "images/bomb.png":
-            ITEM.setScale(0.05)
+        ITEM.setScale(1.5)
 
         return ITEM
         
@@ -251,7 +232,6 @@ class Level1:
                 self.__WINDOW.getSurface().blit(interval.getSurface(), interval.getPOS())
 
             # text
-            self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
             self.__WINDOW.getSurface().blit(self.START_MESSAGE.getSurface(), self.START_MESSAGE.getPOS())
             self.__WINDOW.getSurface().blit(self.DIE_MESSAGE.getSurface(), self.DIE_MESSAGE.getPOS())
             self.__WINDOW.getSurface().blit(self.WIN_MESSAGE.getSurface(), self.WIN_MESSAGE.getPOS())

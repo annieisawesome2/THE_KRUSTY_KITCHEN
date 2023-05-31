@@ -34,10 +34,10 @@ class Level1:
         self.__BG_IMAGE.setScale(1.4, 1.6)
         self.__BG_IMAGE.setPosition((self.__WINDOW.getWidth() - self.__BG_IMAGE.getWidth(), 0))
 
-        self.__CANNON = Cannon("images/cannon.png")
-        self.__CANNON.setScale(0.16)
-        self.__CANNON.setPosition((-60, 200))
-        self.__CANNON.setSpeed(15)
+        self.PLAYER = Cannon("images/spongebob.png")
+        self.PLAYER.setScale(0.25)
+        self.PLAYER.setPosition((0, 200))
+        self.PLAYER.setSpeed(15)
 
         self.__BALLS = []
     
@@ -80,7 +80,7 @@ class Level1:
         "images/mushrooms.png",
         "images/bacon.png",
         '''
-        
+
         self.NEXT_ITEM = 0
         self.ITEMS = []
 
@@ -151,8 +151,8 @@ class Level1:
             if self.PLAY:
                 self.START_MESSAGE.setPosition((-1000, -1000))
 
-                self.__CANNON.moveUpDown(KEYS_PRESSED)
-                self.__CANNON.checkBoundaries(-100, 820)
+                self.PLAYER.moveUpDown(KEYS_PRESSED)
+                self.PLAYER.checkBoundaries(-100, 820)
 
                 # items
                 TIME = pygame.time.get_ticks()
@@ -165,18 +165,18 @@ class Level1:
                     self.ITEMS.append(ITEM)
                     ITEM.setPosition((550, -5 - ITEM.getHeight()))
                     ITEM.setGo(True)
-                
+
             # balls
             TIME1 = pygame.time.get_ticks()
             if self.PLAY and KEYS_PRESSED[pygame.K_SPACE] and TIME1 > self.NEXT_BALL:
                 DELAY_1 = 400
                 self.NEXT_BALL = TIME1 + DELAY_1
     
-                BALL = Ball("images/ball.png")
+                BALL = Ball("images/bubble.png")
 
                 self.__BALLS.append(BALL)
                 BALL.setScale(0.03)
-                BALL.setPosition((self.__CANNON.getX() + 160, self.__CANNON.getY()+100))
+                BALL.setPosition((self.PLAYER.getX() + 160, self.PLAYER.getY()+100))
                 BALL.setSpeed(25)
                 BALL.changeShoot()
 
@@ -241,7 +241,7 @@ class Level1:
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
 
             # cannon
-            self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
+            self.__WINDOW.getSurface().blit(self.PLAYER.getSurface(), self.PLAYER.getPOS())
 
             # plate
             self.__WINDOW.getSurface().blit(self.PLATE.getSurface(), self.PLATE.getPOS())

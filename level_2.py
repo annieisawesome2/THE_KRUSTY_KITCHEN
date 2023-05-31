@@ -183,7 +183,7 @@ class Level2:
                     self.BOXES.append(ITEM)
                     ITEM.setScale(0.07)
                     ITEM.setPosition((-5 - ITEM.getWidth(),50))
-                    ITEM.setgo()
+                    ITEM.setGo(True)
                 
                 for box in self.BOXES:
                     if ITEM.getGo:
@@ -198,11 +198,11 @@ class Level2:
                         pygame.mixer.Sound.play(COLLISION_SOUND)
                         NEW_ITEM = self.generate()
                         NEW_ITEM.setPosition((box.getX(), box.getY())) # y + 30
-                        NEW_ITEM.setgo()
+                        NEW_ITEM.setGo(True)
                         self.ITEMS.append(NEW_ITEM)
                         if box.getPOS()[1] == 250:
                             NEW_ITEM.setDirX(-1)
-                        box.stopgo()
+                        box.setGo(False)
                         box.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
             
@@ -211,7 +211,7 @@ class Level2:
                     BULLET_MASK1_I = pygame.mask.from_surface(bullet.getSurface())
                     ITEM_MASK1 = pygame.mask.from_surface(item.getSurface())
                     if BULLET_MASK1_I.overlap(ITEM_MASK1, ((item._X - bullet._X, item._Y - bullet._Y))):
-                        item.stopgo()
+                        item.setGo(False)
                         item.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
                         
@@ -225,11 +225,11 @@ class Level2:
                         pygame.mixer.Sound.play(COLLISION_SOUND)
                         NEW_ITEM2 = self.generate()
                         NEW_ITEM2.setPosition((box.getX(), box.getY() )) # y + 30
-                        NEW_ITEM2.setgo()
+                        NEW_ITEM2.setGo(True)
                         self.ITEMS.append(NEW_ITEM2)
                         if box.getPOS()[1] == 250:
                             NEW_ITEM2.setDirX(-1)
-                        box.stopgo()
+                        box.setGo(False)
                         box.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
 
@@ -238,7 +238,7 @@ class Level2:
                     BULLET_MASK2_I = pygame.mask.from_surface(bullet.getSurface())
                     ITEM_MASK2 = pygame.mask.from_surface(item.getSurface())
                     if BULLET_MASK2_I.overlap(ITEM_MASK2, ((item._X - bullet._X, item._Y - bullet._Y))):
-                        item.stopgo()
+                        item.setGo(False)
                         item.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
                         
@@ -252,11 +252,11 @@ class Level2:
                         pygame.mixer.Sound.play(COLLISION_SOUND)
                         NEW_ITEM3 = self.generate()
                         NEW_ITEM3.setPosition((box.getX(), box.getY() )) # y + 30
-                        NEW_ITEM3.setgo()
+                        NEW_ITEM3.setGo(True)
                         self.ITEMS.append(NEW_ITEM3)
                         if box.getPOS()[1] == 250:
                             NEW_ITEM3.setDirX(-1)
-                        box.stopgo()
+                        box.setGo(False)
                         box.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
             
@@ -265,7 +265,7 @@ class Level2:
                     BULLET_MASK3_I = pygame.mask.from_surface(bullet.getSurface())
                     ITEM_MASK3 = pygame.mask.from_surface(item.getSurface())
                     if BULLET_MASK3_I.overlap(ITEM_MASK3, ((item._X - bullet._X, item._Y - bullet._Y))):
-                        item.stopgo()
+                        item.setGo(False)
                         item.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
                 
@@ -282,7 +282,7 @@ class Level2:
                 ITEM_MASK5 = pygame.mask.from_surface(item.getSurface())
                 CRAB_MASK = pygame.mask.from_surface(self.CRAB.getSurface())
                 if CRAB_MASK.overlap(ITEM_MASK5, ((item._X - self.CRAB._X, item._Y - self.CRAB._Y))):
-                    item.stopgo()
+                    item.setGo(False)
                     item.setPosition((-1000,-1000))
                     item.setCollected(True)
                     
@@ -290,7 +290,7 @@ class Level2:
                 BOX_MASK = pygame.mask.from_surface(box.getSurface())
                 TREASURE_MASK = pygame.mask.from_surface(self.RESTAURANT.getSurface())
                 if TREASURE_MASK.overlap(BOX_MASK, ((box._X - self.RESTAURANT._X, box._Y - self.RESTAURANT._Y))):
-                    box.stopgo()
+                    box.setGo(False)
                     box.setPosition((-1000,-1000))
             # points
             for item in self.ITEMS:

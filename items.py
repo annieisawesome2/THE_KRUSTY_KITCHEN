@@ -8,10 +8,10 @@ class Items(MySprite):
         self.__FILE_LOC = IMAGE_FILE  ## ENCAPSULATION (protecting and hiding data through an interface)
         self._SURFACE = pygame.image.load(self.__FILE_LOC).convert_alpha()
         self.__COLLECTED = False
-        self.go = False
+        self.GO = False # self.GO
     
-    def setgo(self):
-        self.go = True
+    def setGo(self, STATUS):
+        self.GO = STATUS
     
     def getGo(self):
         return self.GO

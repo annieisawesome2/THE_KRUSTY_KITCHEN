@@ -284,6 +284,7 @@ class Level2:
                 if CRAB_MASK.overlap(ITEM_MASK5, ((item._X - self.CRAB._X, item._Y - self.CRAB._Y))):
                     item.stopgo()
                     item.setPosition((-1000,-1000))
+                    item.setCollected(True)
                     
             for box in self.BOXES:
                 BOX_MASK = pygame.mask.from_surface(box.getSurface())
@@ -291,6 +292,32 @@ class Level2:
                 if TREASURE_MASK.overlap(BOX_MASK, ((box._X - self.RESTAURANT._X, box._Y - self.RESTAURANT._Y))):
                     box.stopgo()
                     box.setPosition((-1000,-1000))
+            # points
+            for item in self.ITEMS:
+                if item.getCollected():
+                    if item.getFileLoc() != "images/plankton_new.png":
+                        self.POINTS += 1
+                        pygame.mixer.Sound.play(FRUIT_SOUND)
+                    elif item.getFileLoc() == "images/plankton_new.png":
+                        self.POINTS -= 1
+                        pygame.mixer.Sound.play(POISON_SOUND)
+                    self.ITEMS.remove(item)
+                    del item
+
+            # health bar
+            if self.POINTS > 0 and self.POINTS <=5:
+                for i in range(len(self.HEALTH_BAR)):
+                    if i < self.POINTS:
+                        self.HEALTH_BAR[i].setColor((255, 0, 0))
+                    else:
+                        self.HEALTH_BAR[i].setColor((255, 255, 255))
+            if self.POINTS > 5 and self.POINTS <=15:
+                for i in range(len(self.HEALTH_BAR)):
+                    if i < self.POINTS:
+                        self.HEALTH_BAR[i].setColor((0, 255, 0))
+                    else:
+                        self.HEALTH_BAR[i].setColor((255, 255, 255))
+            
                     
             
         
@@ -300,7 +327,6 @@ class Level2:
                     self.ITEMS.remove(item)
                     del item
         
-            
 
             for box in self.BOXES:
                 if box._X == -1000 and box._Y == -1000:
@@ -328,42 +354,6 @@ class Level2:
             
   
 
-            # points
-            for item in self.ITEMS:
-                if item.getPOS()[0] > self.__WINDOW.getWidth()-20 and item.getPOS()[1] == 450:
-                    item.setCollected(True)
-                if item.getCollected():
-                    if item.getFileLoc() == "images/box.png":
-                        pass
-                    elif item.getFileLoc() != "images/purple_poison.png" and item.getFileLoc() != "images/poison.png" and item.getFileLoc() != "images/bomb.png":
-                        self.POINTS += 1
-                        pygame.mixer.Sound.play(FRUIT_SOUND)
-                    elif item.getFileLoc() == "images/poison.png":
-                        self.POINTS -= 1
-                        pygame.mixer.Sound.play(POISON_SOUND)
-                    elif item.getFileLoc() == "images/purple_poison.png":
-                        self.POINTS -= 3
-                        pygame.mixer.Sound.play(POISON_SOUND)
-                    elif item.getFileLoc() == "images/bomb.png":
-                        self.POINTS -= 15
-                        pygame.mixer.Sound.play(POISON_SOUND)
-                    self.ITEMS.remove(item)
-                    del item
-
-            # health bar
-            if self.POINTS > 0 and self.POINTS <=5:
-                for i in range(len(self.HEALTH_BAR)):
-                    if i < self.POINTS:
-                        self.HEALTH_BAR[i].setColor((255, 0, 0))
-                    else:
-                        self.HEALTH_BAR[i].setColor((255, 255, 255))
-            if self.POINTS > 5 and self.POINTS <=15:
-                for i in range(len(self.HEALTH_BAR)):
-                    if i < self.POINTS:
-                        self.HEALTH_BAR[i].setColor((0, 255, 0))
-                    else:
-                        self.HEALTH_BAR[i].setColor((255, 255, 255))
-            
             # die screen
             if self.POINTS <= 0:
                 self.PLAY = False
@@ -434,7 +424,7 @@ class Level2:
 if __name__ == "__main__":
     pygame.init()
     pygame.mixer.music.load("sounds/bubble_bath.mp3")
-    FRUIT_SOUND = pygame.mixer.Sound("sounds/fruit_sound.mp3")
+    FRUIT_SOUND = pygame.mixer.Sound("sounds/money.mp3")
     POISON_SOUND = pygame.mixer.Sound("sounds/bad_sound.mp3")
     COLLISION_SOUND = pygame.mixer.Sound("sounds/bubble_pop.mp3")
     GAME = Level2()

@@ -19,9 +19,11 @@ class Level2:
         self.__WINDOW.BG_COLOR = ((255, 255, 255))
 
         # background
-        self.__BG_IMAGE = ImageSprite("images/under_sea.png")
-        self.__BG_IMAGE.setScale(1.02)
-        self.__BG_IMAGE.setPosition((0, 0))
+        self.__BG_IMAGE = ImageSprite("images/sand_bg.png")
+        self.__BG_IMAGE.setScale(1.4)
+        self.__BG_IMAGE.setPosition((0, -10))
+     
+      
 
         # messages
         self.PLAY = False
@@ -65,13 +67,13 @@ class Level2:
         self.ITEMS = []
 
         # crab and treasure box
+        self.RESTAURANT = ImageSprite("images/restaurant.png")
+        self.RESTAURANT.setScale(0.3)
+        self.RESTAURANT.setPosition((self.__WINDOW.getWidth() - 600, 200))
         self.CRAB = ImageSprite("images/crab.png")
         self.CRAB.setScale(0.2)
-        self.CRAB.setPosition((self.__WINDOW.getWidth() - 170, 350))
-        self.TREASURE_BOX = ImageSprite("images/treasure_chest.png")
-        self.TREASURE_BOX.setScale(0.1)
-        self.TREASURE_BOX.setPosition((self.__WINDOW.getWidth() - 370, 350))
-       
+        self.CRAB.setPosition((self.__WINDOW.getWidth() - 200, 500 ))
+      
         # health bar
         self.POINTS = 1
         self.HEALTH_BAR = []
@@ -195,12 +197,13 @@ class Level2:
                     if BULLET_MASK1.overlap(BOX_MASK1, ((box._X - bullet._X, box._Y - bullet._Y))):
                         pygame.mixer.Sound.play(COLLISION_SOUND)
                         NEW_ITEM = self.generate()
-                        NEW_ITEM.setPosition((box.getX(), box.getY() +30)) # y + 30
+                        NEW_ITEM.setPosition((box.getX(), box.getY())) # y + 30
                         NEW_ITEM.setgo()
                         self.ITEMS.append(NEW_ITEM)
-                        if box.getPOS()[1] == 200:
+                        if box.getPOS()[1] == 250:
                             NEW_ITEM.setDirX(-1)
-                        box.setPosition((-1000,1000))
+                        box.stopgo()
+                        box.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
             
             for bullet in self.BULLETS_1:
@@ -208,8 +211,10 @@ class Level2:
                     BULLET_MASK1_I = pygame.mask.from_surface(bullet.getSurface())
                     ITEM_MASK1 = pygame.mask.from_surface(item.getSurface())
                     if BULLET_MASK1_I.overlap(ITEM_MASK1, ((item._X - bullet._X, item._Y - bullet._Y))):
-                        item.setPosition((-1000,1000))
+                        item.stopgo()
+                        item.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
+                        
             
              ## --- COLLISION 2 --- ##
             for bullet in self.BULLETS_2:
@@ -222,9 +227,10 @@ class Level2:
                         NEW_ITEM2.setPosition((box.getX(), box.getY() )) # y + 30
                         NEW_ITEM2.setgo()
                         self.ITEMS.append(NEW_ITEM2)
-                        if box.getPOS()[1] == 200:
+                        if box.getPOS()[1] == 250:
                             NEW_ITEM2.setDirX(-1)
-                        box.setPosition((-1000,1000))
+                        box.stopgo()
+                        box.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
 
             for bullet in self.BULLETS_2:
@@ -232,7 +238,8 @@ class Level2:
                     BULLET_MASK2_I = pygame.mask.from_surface(bullet.getSurface())
                     ITEM_MASK2 = pygame.mask.from_surface(item.getSurface())
                     if BULLET_MASK2_I.overlap(ITEM_MASK2, ((item._X - bullet._X, item._Y - bullet._Y))):
-                        item.setPosition((-1000,1000))
+                        item.stopgo()
+                        item.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
                         
 
@@ -247,9 +254,10 @@ class Level2:
                         NEW_ITEM3.setPosition((box.getX(), box.getY() )) # y + 30
                         NEW_ITEM3.setgo()
                         self.ITEMS.append(NEW_ITEM3)
-                        if box.getPOS()[1] == 200:
+                        if box.getPOS()[1] == 250:
                             NEW_ITEM3.setDirX(-1)
-                        box.setPosition((-1000,1000))
+                        box.stopgo()
+                        box.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
             
             for bullet in self.BULLETS_3:
@@ -257,12 +265,13 @@ class Level2:
                     BULLET_MASK3_I = pygame.mask.from_surface(bullet.getSurface())
                     ITEM_MASK3 = pygame.mask.from_surface(item.getSurface())
                     if BULLET_MASK3_I.overlap(ITEM_MASK3, ((item._X - bullet._X, item._Y - bullet._Y))):
-                        item.setPosition((-1000,1000))
+                        item.stopgo()
+                        item.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
                 
             for item in self.ITEMS:
                 if item.getGo():
-                    if item._Y == 185:
+                    if item._Y == 250:
                         item._DIR_X = -1
                         item.marqueeX(self.__WINDOW.getWidth(), 8)
                     else:
@@ -270,60 +279,27 @@ class Level2:
                         
              ## --- TREASURE and ITEM COLLSION --- ##
             for item in self.ITEMS:
-                    ITEM_MASK5 = pygame.mask.from_surface(item.getSurface())
-                    TREASURE_MASK = pygame.mask.from_surface(self.CRAB.getSurface())
-                    if TREASURE_MASK.overlap(ITEM_MASK5, ((item._X - self.TREASURE_BOX._X, item._Y - self.TREASURE_BOX._Y))):
-                        item.setPosition((-1000,1000))
-                        
-            
-        
-            ##--- Checking for collisions then deleting item.... check for missed objects if it goes off screen without hit
-            for item in self.ITEMS:    
-                if item._POS == ((-1000, -1000)) or (item._Y == 350 and item._X > self.__WINDOW.getWidth()):
-                    self.ITEMS.remove(item)
-                    del item
-
+                ITEM_MASK5 = pygame.mask.from_surface(item.getSurface())
+                CRAB_MASK = pygame.mask.from_surface(self.CRAB.getSurface())
+                if CRAB_MASK.overlap(ITEM_MASK5, ((item._X - self.CRAB._X, item._Y - self.CRAB._Y))):
+                    item.stopgo()
+                    item.setPosition((-1000,-1000))
+                    item.setCollected(True)
+                    
             for box in self.BOXES:
-                if box._POS == ((-1000, -1000)) or (box._Y == 350 and box._X > self.__WINDOW.getWidth()):
-                    self.BOXES.remove(box)
-                    del box
-
-            
-            for bullet1 in self.BULLETS_1:
-                if bullet1._POS == ((-1000, -1000)) or bullet1._Y < 0 - bullet1.getHeight() :
-                    self.BULLETS_1.remove(bullet1)
-                    del bullet1
-            
-            
-            for bullet2 in self.BULLETS_2:
-                if bullet2._POS == ((-1000, -1000)) or bullet2._Y < 0 - bullet2.getHeight():
-                    self.BULLETS_2.remove(bullet2)
-                    del bullet2
-            
-            for bullet3 in self.BULLETS_3 :
-                if bullet3._POS == ((-1000, -1000)) or bullet3._Y < 0 - bullet3.getHeight():
-                    self.BULLETS_3.remove(bullet3)
-                    del bullet3
-  
-
+                BOX_MASK = pygame.mask.from_surface(box.getSurface())
+                TREASURE_MASK = pygame.mask.from_surface(self.RESTAURANT.getSurface())
+                if TREASURE_MASK.overlap(BOX_MASK, ((box._X - self.RESTAURANT._X, box._Y - self.RESTAURANT._Y))):
+                    box.stopgo()
+                    box.setPosition((-1000,-1000))
             # points
             for item in self.ITEMS:
-                if item.getPOS()[0] > self.__WINDOW.getWidth()-20 and item.getPOS()[1] == 350:
-                    item.setCollected(True)
                 if item.getCollected():
-                    if item.getFileLoc() == "images/box.png":
-                        pass
-                    elif item.getFileLoc() != "images/purple_poison.png" and item.getFileLoc() != "images/poison.png" and item.getFileLoc() != "images/bomb.png":
+                    if item.getFileLoc() != "images/plankton_new.png":
                         self.POINTS += 1
                         pygame.mixer.Sound.play(FRUIT_SOUND)
-                    elif item.getFileLoc() == "images/poison.png":
+                    elif item.getFileLoc() == "images/plankton_new.png":
                         self.POINTS -= 1
-                        pygame.mixer.Sound.play(POISON_SOUND)
-                    elif item.getFileLoc() == "images/purple_poison.png":
-                        self.POINTS -= 3
-                        pygame.mixer.Sound.play(POISON_SOUND)
-                    elif item.getFileLoc() == "images/bomb.png":
-                        self.POINTS -= 15
                         pygame.mixer.Sound.play(POISON_SOUND)
                     self.ITEMS.remove(item)
                     del item
@@ -342,6 +318,42 @@ class Level2:
                     else:
                         self.HEALTH_BAR[i].setColor((255, 255, 255))
             
+                    
+            
+        
+            ##--- Checking for collisions then deleting item.... check for missed objects if it goes off screen without hit
+            for item in self.ITEMS: 
+                if item._X == -1000 and item._Y == -1000:
+                    self.ITEMS.remove(item)
+                    del item
+        
+
+            for box in self.BOXES:
+                if box._X == -1000 and box._Y == -1000:
+                    self.BOXES.remove(box)
+                    del box
+
+           
+            
+            for bullet1 in self.BULLETS_1:
+                if bullet1._POS == ((-1000, -1000)) or bullet1._Y < 0 - bullet1.getHeight() :
+                    self.BULLETS_1.remove(bullet1)
+                    del bullet1
+            
+            
+            for bullet2 in self.BULLETS_2:
+                if bullet2._POS == ((-1000, -1000)) or bullet2._Y < 0 - bullet2.getHeight():
+                    self.BULLETS_2.remove(bullet2)
+                    del bullet2
+            
+            
+            for bullet3 in self.BULLETS_3 :
+                if bullet3._POS == ((-1000, -1000)) or bullet3._Y < 0 - bullet3.getHeight():
+                    self.BULLETS_3.remove(bullet3)
+                    del bullet3
+            
+  
+
             # die screen
             if self.POINTS <= 0:
                 self.PLAY = False
@@ -368,6 +380,8 @@ class Level2:
             # -- OUTPUTS -- #
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
+          
+
 
 
             for box in self.BOXES:
@@ -380,11 +394,13 @@ class Level2:
             for bullet in self.BULLETS_3:
                 self.__WINDOW.getSurface().blit(bullet.getSurface(), bullet.getPOS())
            
+            
+            self.__WINDOW.getSurface().blit(self.RESTAURANT.getSurface(), self.RESTAURANT.getPOS())
+            self.__WINDOW.getSurface().blit(self.CRAB.getSurface(), self.CRAB.getPOS())
             for item in self.ITEMS:
                 self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
 
-            self.__WINDOW.getSurface().blit(self.CRAB.getSurface(), self.CRAB.getPOS())
-            self.__WINDOW.getSurface().blit(self.TREASURE_BOX.getSurface(), self.TREASURE_BOX.getPOS())
+       
             
             self.__WINDOW.getSurface().blit(self.SHOOTER_1.getSurface(), self.SHOOTER_1.getPOS())
             self.__WINDOW.getSurface().blit(self.SHOOTER_2.getSurface(), self.SHOOTER_2.getPOS())
@@ -408,7 +424,7 @@ class Level2:
 if __name__ == "__main__":
     pygame.init()
     pygame.mixer.music.load("sounds/bubble_bath.mp3")
-    FRUIT_SOUND = pygame.mixer.Sound("sounds/fruit_sound.mp3")
+    FRUIT_SOUND = pygame.mixer.Sound("sounds/money.mp3")
     POISON_SOUND = pygame.mixer.Sound("sounds/bad_sound.mp3")
     COLLISION_SOUND = pygame.mixer.Sound("sounds/bubble_pop.mp3")
     GAME = Level2()

@@ -241,7 +241,7 @@ class Level1:
 
 if __name__ == "__main__":
     pygame.init()
-    pygame.mixer.music.load("sounds/bubble_bath.mp3")
+    pygame.mixer.music.load("sounds/level_1_music.mp3")
     FRUIT_SOUND = pygame.mixer.Sound("sounds/fruit_sound.mp3")
     POISON_SOUND = pygame.mixer.Sound("sounds/bad_sound.mp3")
     COLLISION_SOUND = pygame.mixer.Sound("sounds/Pop.mp3")

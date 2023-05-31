@@ -61,7 +61,7 @@ class MySprite:
     
         self._POS = (self._X, self._Y)
 
-    def checkBoundaries(self, MAX_X, MAX_Y, MIN_X=-50, MIN_Y= -20):
+    def checkBoundaries(self, MAX_X, MAX_Y, MIN_X=0, MIN_Y=0):
         if self._X > MAX_X - self.getWidth():
             self._X = MAX_X - self.getWidth()
         if self._X < MIN_X:

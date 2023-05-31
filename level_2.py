@@ -130,7 +130,7 @@ class Level2:
                     BULLET_1 = Ball("images/squid.png")
                     self.BULLETS_1.append(BULLET_1)
                     BULLET_1.setScale(0.15)
-                    BULLET_1.setPosition((self.SHOOTER_1.getX() +50, self.SHOOTER_1.getY() +60))
+                    BULLET_1.setPosition((self.SHOOTER_1.getPOS()[0] +50, self.SHOOTER_1.getPOS()[1] +60))
                     BULLET_1.setSpeed(25)
                     BULLET_1.changeShoot()
 
@@ -148,7 +148,7 @@ class Level2:
                     BULLET_2 = Ball("images/squid.png")
                     self.BULLETS_2.append(BULLET_2)
                     BULLET_2.setScale(0.15)
-                    BULLET_2.setPosition((self.SHOOTER_2.getX() +60, self.SHOOTER_2.getY()+60))
+                    BULLET_2.setPosition((self.SHOOTER_2.getPOS()[0] +60, self.SHOOTER_2.getPOS()[1]+60))
                     BULLET_2.setSpeed(25)
                     BULLET_2.changeShoot()
 
@@ -166,7 +166,7 @@ class Level2:
                     BULLET_3 = Ball("images/squid.png")
                     self.BULLETS_3.append(BULLET_3)
                     BULLET_3.setScale(0.15)
-                    BULLET_3.setPosition((self.SHOOTER_3.getX() +35, self.SHOOTER_3.getY()+60))
+                    BULLET_3.setPosition((self.SHOOTER_3.getPOS()[0] +35, self.SHOOTER_3.getPOS()[1]+60))
                     BULLET_3.setSpeed(25)
                     BULLET_3.changeShoot()
 
@@ -197,7 +197,7 @@ class Level2:
                     if BULLET_MASK1.overlap(BOX_MASK1, ((box._X - bullet._X, box._Y - bullet._Y))):
                         pygame.mixer.Sound.play(COLLISION_SOUND)
                         NEW_ITEM = self.generate()
-                        NEW_ITEM.setPosition((box.getX(), box.getY())) # y + 30
+                        NEW_ITEM.setPosition((box.getPOS()[0], box.getPOS()[1])) # y + 30
                         NEW_ITEM.setGo(True)
                         self.ITEMS.append(NEW_ITEM)
                         if box.getPOS()[1] == 250:
@@ -224,7 +224,7 @@ class Level2:
                     if BULLET_MASK2.overlap(BOX_MASK2, ((box._X - bullet._X, box._Y - bullet._Y))):
                         pygame.mixer.Sound.play(COLLISION_SOUND)
                         NEW_ITEM2 = self.generate()
-                        NEW_ITEM2.setPosition((box.getX(), box.getY() )) # y + 30
+                        NEW_ITEM2.setPosition((box.getPOS()[0], box.getPOS()[1])) # y + 30
                         NEW_ITEM2.setGo(True)
                         self.ITEMS.append(NEW_ITEM2)
                         if box.getPOS()[1] == 250:
@@ -251,7 +251,7 @@ class Level2:
                     if BULLET_MASK3.overlap(BOX_MASK3, ((box._X - bullet._X, box._Y - bullet._Y))):
                         pygame.mixer.Sound.play(COLLISION_SOUND)
                         NEW_ITEM3 = self.generate()
-                        NEW_ITEM3.setPosition((box.getX(), box.getY() )) # y + 30
+                        NEW_ITEM3.setPosition((box.getPOS()[0], box.getPOS()[1] )) # y + 30
                         NEW_ITEM3.setGo(True)
                         self.ITEMS.append(NEW_ITEM3)
                         if box.getPOS()[1] == 250:

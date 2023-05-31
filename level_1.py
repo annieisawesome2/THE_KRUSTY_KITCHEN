@@ -9,21 +9,9 @@ from ball import Ball
 from items import Items
 import random
 
-
-##Fruits on clouds random every time hitting objects
-
-
 class Level1: 
     def __init__(self):
-        self.__WINDOW = Window("Fat Bear")
-    
-        self.__TITLE = Text("Fruit Explosion")
-        self.__TITLE.setPosition((self.__WINDOW.getWidth()//2 - self.__TITLE.getWidth()//2, 0))
-        self.__TITLE.setColor((0, 0, 102))
-        self.__TITLE.setFontSize(50)
-        self.__BALL = Box(15, 15)
-        self.__BALL.setSpeed(0)
-        self.__BALL.setPosition((self.__WINDOW.getWidth()//2 - self.__BALL.getWidth()//2, 650))
+        self.__WINDOW = Window("Spongebob")
 
         self.PLAY = False
 
@@ -34,71 +22,104 @@ class Level1:
         self.WIN_MESSAGE = Text("You Win! 'ENTER' to play Level 2!")
         self.WIN_MESSAGE.setPosition((-1000, -1000))
         
-        self.__BG_IMAGE = ImageSprite("images/night_bg.jpeg")
-        self.__BG_IMAGE.setScale(4)
-        self.__BG_IMAGE.setPosition((0, self.__TITLE.getHeight()))
+        self.__BG_IMAGE = ImageSprite("images/krusty_krab_kitchen.jpeg")
+        self.__BG_IMAGE.setScale(1.4, 1.6)
+        self.__BG_IMAGE.setPosition((self.__WINDOW.getWidth() - self.__BG_IMAGE.getWidth(), 0))
 
-        self.__CANNON = Cannon("images/cannon.png")
-        self.__CANNON.setScale(0.16)
-        self.__CANNON.setPosition((-60, 200))
-        self.__CANNON.setSpeed(15)
+        self.PLAYER = Cannon("images/spongebob.png")
+        self.PLAYER.setScale(0.25)
+        self.PLAYER.setPosition((0, 200))
+        self.PLAYER.setSpeed(15)
 
+        self.__BALL = Box(15, 15)
+        self.__BALL.setSpeed(0)
+        self.__BALL.setPosition((self.__WINDOW.getWidth()//2 - self.__BALL.getWidth()//2, 650))
         self.__BALLS = []
-    
         self.NEXT_BALL = 0
-        
+
+        self.PLATE = ImageSprite("images/plate.png")
+        self.PLATE.setScale(1)
+        self.PLATE.setPosition((1040, 620))
+
+        # items
+        self.IMAGE_LOCS = [ # duplicates to increase probability of including most common ingredients
+            "images/bun_top.png", "images/bun_top.png",
+            "images/bun_bottom.png", "images/bun_bottom.png",
+            "images/patty.png", "images/patty.png",
+            "images/lettuce.png",
+            "images/cheese.png",
+            "images/pickles.png",
+            "images/tomatos.png",
+            "images/egg.png",
+            "images/ketchup.png",
+            "images/mustard.png",
+        ]
+
         self.NEXT_ITEM = 0
-        self.STUFF = []
+        self.ITEMS = []
 
-        self.__BUCKET = ImageSprite("images/bucket.png")
-        self.__BUCKET.setPosition((1085, 530))
-        self.__BUCKET.setScale(0.2)
-        self.__FRONT_BUCKET = ImageSprite("images/bucket2.png")
-        self.__FRONT_BUCKET.setPosition((1085, 585))
-        self.__FRONT_BUCKET.setScale(0.2)
+        # burger ordered (bottom to top)
+        self.BURGER1 = []
+        self.BURGER1.append("images/bun_bottom.png") # bottom bun
+        for i in range(4):
+            self.BURGER1.append(random.choice(self.IMAGE_LOCS[6:])) # middle ingredients
+        self.BURGER1.append("images/bun_top.png") # top bun
+        
+        print(self.BURGER1) # delete ------------------------------------------------------------------------------------------------------------------------
 
+        # burger built (bottom to top)
+        self.BURGER2 = []
+
+        # health bar
         self.POINTS = 0
         self.HEALTH_BAR = []
-        for i in range(15):
-            self.HEALTH_BAR.append(Box(15, 15))
+        for i in range(10):
+            self.HEALTH_BAR.append(Box(20, 20))
             self.HEALTH_BAR[i].setPosition(
                 (
-                    self.__WINDOW.getWidth() - 50,
-                    self.__WINDOW.getHeight() - 10 - (i+1)*17
+                    self.__WINDOW.getWidth() - 30,
+                    self.__WINDOW.getHeight() - 100 - (i+1)*22
                 )
             )
-
-        
+            if i > 5:
+                self.HEALTH_BAR[i].setColor((255, 230, 100))
 
     def generate(self):
-        STRING = ["images/banana.png", "images/cherry.png", "images/pear.png", "images/apple.png", "images/orange.png", "images/poison.png", "images/purple_poison.png", "images/poison.png", "images/purple_poison.png", "images/bomb.png"]
-        CHOSEN_ITEM = random.choice(STRING)
-
+        CHOSEN_ITEM = random.choice(self.IMAGE_LOCS)
         ITEM = Items(CHOSEN_ITEM)
 
-        if CHOSEN_ITEM == "images/banana.png":
-            ITEM.setScale(0.04)
-        elif CHOSEN_ITEM == "images/cherry.png":
-            ITEM.setScale(0.03)
-        elif CHOSEN_ITEM == "images/pear.png":
-            ITEM.setScale(0.04)
-        elif CHOSEN_ITEM == "images/apple.png":
-            ITEM.setScale(0.03)
-        elif CHOSEN_ITEM == "images/orange.png":
-            ITEM.setScale(0.04)
-        elif CHOSEN_ITEM == "images/poison.png":
-            ITEM.setScale(0.025)
-        elif CHOSEN_ITEM == "images/purple_poison.png":
-            ITEM.setScale(0.053)
-        elif CHOSEN_ITEM == "images/bomb.png":
-            ITEM.setScale(0.05)
+        if CHOSEN_ITEM == "images/ketchup.png" or CHOSEN_ITEM == "images/mustard.png":
+            ITEM.setScale(0.2)
+        elif CHOSEN_ITEM == "images/pickles.png":
+            ITEM.setScale(0.15)
+        elif CHOSEN_ITEM == "images/lettuce.png":
+            ITEM.setScale(0.6)
+        elif CHOSEN_ITEM == "images/bacon.png":
+            ITEM.setScale(1.6)
+        else:
+            ITEM.setScale(1.2)
 
         return ITEM
         
+    def dieScreen(self, PRESSED_KEYS):
+        pygame.mixer.music.stop()
 
+        self.PLAY = False
+        for item in self.ITEMS:
+            item.setPosition((-1000, -1000))
+        self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
+        if PRESSED_KEYS[pygame.K_RETURN]:
+            self.__init__()
+
+    def winScreen(self, PRESSED_KEYS):
+        self.PLAY = False
+        for item in self.ITEMS:
+            item.setPosition((-1000, -1000))
+        self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
+        if PRESSED_KEYS[pygame.K_RETURN]:
+            pass
     
     def run(self):
-        
 
         while True:
             # -- INPUTS -- #
@@ -106,9 +127,6 @@ class Level1:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-
-            
-            
             
             KEYS_PRESSED = pygame.key.get_pressed()
 
@@ -120,8 +138,8 @@ class Level1:
             if self.PLAY:
                 self.START_MESSAGE.setPosition((-1000, -1000))
 
-                self.__CANNON.moveUpDown(KEYS_PRESSED)
-                self.__CANNON.checkBoundaries(-100, 820)
+                self.PLAYER.moveUpDown(KEYS_PRESSED)
+                self.PLAYER.checkBoundaries(-100, 820)
 
                 # items
                 TIME = pygame.time.get_ticks()
@@ -131,22 +149,21 @@ class Level1:
                     self.NEXT_ITEM = TIME + DELAY
                     ITEM = self.generate()
                     
-                    self.STUFF.append(ITEM)
-                    ITEM.setScale(0.8)
+                    self.ITEMS.append(ITEM)
                     ITEM.setPosition((550, -5 - ITEM.getHeight()))
-                    ITEM.setgo()
-                
+                    ITEM.setGo(True)
+
             # balls
             TIME1 = pygame.time.get_ticks()
             if self.PLAY and KEYS_PRESSED[pygame.K_SPACE] and TIME1 > self.NEXT_BALL:
                 DELAY_1 = 400
                 self.NEXT_BALL = TIME1 + DELAY_1
     
-                BALL = Ball("images/ball.png")
+                BALL = Ball("images/bubble.png")
 
                 self.__BALLS.append(BALL)
                 BALL.setScale(0.03)
-                BALL.setPosition((self.__CANNON.getX() + 160, self.__CANNON.getY()+100))
+                BALL.setPosition((self.PLAYER.getPOS()[0]+160, self.PLAYER.getPOS()[1]+10))
                 BALL.setSpeed(25)
                 BALL.changeShoot()
 
@@ -157,72 +174,52 @@ class Level1:
                     self.__BALLS.pop(0)
                     del ball
 
-            #-----collisions ----------------
+            #----- collisions ----------------
             for ball in self.__BALLS:
-                for stuff in self.STUFF:
+                for item in self.ITEMS:
                     BALL_MASK = pygame.mask.from_surface(ball.getSurface())
-                    ITEM_MASK = pygame.mask.from_surface(stuff.getSurface())
-                    if BALL_MASK.overlap(ITEM_MASK, ((stuff._X - ball._X, stuff._Y - ball._Y))):
+                    ITEM_MASK = pygame.mask.from_surface(item.getSurface())
+                    if BALL_MASK.overlap(ITEM_MASK, ((item._X - ball._X, item._Y - ball._Y))):
                         pygame.mixer.Sound.play(COLLISION_SOUND)
                         ball.setPosition((-1000,-1000))
                         self.__BALLS.remove(ball)
-                        stuff.setPosition((-1000,-1000))
-                        self.STUFF.remove(stuff)
-             
-            for stuff in self.STUFF:
-                if ITEM.getGo:
-                    stuff.marqueeY(self.__WINDOW.getHeight(), 12)
-                
-                # points
-                if stuff.getCollected():
-                    if stuff.getFileLoc() != "images/purple_poison.png" and stuff.getFileLoc() != "images/poison.png" and stuff.getFileLoc() != "images/bomb.png":
-                        self.POINTS += 1
-                        pygame.mixer.Sound.play(FRUIT_SOUND)
-                    elif stuff.getFileLoc() == "images/poison.png":
-                        self.POINTS -= 1
-                        pygame.mixer.Sound.play(POISON_SOUND)
-                    elif stuff.getFileLoc() == "images/purple_poison.png":
-                        self.POINTS -= 3
-                        pygame.mixer.Sound.play(POISON_SOUND)
-                    elif stuff.getFileLoc() == "images/bomb.png":
-                        self.POINTS -= 15
-                        pygame.mixer.Sound.play(POISON_SOUND)
-                    self.STUFF.remove(stuff)
-                    del stuff
+                        item.setPosition((-1000,-1000))
+                        self.ITEMS.remove(item)
+                        del item
+
+            #----- building burger ----------------
+            for item in self.ITEMS:
+                if item.getGo():
+                    item.marqueeY(self.__WINDOW.getHeight(), 12)
+
+                if self.ITEMS.index(item) < 1:
+                    stack_y = 620
+                else:
+                    previous = self.ITEMS[self.ITEMS.index(item)-1]
+                    stack_y = (previous.getPOS()[1] + previous.getHeight()) - 10 - item.getHeight()
+                if item.getPOS()[0] == 1100 and item.getPOS()[1] > stack_y:
+                    item.setGo(False)
+                    item.setCollected(True)
+                    self.BURGER2.append(item.getFileLoc())
+                    item.setPosition((1100, stack_y))
 
             # health bar
-            if self.POINTS > 0 and self.POINTS <=5:
-                for i in range(len(self.HEALTH_BAR)):
-                    if i < self.POINTS:
-                        self.HEALTH_BAR[i].setColor((255, 0, 0))
-                    else:
-                        self.HEALTH_BAR[i].setColor((255, 255, 255))
-            if self.POINTS > 5 and self.POINTS <=15:
-                for i in range(len(self.HEALTH_BAR)):
-                    if i < self.POINTS:
+            for i in range(len(self.BURGER2)):
+                if i <= len(self.BURGER1)-1:
+                    if self.BURGER2[i] != self.BURGER1[i]:
+                        self.HEALTH_BAR[i].setColor((255, 0, 0)) # ingredient doesn't match
+                    elif self.BURGER2[i] == self.BURGER1[i]: # ingredient matches in the right spot
                         self.HEALTH_BAR[i].setColor((0, 255, 0))
-                    else:
-                        self.HEALTH_BAR[i].setColor((255, 255, 255))
+                else:
+                    self.HEALTH_BAR[i].setColor((255, 0, 0))
             
             # die screen
-            if self.POINTS < 0:
-                pygame.mixer.music.stop()
-
-                self.PLAY = False
-                for stuff in self.STUFF:
-                    stuff.setPosition((-1000, -1000))
-                self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
-                if KEYS_PRESSED[pygame.K_RETURN]:
-                    self.__init__()
+            if len(self.BURGER2) >= 10:
+                self.dieScreen(KEYS_PRESSED)
 
             # win screen
-            elif self.POINTS >= 15:
-                self.PLAY = False
-                for stuff in self.STUFF:
-                    stuff.setPosition((-1000, -1000))
-                self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
-                if KEYS_PRESSED[pygame.K_RETURN]:
-                    pass
+            if self.BURGER2 == self.BURGER1:
+                self.winScreen(KEYS_PRESSED)
    
             # -- OUTPUTS -- #
                 
@@ -230,28 +227,25 @@ class Level1:
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
 
             # cannon
-            self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
+            self.__WINDOW.getSurface().blit(self.PLAYER.getSurface(), self.PLAYER.getPOS())
 
-            # bucket
-            self.__WINDOW.getSurface().blit(self.__BUCKET.getSurface(), self.__BUCKET.getPOS())
+            # plate
+            self.__WINDOW.getSurface().blit(self.PLATE.getSurface(), self.PLATE.getPOS())
         
             # items
-            for stuff in self.STUFF:
-                self.__WINDOW.getSurface().blit(stuff.getSurface(), stuff.getPOS())
+            for item in self.ITEMS:
+                self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
 
             # balls
             for ball in self.__BALLS:
                 self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
-
-            # bucket
-            self.__WINDOW.getSurface().blit(self.__FRONT_BUCKET.getSurface(), self.__FRONT_BUCKET.getPOS())
+            
 
             # health bar
             for interval in self.HEALTH_BAR:
                 self.__WINDOW.getSurface().blit(interval.getSurface(), interval.getPOS())
 
             # text
-            self.__WINDOW.getSurface().blit(self.__TITLE.getSurface(), self.__TITLE.getPOS())
             self.__WINDOW.getSurface().blit(self.START_MESSAGE.getSurface(), self.START_MESSAGE.getPOS())
             self.__WINDOW.getSurface().blit(self.DIE_MESSAGE.getSurface(), self.DIE_MESSAGE.getPOS())
             self.__WINDOW.getSurface().blit(self.WIN_MESSAGE.getSurface(), self.WIN_MESSAGE.getPOS())

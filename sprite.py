@@ -154,12 +154,6 @@ class MySprite:
     def getPOS(self):
         return self._POS
     
-    def getX(self):
-        return self._X
-    
-    def getY(self):
-        return self._Y
-    
     def getSurface(self):
         return self._SURFACE
     

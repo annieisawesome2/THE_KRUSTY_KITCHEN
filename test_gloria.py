@@ -42,44 +42,97 @@ class Level1:
         self.__BALLS = []
     
         self.NEXT_BALL = 0
-        
-        self.NEXT_ITEM = 0
-        self.STUFF = []
 
-        self.__BUCKET = ImageSprite("images/bucket.png")
-        self.__BUCKET.setPosition((1085, 530))
-        self.__BUCKET.setScale(0.2)
-        self.__FRONT_BUCKET = ImageSprite("images/bucket2.png")
-        self.__FRONT_BUCKET.setPosition((1085, 585))
-        self.__FRONT_BUCKET.setScale(0.2)
+        self.PLATE = ImageSprite("images/plate.png")
+        self.PLATE.setScale(1)
+        self.PLATE.setPosition((1040, 620))
 
+        # health bar
         self.POINTS = 0
         self.HEALTH_BAR = []
-        for i in range(15):
-            self.HEALTH_BAR.append(Box(15, 15))
+        for i in range(10):
+            self.HEALTH_BAR.append(Box(20, 20))
             self.HEALTH_BAR[i].setPosition(
                 (
-                    self.__WINDOW.getWidth() - 50,
-                    self.__WINDOW.getHeight() - 10 - (i+1)*17
+                    self.__WINDOW.getWidth() - 30,
+                    self.__WINDOW.getHeight() - 100 - (i+1)*22
                 )
             )
+            if i > 5:
+                self.HEALTH_BAR[i].setColor((255, 230, 100))
+
+        # items
+        self.IMAGE_LOCS = [ # duplicates to increase probability of including most common ingredients
+            "images/bun_top.png", "images/bun_top.png",
+            "images/bun_bottom.png", "images/bun_bottom.png",
+            "images/patty.png", "images/patty.png",
+            "images/lettuce.png",
+            "images/cheese.png",
+            "images/pickles.png",
+            "images/tomatos.png",
+            "images/egg.png",
+            "images/ketchup.png",
+            "images/mustard.png",
+        ]
+        '''
+        "images/peppers.png",
+        "images/onions.png",
+        "images/mushrooms.png",
+        "images/bacon.png",
+        '''
+        
+        self.NEXT_ITEM = 0
+        self.ITEMS = []
+
+        # burger ordered (bottom to top)
+        self.BURGER1 = []
+        self.BURGER1.append("images/bun_bottom.png") # bottom bun
+        for i in range(4):
+            self.BURGER1.append(random.choice(self.IMAGE_LOCS[6:])) # middle ingredients
+        self.BURGER1.append("images/bun_top.png") # top bun
+        print(self.BURGER1) # delete ------------------------------------------------------------------------------------------------------------------------
+
+        # burger built (bottom to top)
+        self.BURGER2 = []
 
         
 
     def generate(self):
-        STRING = ["images/bun1.png", "images/bun2.png", "images/patty.png", "images/pickles.png", "images/lettuce.png", "images/tomatos.png", "images/bacon.png", "images/egg.png", "images/cheese.png", "images/ketchup.png", "images/mustard.png", "images/peppers.png", "images/onions.png", "images/pickles.png"]
-        print(len(STRING))
-        CHOSEN_ITEM = random.choice(STRING)
-
+        CHOSEN_ITEM = random.choice(self.IMAGE_LOCS)
         ITEM = Items(CHOSEN_ITEM)
-        ITEM.setScale(1.5)
+
+        if CHOSEN_ITEM == "images/ketchup.png" or CHOSEN_ITEM == "images/mustard.png":
+            ITEM.setScale(0.2)
+        elif CHOSEN_ITEM == "images/pickles.png":
+            ITEM.setScale(0.15)
+        elif CHOSEN_ITEM == "images/lettuce.png":
+            ITEM.setScale(0.6)
+        elif CHOSEN_ITEM == "images/bacon.png":
+            ITEM.setScale(1.6)
+        else:
+            ITEM.setScale(1.2)
 
         return ITEM
         
+    def dieScreen(self, PRESSED_KEYS):
+        pygame.mixer.music.stop()
 
+        self.PLAY = False
+        for item in self.ITEMS:
+            item.setPosition((-1000, -1000))
+        self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
+        if PRESSED_KEYS[pygame.K_RETURN]:
+            self.__init__()
+
+    def winScreen(self, PRESSED_KEYS):
+        self.PLAY = False
+        for item in self.ITEMS:
+            item.setPosition((-1000, -1000))
+        self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
+        if PRESSED_KEYS[pygame.K_RETURN]:
+            pass
     
     def run(self):
-        
 
         while True:
             # -- INPUTS -- #
@@ -87,9 +140,6 @@ class Level1:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-
-            
-            
             
             KEYS_PRESSED = pygame.key.get_pressed()
 
@@ -112,10 +162,9 @@ class Level1:
                     self.NEXT_ITEM = TIME + DELAY
                     ITEM = self.generate()
                     
-                    self.STUFF.append(ITEM)
-                    ITEM.setScale(0.8)
+                    self.ITEMS.append(ITEM)
                     ITEM.setPosition((550, -5 - ITEM.getHeight()))
-                    ITEM.setgo()
+                    ITEM.setGo(True)
                 
             # balls
             TIME1 = pygame.time.get_ticks()
@@ -138,72 +187,53 @@ class Level1:
                     self.__BALLS.pop(0)
                     del ball
 
-            #-----collisions ----------------
+            #----- collisions ----------------
             for ball in self.__BALLS:
-                for stuff in self.STUFF:
+                for item in self.ITEMS:
                     BALL_MASK = pygame.mask.from_surface(ball.getSurface())
-                    ITEM_MASK = pygame.mask.from_surface(stuff.getSurface())
-                    if BALL_MASK.overlap(ITEM_MASK, ((stuff._X - ball._X, stuff._Y - ball._Y))):
+                    ITEM_MASK = pygame.mask.from_surface(item.getSurface())
+                    if BALL_MASK.overlap(ITEM_MASK, ((item._X - ball._X, item._Y - ball._Y))):
                         pygame.mixer.Sound.play(COLLISION_SOUND)
                         ball.setPosition((-1000,-1000))
                         self.__BALLS.remove(ball)
-                        stuff.setPosition((-1000,-1000))
-                        self.STUFF.remove(stuff)
-             
-            for stuff in self.STUFF:
-                if ITEM.getGo:
-                    stuff.marqueeY(self.__WINDOW.getHeight(), 12)
-                
-                # points
-                if stuff.getCollected():
-                    if stuff.getFileLoc() != "images/purple_poison.png" and stuff.getFileLoc() != "images/poison.png" and stuff.getFileLoc() != "images/bomb.png":
-                        self.POINTS += 1
-                        pygame.mixer.Sound.play(FRUIT_SOUND)
-                    elif stuff.getFileLoc() == "images/poison.png":
-                        self.POINTS -= 1
-                        pygame.mixer.Sound.play(POISON_SOUND)
-                    elif stuff.getFileLoc() == "images/purple_poison.png":
-                        self.POINTS -= 3
-                        pygame.mixer.Sound.play(POISON_SOUND)
-                    elif stuff.getFileLoc() == "images/bomb.png":
-                        self.POINTS -= 15
-                        pygame.mixer.Sound.play(POISON_SOUND)
-                    self.STUFF.remove(stuff)
-                    del stuff
+                        item.setPosition((-1000,-1000))
+                        self.ITEMS.remove(item)
+                        del item
+
+            #----- building burger ----------------
+            for item in self.ITEMS:
+                if item.getGo():
+                    item.marqueeY(self.__WINDOW.getHeight(), 12)
+
+                if self.ITEMS.index(item) < 1:
+                    stack_y = 620
+                else:
+                    previous = self.ITEMS[self.ITEMS.index(item)-1]
+                    stack_y = (previous.getPOS()[1] + previous.getHeight()) - 10 - item.getHeight()
+                if item.getPOS()[0] == 1100 and item.getPOS()[1] > stack_y:
+                    item.setGo(False)
+                    item.setCollected(True)
+                    self.BURGER2.append(item.getFileLoc())
+                    # print(self.BURGER2) # delete ------------------------------------------------------------------------------------------------------------------------
+                    item.setPosition((1100, stack_y))
 
             # health bar
-            if self.POINTS > 0 and self.POINTS <=5:
-                for i in range(len(self.HEALTH_BAR)):
-                    if i < self.POINTS:
-                        self.HEALTH_BAR[i].setColor((255, 0, 0))
-                    else:
-                        self.HEALTH_BAR[i].setColor((255, 255, 255))
-            if self.POINTS > 5 and self.POINTS <=15:
-                for i in range(len(self.HEALTH_BAR)):
-                    if i < self.POINTS:
+            for i in range(len(self.BURGER2)):
+                if i <= len(self.BURGER1)-1:
+                    if self.BURGER2[i] != self.BURGER1[i]:
+                        self.HEALTH_BAR[i].setColor((255, 0, 0)) # ingredient doesn't match
+                    elif self.BURGER2[i] == self.BURGER1[i]: # ingredient matches in the right spot
                         self.HEALTH_BAR[i].setColor((0, 255, 0))
-                    else:
-                        self.HEALTH_BAR[i].setColor((255, 255, 255))
+                else:
+                    self.HEALTH_BAR[i].setColor((255, 0, 0))
             
             # die screen
-            if self.POINTS < 0:
-                pygame.mixer.music.stop()
-
-                self.PLAY = False
-                for stuff in self.STUFF:
-                    stuff.setPosition((-1000, -1000))
-                self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
-                if KEYS_PRESSED[pygame.K_RETURN]:
-                    self.__init__()
+            if len(self.BURGER2) >= 10:
+                self.dieScreen(KEYS_PRESSED)
 
             # win screen
-            elif self.POINTS >= 15:
-                self.PLAY = False
-                for stuff in self.STUFF:
-                    stuff.setPosition((-1000, -1000))
-                self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
-                if KEYS_PRESSED[pygame.K_RETURN]:
-                    pass
+            if self.BURGER2 == self.BURGER1:
+                self.winScreen(KEYS_PRESSED)
    
             # -- OUTPUTS -- #
                 
@@ -213,19 +243,16 @@ class Level1:
             # cannon
             self.__WINDOW.getSurface().blit(self.__CANNON.getSurface(), self.__CANNON.getPOS())
 
-            # bucket
-            self.__WINDOW.getSurface().blit(self.__BUCKET.getSurface(), self.__BUCKET.getPOS())
+            # plate
+            self.__WINDOW.getSurface().blit(self.PLATE.getSurface(), self.PLATE.getPOS())
         
             # items
-            for stuff in self.STUFF:
-                self.__WINDOW.getSurface().blit(stuff.getSurface(), stuff.getPOS())
+            for item in self.ITEMS:
+                self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
 
             # balls
             for ball in self.__BALLS:
                 self.__WINDOW.getSurface().blit(ball.getSurface(), ball.getPOS())
-
-            # bucket
-            self.__WINDOW.getSurface().blit(self.__FRONT_BUCKET.getSurface(), self.__FRONT_BUCKET.getPOS())
 
             # health bar
             for interval in self.HEALTH_BAR:

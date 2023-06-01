@@ -74,7 +74,7 @@ class Level1:
 
         self.BURGER1.append(Items("images/bun_bottom.png")) # bottom bun
         for i in range(4):
-            self.BURGER1.append(Items(random.choice(self.IMAGE_LOCS[5:]))) # middle ingredients
+            self.BURGER1.append(Items(random.choice(self.IMAGE_LOCS[6:]))) # middle ingredients
         self.BURGER1.append(Items("images/bun_top.png")) # top bun
 
         if not Items("images/patty.png") in self.BURGER1: # must include at least 1 patty
@@ -96,7 +96,7 @@ class Level1:
             self.HEALTH_BAR[i].setPosition(
                 (
                     self.__WINDOW.getWidth() - 30,
-                    self.__WINDOW.getHeight() - 100 - (i+1)*22
+                    self.__WINDOW.getHeight() - 120 - (i+1)*22
                 )
             )
             if i > 5:
@@ -113,7 +113,9 @@ class Level1:
 
         self.PLAY = False
         for item in self.ITEMS:
-            item.setPosition((-1000, -1000))
+            for item in self.ITEMS:
+                if not item in self.BURGER2:
+                    item.setPosition((-1000, -1000))
         self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
         if PRESSED_KEYS[pygame.K_RETURN]:
             self.__init__()
@@ -121,7 +123,8 @@ class Level1:
     def winScreen(self, PRESSED_KEYS):
         self.PLAY = False
         for item in self.ITEMS:
-            item.setPosition((-1000, -1000))
+            if not item in self.BURGER2:
+                item.setPosition((-1000, -1000))
         self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
         if PRESSED_KEYS[pygame.K_RETURN]:
             pass
@@ -146,7 +149,7 @@ class Level1:
                 self.START_MESSAGE.setPosition((-1000, -1000))
 
                 self.PLAYER.moveUpDown(KEYS_PRESSED)
-                self.PLAYER.checkBoundaries(20, 750, 20)
+                self.PLAYER.checkBoundaries(20, 770, 20)
 
                 # items
                 TIME = pygame.time.get_ticks()

@@ -65,7 +65,7 @@ class MySprite:
         if self._X > MAX_X - self.getWidth():
             self._X = MAX_X - self.getWidth()
         if self._X < MIN_X:
-            self._X = MIN_X 
+            self._X = MIN_X
         
         if self._Y > MAX_Y - self.getHeight():
             self._Y = MAX_Y - self.getHeight()

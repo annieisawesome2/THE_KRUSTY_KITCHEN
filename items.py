@@ -27,6 +27,25 @@ class Items(MySprite):
         self._DIR_X = DIRECTION
         self._POS = (self._X*self._DIR_X, self._Y)
 
+    def scaleBurgerItems(self):
+        ITEM_NAME = self.getFileLoc()
+        if ITEM_NAME == "images/bun_bottom.png":
+            self.setScale(1.2, 1)
+        elif ITEM_NAME == "images/cheese.png":
+            self.setScale(1.4, 1.2)
+        elif ITEM_NAME == "images/lettuce.png":
+            self.setScale(0.6)
+        elif ITEM_NAME == "images/pickles.png":
+            self.setScale(0.18, 0.2)
+        elif ITEM_NAME == "images/tomatos.png":
+            self.setScale(1.7, 1.2)
+        elif ITEM_NAME == "images/onions.png":
+            self.setScale(1.5)
+        elif ITEM_NAME == "images/ketchup.png" or ITEM_NAME == "images/mustard.png":
+            self.setScale(0.2, 0.15)
+        else:
+            self.setScale(1.2)
+
     # -- ACCESSOR METHODS -- #
     def getCollected(self):
         return self.__COLLECTED

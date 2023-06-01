@@ -27,8 +27,8 @@ class Level1:
         self.__BG_IMAGE.setPosition((self.__WINDOW.getWidth() - self.__BG_IMAGE.getWidth(), 0))
 
         self.PLAYER = Cannon("images/spongebob.png")
-        self.PLAYER.setScale(0.25)
-        self.PLAYER.setPosition((200, 400))
+        self.PLAYER.setScale(0.5)
+        self.PLAYER.setPosition((20, 400))
         self.PLAYER.setSpeed(15)
 
         self.__BALL = Box(15, 15)
@@ -38,11 +38,14 @@ class Level1:
         self.NEXT_BALL = 0
 
         self.PLATE = ImageSprite("images/plate.png")
-        self.PLATE.setScale(1)
-        self.PLATE.setPosition((1040, 620))
+        self.PLATE.setScale(0.8)
+        self.PLATE.setPosition((1070, 620))
+
+        self.SPATULA = ImageSprite("images/spatula.png")
 
         # all items
         self.IMAGE_LOCS = [ # duplicates to increase probability of including most common ingredients
+            
             "images/bun_top.png", "images/bun_top.png",
             "images/bun_bottom.png", "images/bun_bottom.png",
             "images/patty.png", "images/patty.png",
@@ -61,7 +64,7 @@ class Level1:
 
         # scroll
         self.SCROLL = ImageSprite("images/scroll.png")
-        self.SCROLL.setScale(1.4, 1)
+        self.SCROLL.setScale(1.2, 0.7)
 
         self.SCROLL_TEXT = Text("Make this burger")
         self.SCROLL_TEXT.setColor((80, 50, 0))
@@ -72,7 +75,7 @@ class Level1:
 
         self.BURGER1.append(Items("images/bun_bottom.png")) # bottom bun
         for i in range(4):
-            self.BURGER1.append(Items(random.choice(self.IMAGE_LOCS[5:]))) # middle ingredients
+            self.BURGER1.append(Items(random.choice(self.IMAGE_LOCS[6:]))) # middle ingredients
         self.BURGER1.append(Items("images/bun_top.png")) # top bun
 
         if not Items("images/patty.png") in self.BURGER1: # must include at least 1 patty
@@ -80,9 +83,8 @@ class Level1:
 
         for i in range(len(self.BURGER1)):
             self.BURGER1[i].scaleBurgerItems()
-            self.BURGER1[i].setPosition((25, self.SCROLL.getHeight() - 40 - (i+1)*40))
-        
-        print(self.BURGER1)
+            self.BURGER1[i].setScale(0.6)
+            self.BURGER1[i].setPosition((35, self.SCROLL.getHeight() - 30 - (i+1)*25))
 
         # burger built (bottom to top)
         self.BURGER2 = []
@@ -95,7 +97,7 @@ class Level1:
             self.HEALTH_BAR[i].setPosition(
                 (
                     self.__WINDOW.getWidth() - 30,
-                    self.__WINDOW.getHeight() - 100 - (i+1)*22
+                    self.__WINDOW.getHeight() - 120 - (i+1)*22
                 )
             )
             if i > 5:
@@ -112,7 +114,9 @@ class Level1:
 
         self.PLAY = False
         for item in self.ITEMS:
-            item.setPosition((-1000, -1000))
+            for item in self.ITEMS:
+                if not item in self.BURGER2:
+                    item.setPosition((-1000, -1000))
         self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
         if PRESSED_KEYS[pygame.K_RETURN]:
             self.__init__()
@@ -120,7 +124,8 @@ class Level1:
     def winScreen(self, PRESSED_KEYS):
         self.PLAY = False
         for item in self.ITEMS:
-            item.setPosition((-1000, -1000))
+            if not item in self.BURGER2:
+                item.setPosition((-1000, -1000))
         self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
         if PRESSED_KEYS[pygame.K_RETURN]:
             pass
@@ -145,7 +150,7 @@ class Level1:
                 self.START_MESSAGE.setPosition((-1000, -1000))
 
                 self.PLAYER.moveUpDown(KEYS_PRESSED)
-                self.PLAYER.checkBoundaries(200, 600, 200)
+                self.PLAYER.checkBoundaries(20, 770, 20)
 
                 # items
                 TIME = pygame.time.get_ticks()
@@ -169,7 +174,7 @@ class Level1:
 
                 self.__BALLS.append(BALL)
                 BALL.setScale(0.03)
-                BALL.setPosition((self.PLAYER.getPOS()[0]+160, self.PLAYER.getPOS()[1]+10))
+                BALL.setPosition((self.PLAYER.getPOS()[0]+320, self.PLAYER.getPOS()[1]+40))
                 BALL.setSpeed(25)
                 BALL.changeShoot()
 
@@ -209,7 +214,6 @@ class Level1:
                     item.setCollected(True)
                     self.BURGER2.append(item)
                     item.setPosition((1100, stack_y))
-                    print(self.BURGER2) # delete ---------------------------------------------------------
 
             # health bar
             for i in range(len(self.BURGER2)):
@@ -226,35 +230,43 @@ class Level1:
                 self.dieScreen(KEYS_PRESSED)
 
             # win screen
-            elif len(self.BURGER2) == 6:
-                for i in range(len(self.BURGER1)):
-                    if self.BURGER2[i].getFileLoc() == self.BURGER1[i].getFileLoc():
-                        self.winScreen(KEYS_PRESSED)
+            BURGER1_STR = []
+            BURGER2_STR = []
+            if len(self.BURGER2) == 6:
+                for i in range(len(self.BURGER2)):
+                    BURGER1_STR.append(self.BURGER1[i].getFileLoc())
+                    BURGER2_STR.append(self.BURGER2[i].getFileLoc())
+                if BURGER1_STR == BURGER2_STR:
+                    self.winScreen(KEYS_PRESSED)
    
             # -- OUTPUTS -- #
                 
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
 
-            # cannon
-            self.__WINDOW.getSurface().blit(self.PLAYER.getSurface(), self.PLAYER.getPOS())
-
             # plate
             self.__WINDOW.getSurface().blit(self.PLATE.getSurface(), self.PLATE.getPOS())
         
             # items
             for item in self.ITEMS:
-                self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
+                if item.getFileLoc() == "images/spatula.png":
+                    self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
+            for item in self.ITEMS:
+                if not item.getFileLoc() == "images/spatula.png":
+                    self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
 
             # scroll
             self.__WINDOW.getSurface().blit(self.SCROLL.getSurface(), self.SCROLL.getPOS())
             self.__WINDOW.getSurface().blit(self.SCROLL_TEXT.getSurface(), self.SCROLL_TEXT.getPOS())
 
+            # cannon
+            self.__WINDOW.getSurface().blit(self.PLAYER.getSurface(), self.PLAYER.getPOS())
+
             # burgers
             for item in self.BURGER1:
                 self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
-            # for item in self.BURGER2:
-            #     self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
+            for i in self.BURGER2:
+                self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
 
             # balls
             for ball in self.__BALLS:

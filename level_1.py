@@ -9,11 +9,15 @@ from ball import Ball
 from items import Items
 import random
 
+
+
+
 class Level1: 
     def __init__(self):
         self.__WINDOW = Window("Spongebob")
 
         self.PLAY = False
+    
 
         self.START_MESSAGE = Text("'ENTER' to play!")
         self.START_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.START_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.START_MESSAGE.getHeight()//2))
@@ -107,18 +111,22 @@ class Level1:
         ITEM = Items(CHOSEN_ITEM)
         ITEM.scaleBurgerItems()
         return ITEM
-        
+
+
+
+     
     def dieScreen(self, PRESSED_KEYS):
         pygame.mixer.music.stop()
 
-        self.PLAY = False
+        
         for item in self.ITEMS:
             for item in self.ITEMS:
                 if not item in self.BURGER2:
                     item.setPosition((-1000, -1000))
         self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
         if PRESSED_KEYS[pygame.K_RETURN]:
-            self.__init__()
+            self.PLAY = False
+        
 
     def winScreen(self, PRESSED_KEYS):
         self.PLAY = False
@@ -137,6 +145,9 @@ class Level1:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
+                    
+         
+            COLLISION_SOUND = pygame.mixer.Sound("sounds/Pop.mp3")
             
             KEYS_PRESSED = pygame.key.get_pressed()
 
@@ -227,6 +238,7 @@ class Level1:
             # die screen
             if len(self.BURGER2) >= 10:
                 self.dieScreen(KEYS_PRESSED)
+
 
             # win screen
             BURGER1_STR = []

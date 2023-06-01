@@ -102,6 +102,8 @@ class Level1:
             )
             if i > 5:
                 self.HEALTH_BAR[i].setColor((180, 180, 180))
+    
+    
 
     def generate(self):
         CHOSEN_ITEM = random.choice(self.IMAGE_LOCS)

@@ -110,7 +110,9 @@ class Level2:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-            
+            FRUIT_SOUND = pygame.mixer.Sound("sounds/money.mp3")
+            POISON_SOUND = pygame.mixer.Sound("sounds/bad_sound.mp3")
+            COLLISION_SOUND = pygame.mixer.Sound("sounds/bubble_pop.mp3")
             KEYS_PRESSED = pygame.key.get_pressed()
 
             # --- PROCESSING --- #
@@ -424,8 +426,6 @@ class Level2:
 if __name__ == "__main__":
     pygame.init()
     pygame.mixer.music.load("sounds/bubble_bath.mp3")
-    FRUIT_SOUND = pygame.mixer.Sound("sounds/money.mp3")
-    POISON_SOUND = pygame.mixer.Sound("sounds/bad_sound.mp3")
-    COLLISION_SOUND = pygame.mixer.Sound("sounds/bubble_pop.mp3")
+    
     GAME = Level2()
     GAME.run()

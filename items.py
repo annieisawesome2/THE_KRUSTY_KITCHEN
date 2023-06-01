@@ -29,7 +29,9 @@ class Items(MySprite):
 
     def scaleBurgerItems(self):
         ITEM_NAME = self.getFileLoc()
-        if ITEM_NAME == "images/bun_bottom.png":
+        if ITEM_NAME == "images/spatula.png":
+            self.setScale(0.4)
+        elif ITEM_NAME == "images/bun_bottom.png":
             self.setScale(1.2, 1)
         elif ITEM_NAME == "images/cheese.png":
             self.setScale(1.4, 1.2)

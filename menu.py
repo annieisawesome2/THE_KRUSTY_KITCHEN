@@ -2,6 +2,8 @@ import pygame
 
 from window import Window
 from image import ImageSprite
+from level_1 import Level1
+from level_2 import Level2
 
 class Engine:
     def __init__(self):
@@ -50,6 +52,16 @@ class Engine:
                     quit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     print("pressed")
+                    SQUID_MASK = pygame.mask.from_surface(self.SQUID.getSurface())
+                    PERFECT_BURGER_MASK = pygame.mask.from_surface(self.PERFECT_BURGER.getSurface())
+                    KRABBY_CASH_MASK = pygame.mask.from_surface(self.KRABBY_CASH.getSurface())
+                    if SQUID_MASK.overlap(PERFECT_BURGER_MASK, ((self.PERFECT_BURGER._X - self.SQUID._X, self.PERFECT_BURGER._Y - self.SQUID._Y))):
+                        LEVEL_1 = Level1()
+                        LEVEL_1.run()
+
+                    if SQUID_MASK.overlap(KRABBY_CASH_MASK, ((self.KRABBY_CASH._X - self.SQUID._X, self.KRABBY_CASH._Y - self.SQUID._Y))):
+                        pass
+
                     
                 MOUSE_POS = pygame.mouse.get_pos()
                 self.SQUID.setPosition((MOUSE_POS[0]-25, MOUSE_POS[1]-20))

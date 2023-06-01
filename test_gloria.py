@@ -45,7 +45,7 @@ class Level1:
 
         # all items
         self.IMAGE_LOCS = [ # duplicates to increase probability of including most common ingredients
-            
+            "images/spatula.png",
             "images/bun_top.png", "images/bun_top.png",
             "images/bun_bottom.png", "images/bun_bottom.png",
             "images/patty.png", "images/patty.png",

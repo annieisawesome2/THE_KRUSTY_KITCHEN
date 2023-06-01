@@ -129,6 +129,12 @@ class Level1:
         self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
         if PRESSED_KEYS[pygame.K_RETURN]:
             pass
+
+    def delObjects(self, LIST):
+        for thing in LIST:
+            if thing.getPOS() == (-1000, -1000):
+                LIST.remove(thing)
+                del thing
     
     def run(self):
 
@@ -182,8 +188,7 @@ class Level1:
                 if ball.getShoot():
                     ball.marqueeX()
                 if ball.getPOS()[0] > self.__WINDOW.getWidth():
-                    self.__BALLS.pop(0)
-                    del ball
+                    ball.setPosition((-1000, -1000))
 
             #----- collisions ----------------
             for ball in self.__BALLS:
@@ -214,16 +219,35 @@ class Level1:
                     item.setCollected(True)
                     self.BURGER2.append(item)
                     item.setPosition((1100, stack_y))
+            
+            for i in range(len(self.BURGER2)):
+                if self.BURGER2[i].getFileLoc() == "images/spatula.png" and self.BURGER2[i].getGo() == False:
+                    self.BURGER2[i].moveX(self.__WINDOW.getWidth())
+                    self.BURGER2[i-1].moveX(self.__WINDOW.getWidth())
+                
+                if self.BURGER2[i].getPOS()[0] >= self.__WINDOW.getWidth():
+                    self.BURGER2[i].setPosition((-1000, -1000))
+                    self.ITEMS.remove(self.BURGER2[i])
+                    self.ITEMS.remove(self.BURGER2[i-1])
+                    self.BURGER2.pop()
+                    self.BURGER2.pop()
 
             # health bar
             for i in range(len(self.BURGER2)):
-                if i <= len(self.BURGER1)-1:
-                    if self.BURGER2[i].getFileLoc() != self.BURGER1[i].getFileLoc():
-                        self.HEALTH_BAR[i].setColor((255, 0, 0)) # ingredient doesn't match
-                    elif self.BURGER2[i].getFileLoc() == self.BURGER1[i].getFileLoc(): # ingredient matches in the right spot
-                        self.HEALTH_BAR[i].setColor((0, 255, 0))
-                else:
-                    self.HEALTH_BAR[i].setColor((255, 0, 0))
+                if self.BURGER2[i].getFileLoc() != "images/spatula.png":
+                    if i <= len(self.BURGER1)-1:
+                        if self.BURGER2[i].getFileLoc() != self.BURGER1[i].getFileLoc():
+                            self.HEALTH_BAR[i].setColor((255, 0, 0)) # ingredient doesn't match
+                        elif self.BURGER2[i].getFileLoc() == self.BURGER1[i].getFileLoc(): # ingredient matches in the right spot
+                            self.HEALTH_BAR[i].setColor((0, 255, 0))
+                    else:
+                        self.HEALTH_BAR[i].setColor((255, 0, 0))
+
+            for i in range(len(self.HEALTH_BAR)):
+                if i >= len(self.BURGER2) and i <= 5:
+                    self.HEALTH_BAR[i].setColor((255, 255, 255))
+                elif i > 5 and i <= 10:
+                    self.HEALTH_BAR[i].setColor((180, 180, 180))
             
             # die screen
             if len(self.BURGER2) >= 10:
@@ -238,6 +262,10 @@ class Level1:
                     BURGER2_STR.append(self.BURGER2[i].getFileLoc())
                 if BURGER1_STR == BURGER2_STR:
                     self.winScreen(KEYS_PRESSED)
+
+            # deleting unecessary objects
+            self.delObjects(self.__BALLS)
+            self.delObjects(self.ITEMS)
    
             # -- OUTPUTS -- #
                 

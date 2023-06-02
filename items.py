@@ -77,7 +77,7 @@ class Items(MySprite):
     
     def marqueeX(self, SCREEN_WIDTH, SPEED):
         """
-        Moves object in a vertical snake pattern.
+        Moves object in a horizontal snake pattern.
         """
         #if self._Y == 50 and self._X < SCREEN_WIDTH:
         self._X += SPEED*self._DIR_X
@@ -96,5 +96,8 @@ class Items(MySprite):
             
         self._POS = (self._X, self._Y)
     
-    
-  
+    def moveX(self, MAX_WIDTH):
+        self._X += 20
+        if self._X > MAX_WIDTH:
+            self.setPosition((-1000,-1000))
+        self._POS = (self._X, self._Y)

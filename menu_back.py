@@ -6,7 +6,7 @@ from image import ImageSprite
 from level_1 import Level1
 from level_2 import Level2 
 
-class Menu:
+class MenuBack:
     def __init__(self):
         self.WINDOW = Window("Spongebob")
 
@@ -65,6 +65,7 @@ class Menu:
                         self.LEVEL_1_RUN = True
                         LEVEL_1 = Level1()
                         LEVEL_1.run()
+                
                         
                         
                     
@@ -73,6 +74,8 @@ class Menu:
                         self.LEVEL_2_RUN = True
                         LEVEL_2 = Level2()
                         LEVEL_2.run()
+                    
+                self.__init__()
 
                 MOUSE_POS = pygame.mouse.get_pos()
                 self.SQUID.setPosition((MOUSE_POS[0]-25, MOUSE_POS[1]-20))
@@ -95,5 +98,5 @@ class Menu:
 
 if __name__ == "__main__":
     pygame.init()
-    MENU = Menu()
+    MENU = MenuBack()
     MENU.run()

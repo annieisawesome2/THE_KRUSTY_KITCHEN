@@ -5,20 +5,7 @@ import pygame
 
 class Engine:
     def __init__(self):
-        self.LEVEL_1 = False
-        self.LEVEL_2 = False
-        self.MENU = False
-    
-    def setLevel1(self):
-        self.LEVEL_1 = True
-    
-    def setLevel2(self):
-        self.LEVEL_2 = True
-    
-    def setMenu(self):
-        self.MENU = True
-    def stopMenu(self):
-        self.MENU = False
+        self.GAME_MENU = True
 
     def run(self):
         while True:
@@ -26,24 +13,11 @@ class Engine:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-            self.setMenu()
-
-            if self.MENU:
-                MENU = Menu()
-                self.stopMenu()
-
-                if MENU.LEVEL_1_RUN:
-                    self.setLevel1()
-                if MENU.LEVEL_2_RUN:
-                    self.setLevel2()
-                MENU.run()
-                
             
-            LEVEL_1 = Level1()
-            if LEVEL_1.PLAY == False:
-                self.setMenu()
+            if self.GAME_MENU:
+                pass
 
-            
+   
 
 
 if __name__ == "__main__":

@@ -66,9 +66,12 @@ class Level1:
         self.SCROLL = ImageSprite("images/scroll.png")
         self.SCROLL.setScale(1.2, 0.7)
 
-        self.SCROLL_TEXT = Text("Make this burger")
+        self.SCROLL_TEXT = Text("Make this")
         self.SCROLL_TEXT.setColor((80, 50, 0))
-        self.SCROLL_TEXT.setPosition((10, 30))
+        self.SCROLL_TEXT.setPosition((15, 20))
+        self.SCROLL_TEXT2 = Text("burger")
+        self.SCROLL_TEXT2.setColor((80, 50, 0))
+        self.SCROLL_TEXT2.setPosition((30, 40))
 
         # burger ordered (bottom to top)
         self.BURGER1 = []
@@ -111,26 +114,7 @@ class Level1:
         ITEM.scaleBurgerItems()
         return ITEM
         
-    def dieScreen(self, PRESSED_KEYS):
-        pygame.mixer.music.stop()
-
-        self.PLAY = False
-        for item in self.ITEMS:
-            for item in self.ITEMS:
-                if not item in self.BURGER2:
-                    item.setPosition((-1000, -1000))
-        self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
-        if PRESSED_KEYS[pygame.K_RETURN]:
-            self.__init__()
-
-    def winScreen(self, PRESSED_KEYS):
-        self.PLAY = False
-        for item in self.ITEMS:
-            if not item in self.BURGER2:
-                item.setPosition((-1000, -1000))
-        self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
-        if PRESSED_KEYS[pygame.K_RETURN]:
-            pass
+  
 
     def delObjects(self, LIST):
         for thing in LIST:
@@ -223,15 +207,15 @@ class Level1:
                     item.setPosition((1100, stack_y))
             
             for i in range(len(self.BURGER2)):
-                if self.BURGER2[i].getFileLoc() == "images/spatula.png" and self.BURGER2[i].getGo() == False:
+                if i > 0 and self.BURGER2[i].getFileLoc() == "images/spatula.png" and self.BURGER2[i].getGo() == False:
                     self.BURGER2[i].moveX(self.__WINDOW.getWidth())
                     self.BURGER2[i-1].moveX(self.__WINDOW.getWidth())
+                elif i == 0 and self.BURGER2[i].getFileLoc() == "images/spatula.png":
+                    self.BURGER2[i].moveX(self.__WINDOW.getWidth())
                 
                 if self.BURGER2[i].getPOS()[0] >= self.__WINDOW.getWidth():
                     self.BURGER2[i].setPosition((-1000, -1000))
                     self.ITEMS.remove(self.BURGER2[i])
-                    self.ITEMS.remove(self.BURGER2[i-1])
-                    self.BURGER2.pop()
                     self.BURGER2.pop()
 
             # health bar
@@ -253,7 +237,16 @@ class Level1:
             
             # die screen
             if len(self.BURGER2) >= 10:
-                self.dieScreen(KEYS_PRESSED)
+                pygame.mixer.music.stop()
+
+                self.PLAY = False
+                for item in self.ITEMS:
+                    for item in self.ITEMS:
+                        if not item in self.BURGER2:
+                            item.setPosition((-1000, -1000))
+                self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
+                if KEYS_PRESSED[pygame.K_RETURN]:
+                    break
 
             # win screen
             BURGER1_STR = []
@@ -263,7 +256,13 @@ class Level1:
                     BURGER1_STR.append(self.BURGER1[i].getFileLoc())
                     BURGER2_STR.append(self.BURGER2[i].getFileLoc())
                 if BURGER1_STR == BURGER2_STR:
-                    self.winScreen(KEYS_PRESSED)
+                    self.PLAY = False
+                    for item in self.ITEMS:
+                        if not item in self.BURGER2:
+                            item.setPosition((-1000, -1000))
+                    self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
+                    if KEYS_PRESSED[pygame.K_RETURN]:
+                        break
 
             # deleting unecessary objects
             self.delObjects(self.__BALLS)
@@ -288,6 +287,7 @@ class Level1:
             # scroll
             self.__WINDOW.getSurface().blit(self.SCROLL.getSurface(), self.SCROLL.getPOS())
             self.__WINDOW.getSurface().blit(self.SCROLL_TEXT.getSurface(), self.SCROLL_TEXT.getPOS())
+            self.__WINDOW.getSurface().blit(self.SCROLL_TEXT2.getSurface(), self.SCROLL_TEXT2.getPOS())
 
             # cannon
             self.__WINDOW.getSurface().blit(self.PLAYER.getSurface(), self.PLAYER.getPOS())

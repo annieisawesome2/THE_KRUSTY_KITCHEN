@@ -79,12 +79,7 @@ class Level2:
         self.HEALTH_BAR = []
         for i in range(15):
             self.HEALTH_BAR.append(Box(15, 15))
-            self.HEALTH_BAR[i].setPosition(
-                (
-                    self.__WINDOW.getWidth() - 30,
-                    self.__WINDOW.getHeight() - 10 - (i+1)*17
-                )
-            )
+            self.HEALTH_BAR[i].setPosition((960 + (i+1)*17, 700))
 
     def generate(self):
         """Generate cash or plankton

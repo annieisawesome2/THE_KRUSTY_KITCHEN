@@ -313,6 +313,8 @@ class Level2:
                         self.HEALTH_BAR[i].setColor((255, 0, 0))
                     else:
                         self.HEALTH_BAR[i].setColor((255, 255, 255))
+
+                        
             if self.POINTS > 5 and self.POINTS <=15:
                 for i in range(len(self.HEALTH_BAR)):
                     if i < self.POINTS:

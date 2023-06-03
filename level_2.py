@@ -30,9 +30,9 @@ class Level2:
 
         self.START_MESSAGE = Text("'ENTER' to play!")
         self.START_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.START_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.START_MESSAGE.getHeight()//2))
-        self.DIE_MESSAGE = Text("You lose! 'ENTER' to try again")
+        self.DIE_MESSAGE = Text("You lose! 'ENTER' to go back to the menu!")
         self.DIE_MESSAGE.setPosition((-1000, -1000))
-        self.WIN_MESSAGE = Text("You Win!")
+        self.WIN_MESSAGE = Text("You Win! 'ENTER' to go back to the menu!")
         self.WIN_MESSAGE.setPosition((-1000, -1000))
 
         # --- SHOOTER 1 -- #
@@ -296,7 +296,7 @@ class Level2:
                         self.POINTS += 1
                         pygame.mixer.Sound.play(FRUIT_SOUND)
                     elif item.getFileLoc() == "images/plankton_new.png":
-                        self.POINTS -= 1
+                        self.POINTS -= 3
                         pygame.mixer.Sound.play(POISON_SOUND)
                     self.ITEMS.remove(item)
                     del item
@@ -309,7 +309,7 @@ class Level2:
                     else:
                         self.HEALTH_BAR[i].setColor((255, 255, 255))
 
-                        
+
             if self.POINTS > 5 and self.POINTS <=15:
                 for i in range(len(self.HEALTH_BAR)):
                     if i < self.POINTS:
@@ -363,7 +363,7 @@ class Level2:
                     box.setPosition((-1000, -1000))
                 self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
                 if KEYS_PRESSED[pygame.K_RETURN]:
-                    self.__init__()
+                    break
 
             # win screen
             elif self.POINTS >= 15:
@@ -372,9 +372,10 @@ class Level2:
                     item.setPosition((-1000, -1000))
                 for box in self.BOXES:
                     box.setPosition((-1000, -1000))
+                pygame.mixer.music.stop()
                 self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
                 if KEYS_PRESSED[pygame.K_RETURN]:
-                    pass
+                    break
     
             # -- OUTPUTS -- #
             self.__WINDOW.clearScreen()

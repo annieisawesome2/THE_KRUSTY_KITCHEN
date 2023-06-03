@@ -17,9 +17,9 @@ class Level1:
 
         self.START_MESSAGE = Text("'ENTER' to play!")
         self.START_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.START_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.START_MESSAGE.getHeight()//2))
-        self.DIE_MESSAGE = Text("You lose! 'ENTER' to try again")
+        self.DIE_MESSAGE = Text("You lose! 'ENTER' to return to menu")
         self.DIE_MESSAGE.setPosition((-1000, -1000))
-        self.WIN_MESSAGE = Text("You Win! 'ENTER' to play Level 2!")
+        self.WIN_MESSAGE = Text("You Win! 'ENTER' to return to menu!")
         self.WIN_MESSAGE.setPosition((-1000, -1000))
         
         self.__BG_IMAGE = ImageSprite("images/krusty_krab_kitchen.jpeg")
@@ -241,7 +241,7 @@ class Level1:
             
             # die screen
             if len(self.BURGER2) >= 10:
-                pygame.mixer.music.stop()
+                
 
                 self.PLAY = False
                 for item in self.ITEMS:
@@ -249,6 +249,7 @@ class Level1:
                         if not item in self.BURGER2:
                             item.setPosition((-1000, -1000))
                 self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
+                pygame.mixer.music.stop()
                 if KEYS_PRESSED[pygame.K_RETURN]:
                     break
 
@@ -256,6 +257,7 @@ class Level1:
             BURGER1_STR = []
             BURGER2_STR = []
             if len(self.BURGER2) == 6:
+                
                 for i in range(len(self.BURGER2)):
                     BURGER1_STR.append(self.BURGER1[i].getFileLoc())
                     BURGER2_STR.append(self.BURGER2[i].getFileLoc())
@@ -264,6 +266,7 @@ class Level1:
                     for item in self.ITEMS:
                         if not item in self.BURGER2:
                             item.setPosition((-1000, -1000))
+                    pygame.mixer.music.stop()
                     self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
                     if KEYS_PRESSED[pygame.K_RETURN]:
                         break

@@ -21,18 +21,26 @@ class Level2:
         # background
         self.__BG_IMAGE = ImageSprite("images/sand_bg.png")
         self.__BG_IMAGE.setScale(1.4)
-        self.__BG_IMAGE.setPosition((0, -10))
-     
-      
+        self.__BG_IMAGE.setPosition((0, -100))
 
         # messages
         self.PLAY = False
 
-        self.START_MESSAGE = Text("'ENTER' to play!")
-        self.START_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.START_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.START_MESSAGE.getHeight()//2))
-        self.DIE_MESSAGE = Text("You lose! 'ENTER' to go back to the menu!")
-        self.DIE_MESSAGE.setPosition((-1000, -1000))
-        self.WIN_MESSAGE = Text("You Win! 'ENTER' to go back to the menu!")
+        self.START = ImageSprite("images/level2_instructions.png")
+        self.START.setScale(0.818)
+        # lose
+        self.ANGRY_MRKRABS = ImageSprite("images/angry_mrkrabs.png")
+        self.ANGRY_MRKRABS.setScale(0.3)
+        self.ANGRY_MRKRABS.setPosition((-1000, -1000))
+        self.LOSE_MESSAGE = ImageSprite("images/lose_message.png")
+        self.LOSE_MESSAGE.setScale(0.8)
+        self.LOSE_MESSAGE.setPosition((-1000, -1000))
+        # win
+        self.HAPPY_MRKRABS = ImageSprite("images/happy_mrkrabs.png")
+        self.HAPPY_MRKRABS.setScale(0.5)
+        self.HAPPY_MRKRABS.setPosition((-1000, -1000))
+        self.WIN_MESSAGE = ImageSprite("images/win_message.png")
+        self.WIN_MESSAGE.setScale(0.8)
         self.WIN_MESSAGE.setPosition((-1000, -1000))
 
         # --- SHOOTER 1 -- #
@@ -59,8 +67,6 @@ class Level2:
         self.BULLETS_3 = []
         self.NEXT_BULLET_3 = 0
 
-
-
         # items
         self.NEXT_ITEM = 0
         self.BOXES = []
@@ -69,17 +75,20 @@ class Level2:
         # crab and treasure box
         self.RESTAURANT = ImageSprite("images/restaurant.png")
         self.RESTAURANT.setScale(0.3)
-        self.RESTAURANT.setPosition((self.__WINDOW.getWidth() - 600, 200))
+        self.RESTAURANT.setPosition((self.__WINDOW.getWidth() - self.RESTAURANT.getWidth(), 380))
+        self.RESTAURANT2 = ImageSprite("images/restaurant2.png")
+        self.RESTAURANT2.setScale(0.3)
+        self.RESTAURANT2.setPosition((self.__WINDOW.getWidth() - self.RESTAURANT.getWidth(), 380))
         self.CRAB = ImageSprite("images/crab.png")
         self.CRAB.setScale(0.2)
-        self.CRAB.setPosition((self.__WINDOW.getWidth() - 200, 500 ))
+        self.CRAB.setPosition((1100, 450))
       
         # health bar
         self.POINTS = 1
         self.HEALTH_BAR = []
         for i in range(15):
-            self.HEALTH_BAR.append(Box(15, 15))
-            self.HEALTH_BAR[i].setPosition((960 + (i+1)*17, 700))
+            self.HEALTH_BAR.append(Box(20, 20))
+            self.HEALTH_BAR[i].setPosition((920 + (i+1)*22, 640))
 
     def generate(self):
         """Generate cash or plankton
@@ -116,7 +125,7 @@ class Level2:
                 pygame.mixer.music.play(-1)
 
             if self.PLAY:
-                self.START_MESSAGE.setPosition((-1000, -1000))
+                self.START.setPosition((-2000, -1000))
 
                 # ----- shooter 1 ----- #
                 TIME1 = pygame.time.get_ticks()
@@ -174,7 +183,7 @@ class Level2:
                 # --- BUBBLE GENERATOR --- #
                 TIME = pygame.time.get_ticks()
                 if TIME > self.NEXT_ITEM:
-                    DELAY = 2000
+                    DELAY = 1500
                     self.NEXT_ITEM = TIME + DELAY
                     ITEM = Items("images/bubble.png")
                     self.BOXES.append(ITEM)
@@ -184,7 +193,7 @@ class Level2:
                 
                 for box in self.BOXES:
                     if ITEM.getGo:
-                        box.marqueeX(self.__WINDOW.getWidth(), 8)
+                        box.marqueeX(self.__WINDOW.getWidth(), 12)
 
             ## --- COLLISION 1 --- ##
             for bullet in self.BULLETS_1:
@@ -270,15 +279,13 @@ class Level2:
                 if item.getGo():
                     if item._Y == 250:
                         item._DIR_X = -1
-                        item.marqueeX(self.__WINDOW.getWidth(), 8)
+                        item.marqueeX(self.__WINDOW.getWidth(), 12)
                     else:
-                        item.marqueeX(self.__WINDOW.getWidth(), 8)
+                        item.marqueeX(self.__WINDOW.getWidth(), 12)
                         
              ## --- TREASURE and ITEM COLLSION --- ##
             for item in self.ITEMS:
-                ITEM_MASK5 = pygame.mask.from_surface(item.getSurface())
-                CRAB_MASK = pygame.mask.from_surface(self.CRAB.getSurface())
-                if CRAB_MASK.overlap(ITEM_MASK5, ((item._X - self.CRAB._X, item._Y - self.CRAB._Y))):
+                if item.getPOS()[0] > 1050 and item.getPOS()[1] == 470:
                     item.setGo(False)
                     item.setPosition((-1000,-1000))
                     item.setCollected(True)
@@ -345,23 +352,24 @@ class Level2:
                     self.BULLETS_2.remove(bullet2)
                     del bullet2
             
-            
             for bullet3 in self.BULLETS_3 :
                 if bullet3._POS == ((-1000, -1000)) or bullet3._Y < 0 - bullet3.getHeight():
                     self.BULLETS_3.remove(bullet3)
                     del bullet3
-            
-  
 
             # die screen
             if self.POINTS <= 0:
                 self.PLAY = False
-                pygame.mixer.music.stop()
+                for health in self.HEALTH_BAR:
+                    health.setColor((255, 255, 255))
                 for item in self.ITEMS:
                     item.setPosition((-1000, -1000))
                 for box in self.BOXES:
                     box.setPosition((-1000, -1000))
-                self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
+                self.CRAB.setPosition((-1000, -1000))
+                self.ANGRY_MRKRABS.setPosition((1120, 450))
+                self.LOSE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.LOSE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.LOSE_MESSAGE.getHeight()//2))
+                pygame.mixer.music.stop()
                 if KEYS_PRESSED[pygame.K_RETURN]:
                     break
 
@@ -372,17 +380,16 @@ class Level2:
                     item.setPosition((-1000, -1000))
                 for box in self.BOXES:
                     box.setPosition((-1000, -1000))
-                pygame.mixer.music.stop()
+                self.CRAB.setPosition((-1000, -1000))
+                self.HAPPY_MRKRABS.setPosition((1040, 400))
                 self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
+                pygame.mixer.music.stop()
                 if KEYS_PRESSED[pygame.K_RETURN]:
                     break
     
             # -- OUTPUTS -- #
             self.__WINDOW.clearScreen()
             self.__WINDOW.getSurface().blit(self.__BG_IMAGE.getSurface(), self.__BG_IMAGE.getPOS())
-          
-
-
 
             for box in self.BOXES:
                 self.__WINDOW.getSurface().blit(box.getSurface(), box.getPOS())
@@ -396,12 +403,11 @@ class Level2:
            
             
             self.__WINDOW.getSurface().blit(self.RESTAURANT.getSurface(), self.RESTAURANT.getPOS())
-            self.__WINDOW.getSurface().blit(self.CRAB.getSurface(), self.CRAB.getPOS())
             for item in self.ITEMS:
                 self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
+            self.__WINDOW.getSurface().blit(self.RESTAURANT2.getSurface(), self.RESTAURANT2.getPOS())
+            self.__WINDOW.getSurface().blit(self.CRAB.getSurface(), self.CRAB.getPOS())
 
-       
-            
             self.__WINDOW.getSurface().blit(self.SHOOTER_1.getSurface(), self.SHOOTER_1.getPOS())
             self.__WINDOW.getSurface().blit(self.SHOOTER_2.getSurface(), self.SHOOTER_2.getPOS())
             self.__WINDOW.getSurface().blit(self.SHOOTER_3.getSurface(), self.SHOOTER_3.getPOS())
@@ -411,10 +417,11 @@ class Level2:
             for interval in self.HEALTH_BAR:
                 self.__WINDOW.getSurface().blit(interval.getSurface(), interval.getPOS())
             
-            # text
-            # text
-            self.__WINDOW.getSurface().blit(self.START_MESSAGE.getSurface(), self.START_MESSAGE.getPOS())
-            self.__WINDOW.getSurface().blit(self.DIE_MESSAGE.getSurface(), self.DIE_MESSAGE.getPOS())
+            # start/lose/win
+            self.__WINDOW.getSurface().blit(self.START.getSurface(), self.START.getPOS())
+            self.__WINDOW.getSurface().blit(self.ANGRY_MRKRABS.getSurface(), self.ANGRY_MRKRABS.getPOS())
+            self.__WINDOW.getSurface().blit(self.LOSE_MESSAGE.getSurface(), self.LOSE_MESSAGE.getPOS())
+            self.__WINDOW.getSurface().blit(self.HAPPY_MRKRABS.getSurface(), self.HAPPY_MRKRABS.getPOS())
             self.__WINDOW.getSurface().blit(self.WIN_MESSAGE.getSurface(), self.WIN_MESSAGE.getPOS())
       
             self.__WINDOW.updateFrame()

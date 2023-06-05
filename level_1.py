@@ -18,9 +18,19 @@ class Level1:
 
         self.START = ImageSprite("images/level1_instructions.png")
         self.START.setScale(0.818)
-        self.DIE_MESSAGE = Text("You lose! 'ENTER' to return to menu")
-        self.DIE_MESSAGE.setPosition((-1000, -1000))
-        self.WIN_MESSAGE = Text("You Win! 'ENTER' to return to menu!")
+        # lose
+        self.SAD_SPONGEBOB = ImageSprite("images/sad_spongebob.png")
+        self.SAD_SPONGEBOB.setScale(2)
+        self.SAD_SPONGEBOB.setPosition((-1000, -1000))
+        self.LOSE_MESSAGE = ImageSprite("images/lose_message.png")
+        self.LOSE_MESSAGE.setScale(0.8)
+        self.LOSE_MESSAGE.setPosition((-1000, -1000))
+        # win
+        self.HAPPY_SPONGEBOB = ImageSprite("images/happy_spongebob.png")
+        self.HAPPY_SPONGEBOB.setScale(1.5)
+        self.HAPPY_SPONGEBOB.setPosition((-1000, -1000))
+        self.WIN_MESSAGE = ImageSprite("images/win_message.png")
+        self.WIN_MESSAGE.setScale(0.8)
         self.WIN_MESSAGE.setPosition((-1000, -1000))
         
         self.__BG_IMAGE = ImageSprite("images/krusty_krab_kitchen.jpeg")
@@ -242,14 +252,14 @@ class Level1:
             
             # die screen
             if len(self.BURGER2) >= 10:
-                
-
                 self.PLAY = False
                 for item in self.ITEMS:
                     for item in self.ITEMS:
                         if not item in self.BURGER2:
                             item.setPosition((-1000, -1000))
-                self.DIE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.DIE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.DIE_MESSAGE.getHeight()//2))
+                self.PLAYER.setPosition((-1000, -1000))
+                self.SAD_SPONGEBOB.setPosition((60, 400))
+                self.LOSE_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.LOSE_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.LOSE_MESSAGE.getHeight()//2))
                 pygame.mixer.music.stop()
                 if KEYS_PRESSED[pygame.K_RETURN]:
                     break
@@ -258,7 +268,6 @@ class Level1:
             BURGER1_STR = []
             BURGER2_STR = []
             if len(self.BURGER2) == 6:
-                
                 for i in range(len(self.BURGER2)):
                     BURGER1_STR.append(self.BURGER1[i].getFileLoc())
                     BURGER2_STR.append(self.BURGER2[i].getFileLoc())
@@ -267,8 +276,10 @@ class Level1:
                     for item in self.ITEMS:
                         if not item in self.BURGER2:
                             item.setPosition((-1000, -1000))
-                    pygame.mixer.music.stop()
+                    self.PLAYER.setPosition((-1000, -1000))
+                    self.HAPPY_SPONGEBOB.setPosition((20, 400))
                     self.WIN_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.WIN_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.WIN_MESSAGE.getHeight()//2))
+                    pygame.mixer.music.stop()
                     if KEYS_PRESSED[pygame.K_RETURN]:
                         break
 
@@ -303,7 +314,7 @@ class Level1:
             for i in self.BURGER2:
                 self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
 
-            # cannon
+            # player
             self.__WINDOW.getSurface().blit(self.PLAYER.getSurface(), self.PLAYER.getPOS())
 
             # balls
@@ -314,9 +325,11 @@ class Level1:
             for interval in self.HEALTH_BAR:
                 self.__WINDOW.getSurface().blit(interval.getSurface(), interval.getPOS())
 
-            # start/die
+            # start/lose/win
             self.__WINDOW.getSurface().blit(self.START.getSurface(), self.START.getPOS())
-            self.__WINDOW.getSurface().blit(self.DIE_MESSAGE.getSurface(), self.DIE_MESSAGE.getPOS())
+            self.__WINDOW.getSurface().blit(self.SAD_SPONGEBOB.getSurface(), self.SAD_SPONGEBOB.getPOS())
+            self.__WINDOW.getSurface().blit(self.LOSE_MESSAGE.getSurface(), self.LOSE_MESSAGE.getPOS())
+            self.__WINDOW.getSurface().blit(self.HAPPY_SPONGEBOB.getSurface(), self.HAPPY_SPONGEBOB.getPOS())
             self.__WINDOW.getSurface().blit(self.WIN_MESSAGE.getSurface(), self.WIN_MESSAGE.getPOS())
 
             self.__WINDOW.updateFrame()

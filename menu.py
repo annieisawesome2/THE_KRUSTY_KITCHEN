@@ -8,7 +8,7 @@ from level_2 import Level2
 
 class Menu:
     def __init__(self):
-        self.WINDOW = Window("Spongebob")
+        self.WINDOW = Window("Krust Kitche ")
 
         self.BG_IMAGE = ImageSprite("images/menu_bg.png")
         self.BG_IMAGE.setScale(0.7, 0.8)

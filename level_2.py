@@ -15,7 +15,7 @@ from boxes import Box
 
 class Level2: 
     def __init__(self):
-        self.__WINDOW = Window("Fruit Explosion")
+        self.__WINDOW = Window("Krabby Kash")
         self.__WINDOW.BG_COLOR = ((255, 255, 255))
 
         # background

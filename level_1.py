@@ -11,12 +11,13 @@ import random
 
 class Level1: 
     def __init__(self):
-        self.__WINDOW = Window("Spongebob")
+        self.__WINDOW = Window("Perfect Burger")
 
         self.PLAY = False
 
-        self.START_MESSAGE = Text("'ENTER' to play!")
-        self.START_MESSAGE.setPosition((self.__WINDOW.getWidth()//2 - self.START_MESSAGE.getWidth()//2, self.__WINDOW.getHeight()//2 - self.START_MESSAGE.getHeight()//2))
+
+        self.START = ImageSprite("images/level1_instructions.png")
+        self.START.setScale(0.818)
         self.DIE_MESSAGE = Text("You lose! 'ENTER' to return to menu")
         self.DIE_MESSAGE.setPosition((-1000, -1000))
         self.WIN_MESSAGE = Text("You Win! 'ENTER' to return to menu!")
@@ -142,7 +143,7 @@ class Level1:
 
             # -- PROCESSING -- #
             if self.PLAY:
-                self.START_MESSAGE.setPosition((-1000, -1000))
+                self.START.setPosition((-2000, -1000))
 
                 self.PLAYER.moveUpDown(KEYS_PRESSED)
                 self.PLAYER.checkBoundaries(20, 770, 20)
@@ -296,14 +297,14 @@ class Level1:
             self.__WINDOW.getSurface().blit(self.SCROLL_TEXT.getSurface(), self.SCROLL_TEXT.getPOS())
             self.__WINDOW.getSurface().blit(self.SCROLL_TEXT2.getSurface(), self.SCROLL_TEXT2.getPOS())
 
-            # cannon
-            self.__WINDOW.getSurface().blit(self.PLAYER.getSurface(), self.PLAYER.getPOS())
-
             # burgers
             for item in self.BURGER1:
                 self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
             for i in self.BURGER2:
                 self.__WINDOW.getSurface().blit(item.getSurface(), item.getPOS())
+
+            # cannon
+            self.__WINDOW.getSurface().blit(self.PLAYER.getSurface(), self.PLAYER.getPOS())
 
             # balls
             for ball in self.__BALLS:
@@ -313,8 +314,8 @@ class Level1:
             for interval in self.HEALTH_BAR:
                 self.__WINDOW.getSurface().blit(interval.getSurface(), interval.getPOS())
 
-            # text
-            self.__WINDOW.getSurface().blit(self.START_MESSAGE.getSurface(), self.START_MESSAGE.getPOS())
+            # start/die
+            self.__WINDOW.getSurface().blit(self.START.getSurface(), self.START.getPOS())
             self.__WINDOW.getSurface().blit(self.DIE_MESSAGE.getSurface(), self.DIE_MESSAGE.getPOS())
             self.__WINDOW.getSurface().blit(self.WIN_MESSAGE.getSurface(), self.WIN_MESSAGE.getPOS())
 

@@ -14,8 +14,7 @@ class Level1:
         self.__WINDOW = Window("Perfect Burger")
 
         self.PLAY = False
-
-
+        
         self.START = ImageSprite("images/level1_instructions.png")
         self.START.setScale(0.818)
         # lose

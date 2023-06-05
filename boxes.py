@@ -32,6 +32,9 @@ class Box(MySprite):
         self.__HEIGHT = HEIGHT
         self._DIM = (self.__WIDTH, self.__HEIGHT)
 
+    def getColor(self):
+        return self._COLOR
+
 
 
 if __name__ == "__main__":

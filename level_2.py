@@ -102,6 +102,12 @@ class Level2:
             ITEM.setScale(0.25)
         return ITEM
     
+    def delObjects(self, LIST):
+        for thing in LIST:
+            if thing.getPOS() == (-1000, -1000):
+                LIST.remove(thing)
+                del thing
+    
     def run(self):
         
         while True:
@@ -132,14 +138,13 @@ class Level2:
                     BULLET_1 = Ball("images/squid.png")
                     self.BULLETS_1.append(BULLET_1)
                     BULLET_1.setScale(0.15)
-                    BULLET_1.setPosition((self.SHOOTER_1.getPOS()[0] +50, self.SHOOTER_1.getPOS()[1] +60))
+                    BULLET_1.setPosition((self.SHOOTER_1.getPOS()[0] +50, 770))
                     BULLET_1.setSpeed(25)
                     BULLET_1.changeShoot()
 
                 for bullet in self.BULLETS_1:
                     if bullet.getShoot():
                         bullet.marqueeY()
-                
 
                 # ----- shooter 2 ----- #
                 TIME2 = pygame.time.get_ticks()
@@ -150,7 +155,7 @@ class Level2:
                     BULLET_2 = Ball("images/squid.png")
                     self.BULLETS_2.append(BULLET_2)
                     BULLET_2.setScale(0.15)
-                    BULLET_2.setPosition((self.SHOOTER_2.getPOS()[0] +60, self.SHOOTER_2.getPOS()[1]+60))
+                    BULLET_2.setPosition((self.SHOOTER_2.getPOS()[0] +60, 790))
                     BULLET_2.setSpeed(25)
                     BULLET_2.changeShoot()
 
@@ -168,7 +173,7 @@ class Level2:
                     BULLET_3 = Ball("images/squid.png")
                     self.BULLETS_3.append(BULLET_3)
                     BULLET_3.setScale(0.15)
-                    BULLET_3.setPosition((self.SHOOTER_3.getPOS()[0] +35, self.SHOOTER_3.getPOS()[1]+60))
+                    BULLET_3.setPosition((self.SHOOTER_3.getPOS()[0] +35, 750))
                     BULLET_3.setSpeed(25)
                     BULLET_3.changeShoot()
 
@@ -179,7 +184,7 @@ class Level2:
                 # --- BUBBLE GENERATOR --- #
                 TIME = pygame.time.get_ticks()
                 if TIME > self.NEXT_ITEM:
-                    DELAY = 1500
+                    DELAY = 1600
                     self.NEXT_ITEM = TIME + DELAY
                     ITEM = Items("images/bubble.png")
                     self.BOXES.append(ITEM)
@@ -189,7 +194,7 @@ class Level2:
                 
                 for box in self.BOXES:
                     if ITEM.getGo:
-                        box.marqueeX(self.__WINDOW.getWidth(), 12)
+                        box.marqueeX(self.__WINDOW.getWidth(), 10)
 
             ## --- COLLISION 1 --- ##
             for bullet in self.BULLETS_1:
@@ -216,7 +221,6 @@ class Level2:
                         item.setGo(False)
                         item.setPosition((-1000,-1000))
                         bullet.setPosition((-1000,-1000))
-                        
             
              ## --- COLLISION 2 --- ##
             for bullet in self.BULLETS_2:
@@ -275,9 +279,9 @@ class Level2:
                 if item.getGo():
                     if item._Y == 250:
                         item._DIR_X = -1
-                        item.marqueeX(self.__WINDOW.getWidth(), 12)
+                        item.marqueeX(self.__WINDOW.getWidth(), 10)
                     else:
-                        item.marqueeX(self.__WINDOW.getWidth(), 12)
+                        item.marqueeX(self.__WINDOW.getWidth(), 10)
                         
              ## --- TREASURE and ITEM COLLSION --- ##
             for item in self.ITEMS:
@@ -290,6 +294,7 @@ class Level2:
                 BOX_MASK = pygame.mask.from_surface(box.getSurface())
                 TREASURE_MASK = pygame.mask.from_surface(self.RESTAURANT.getSurface())
                 if TREASURE_MASK.overlap(BOX_MASK, ((box._X - self.RESTAURANT._X, box._Y - self.RESTAURANT._Y))):
+                    self.POINTS -= 1
                     box.setGo(False)
                     box.setPosition((-1000,-1000))
             # points
@@ -312,7 +317,6 @@ class Level2:
                     else:
                         self.HEALTH_BAR[i].setColor((255, 255, 255))
 
-
             if self.POINTS > 5 and self.POINTS <=15:
                 for i in range(len(self.HEALTH_BAR)):
                     if i < self.POINTS:
@@ -320,28 +324,15 @@ class Level2:
                     else:
                         self.HEALTH_BAR[i].setColor((255, 255, 255))
             
-                    
-            
-        
             ##--- Checking for collisions then deleting item.... check for missed objects if it goes off screen without hit
-            for item in self.ITEMS: 
-                if item._X == -1000 and item._Y == -1000:
-                    self.ITEMS.remove(item)
-                    del item
-        
-
-            for box in self.BOXES:
-                if box._X == -1000 and box._Y == -1000:
-                    self.BOXES.remove(box)
-                    del box
-
-           
+            self.delObjects(self.ITEMS)
+            self.delObjects(self.BOXES)
             
             for bullet1 in self.BULLETS_1:
-                if bullet1._POS == ((-1000, -1000)) or bullet1._Y < 0 - bullet1.getHeight() :
+                if bullet1._POS == ((-1000, -1000)) or bullet1._Y < 0 - bullet1.getHeight():
+                    print(bullet1._Y, bullet1.getHeight(), bullet1._POS)
                     self.BULLETS_1.remove(bullet1)
                     del bullet1
-            
             
             for bullet2 in self.BULLETS_2:
                 if bullet2._POS == ((-1000, -1000)) or bullet2._Y < 0 - bullet2.getHeight():

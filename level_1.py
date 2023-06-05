@@ -14,7 +14,7 @@ class Level1:
         self.__WINDOW = Window("Perfect Burger")
 
         self.PLAY = False
-        
+
         self.START = ImageSprite("images/level1_instructions.png")
         self.START.setScale(0.818)
         # lose
@@ -115,17 +115,13 @@ class Level1:
             )
             if i > 5:
                 self.HEALTH_BAR[i].setColor((180, 180, 180))
-    
-    
 
     def generate(self):
         CHOSEN_ITEM = random.choice(self.IMAGE_LOCS)
         ITEM = Items(CHOSEN_ITEM)
         ITEM.scaleBurgerItems()
         return ITEM
-        
   
-
     def delObjects(self, LIST):
         for thing in LIST:
             if thing.getPOS() == (-1000, -1000):
@@ -160,7 +156,7 @@ class Level1:
                 # items
                 TIME = pygame.time.get_ticks()
                 if TIME > self.NEXT_ITEM:
-                    DELAY = 1500
+                    DELAY = 1200
 
                     self.NEXT_ITEM = TIME + DELAY
                     ITEM = self.generate()
@@ -205,7 +201,7 @@ class Level1:
             #----- building burger ----------------
             for item in self.ITEMS:
                 if item.getGo():
-                    item.marqueeY(self.__WINDOW.getHeight(), 12)
+                    item.marqueeY(self.__WINDOW.getHeight(), 16)
 
                 if self.ITEMS.index(item) < 1:
                     stack_y = 620

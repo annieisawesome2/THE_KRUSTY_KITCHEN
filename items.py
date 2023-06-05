@@ -9,19 +9,17 @@ class Items(MySprite):
         self._SURFACE = pygame.image.load(self.__FILE_LOC).convert_alpha()
         self.__COLLECTED = False
         self.GO = False # self.GO
-    
+        self.SPEED = 0
+
+    # -- MODIFIER METHODS -- #
     def setGo(self, STATUS):
         self.GO = STATUS
     
-    def getGo(self):
-        return self.GO
-
-    # -- MODIFIER METHODS -- #
-    def setValue(self, VALUE):
-        self.__VALUE = VALUE
-    
     def setCollected(self, STATUS):
         self.__COLLECTED = STATUS
+
+    def setSpeed(self, NUMBER):
+        self.SPEED = NUMBER
 
     def setDirX(self, DIRECTION):
         self._DIR_X = DIRECTION
@@ -47,19 +45,14 @@ class Items(MySprite):
             self.setScale(0.2, 0.15)
         else:
             self.setScale(1.2)
-
-    # -- ACCESSOR METHODS -- #
-    def getCollected(self):
-        return self.__COLLECTED
-
-    def getFileLoc(self):
-        return self.__FILE_LOC
-
+        
+    # movement methods
     def marqueeY(self, SCREEN_HEIGHT, SPEED):
         """
         Moves object in a vertical snake pattern.
         """
-        self._Y += SPEED*self._DIR_Y
+        self.SPEED = SPEED
+        self._Y += self.SPEED*self._DIR_Y
         if self._X == 550 and self._Y > SCREEN_HEIGHT+100:
             self._X = 850
             self._Y = SCREEN_HEIGHT
@@ -70,17 +63,14 @@ class Items(MySprite):
             self._Y = 0 - self.getWidth()
             self._DIR_Y = 1
             
-        # if self._X == 1100 and self._Y > 600:
-        #     self.setPosition((-1000, -1000))
-            
         self._POS = (self._X, self._Y)
     
     def marqueeX(self, SCREEN_WIDTH, SPEED):
         """
         Moves object in a horizontal snake pattern.
         """
-        #if self._Y == 50 and self._X < SCREEN_WIDTH:
-        self._X += SPEED*self._DIR_X
+        self.SPEED = SPEED
+        self._X += self.SPEED*self._DIR_X
         if self._Y == 50 and self._X > SCREEN_WIDTH:
             self._Y = 250
             self._X = SCREEN_WIDTH
@@ -101,3 +91,13 @@ class Items(MySprite):
         if self._X > MAX_WIDTH:
             self.setPosition((-1000,-1000))
         self._POS = (self._X, self._Y)
+
+    # -- ACCESSOR METHODS -- #
+    def getGo(self):
+        return self.GO
+
+    def getCollected(self):
+        return self.__COLLECTED
+
+    def getFileLoc(self):
+        return self.__FILE_LOC

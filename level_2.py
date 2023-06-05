@@ -9,10 +9,6 @@ from cannon import Cannon
 from ball import Ball
 from boxes import Box
 
-
-##Fruits on clouds random every time hitting objects
-
-
 class Level2: 
     def __init__(self):
         self.__WINDOW = Window("Krabby Kash")
@@ -96,13 +92,13 @@ class Level2:
         Returns:
             _type_: _description_
         """
-        STRING = ["images/dollar_bill.png", "images/plankton_new.png"]
+        STRING = ["images/dollar_bill.png", "images/plankton.png"]
         CHOSEN_ITEM = random.choice(STRING)
         ITEM = Items(CHOSEN_ITEM)
 
         if CHOSEN_ITEM == "images/dollar_bill.png":
             ITEM.setScale(0.21)
-        elif CHOSEN_ITEM == "images/plankton_new.png":
+        elif CHOSEN_ITEM == "images/plankton.png":
             ITEM.setScale(0.25)
         return ITEM
     
@@ -299,10 +295,10 @@ class Level2:
             # points
             for item in self.ITEMS:
                 if item.getCollected():
-                    if item.getFileLoc() != "images/plankton_new.png":
+                    if item.getFileLoc() != "images/plankton.png":
                         self.POINTS += 1
                         pygame.mixer.Sound.play(FRUIT_SOUND)
-                    elif item.getFileLoc() == "images/plankton_new.png":
+                    elif item.getFileLoc() == "images/plankton.png":
                         self.POINTS -= 3
                         pygame.mixer.Sound.play(POISON_SOUND)
                     self.ITEMS.remove(item)

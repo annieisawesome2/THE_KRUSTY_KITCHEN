@@ -136,8 +136,7 @@ class Level1:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-            FRUIT_SOUND = pygame.mixer.Sound("sounds/fruit_sound.mp3")
-            POISON_SOUND = pygame.mixer.Sound("sounds/bad_sound.mp3")
+
             COLLISION_SOUND = pygame.mixer.Sound("sounds/Pop.mp3")
             
             KEYS_PRESSED = pygame.key.get_pressed()

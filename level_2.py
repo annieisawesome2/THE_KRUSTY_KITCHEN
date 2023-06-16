@@ -90,7 +90,7 @@ class Level2:
         """Generate cash or plankton
 
         Returns:
-            _type_: _description_
+            ITEM: obj
         """
         STRING = ["images/dollar_bill.png", "images/plankton.png"]
         CHOSEN_ITEM = random.choice(STRING)
@@ -330,7 +330,6 @@ class Level2:
             
             for bullet1 in self.BULLETS_1:
                 if bullet1._POS == ((-1000, -1000)) or bullet1._Y < 0 - bullet1.getHeight():
-                    print(bullet1._Y, bullet1.getHeight(), bullet1._POS)
                     self.BULLETS_1.remove(bullet1)
                     del bullet1
             
